@@ -1,0 +1,90 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Phone, Mail, MapPin, Dumbbell, Clock } from 'lucide-react';
+import logoImg from '../assets/images/logo.png';
+import { GYM_INFO } from '../data/gymData';
+
+export const Footer: React.FC = () => {
+  return (
+    <footer className="bg-[#0a0a0a] border-t border-neutral-900 pt-16 pb-8 relative overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-[#e8272a] to-transparent opacity-60"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          
+          <div className="space-y-5">
+            <Link to="/" className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg overflow-hidden shadow-md shadow-red-500/10">
+                <img src={logoImg} alt="Beast Factory Logo" className="w-full h-full object-cover" />
+              </div>
+              <div>
+                <span className="font-heading text-2xl tracking-wider text-white">BEAST <span className="text-[#e8272a]">FACTORY</span></span>
+                <span className="block text-[10px] text-neutral-500 uppercase tracking-widest">{GYM_INFO.tagline}</span>
+              </div>
+            </Link>
+            <p className="text-neutral-400 text-sm leading-relaxed">
+              Damak's premier strength & conditioning fitness facility. International standard machinery, expert certified trainers, and an unbeatable hardcore training environment. {GYM_INFO.daysOpen}.
+            </p>
+            <div className="flex items-center gap-3 pt-2">
+              <a href={GYM_INFO.facebook} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300 hover:text-[#e8272a] hover:border-[#e8272a]/40 transition-all font-bold text-xs">FB</a>
+              <a href={GYM_INFO.instagram} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300 hover:text-[#e8272a] hover:border-[#e8272a]/40 transition-all font-bold text-xs">IG</a>
+              <a href={GYM_INFO.tiktok} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300 hover:text-[#e8272a] hover:border-[#e8272a]/40 transition-all font-bold text-xs">TK</a>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-heading text-xl text-white tracking-wide border-b border-neutral-800 pb-2">QUICK NAVIGATION</h3>
+            <ul className="space-y-2.5 text-sm text-neutral-400">
+              {[
+                { to: '/about', label: 'About Beast Factory' },
+                { to: '/services', label: 'Programs & Training' },
+                { to: '/trainers', label: 'Certified Coaches' },
+                { to: '/calculator', label: 'BMI & Calorie Calculator' },
+                { to: '/membership', label: 'Membership Pricing' },
+              ].map((l) => (
+                <li key={l.to}><Link to={l.to} className="hover:text-[#ff1e1e] transition-colors flex items-center gap-2"><span className="text-[#e8272a]">›</span> {l.label}</Link></li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-heading text-xl text-white tracking-wide border-b border-neutral-800 pb-2 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-[#e8272a]" />OPERATING HOURS
+            </h3>
+            <div className="space-y-3 text-sm text-neutral-300">
+              <div className="flex justify-between border-b border-neutral-900 pb-2">
+                <span className="text-neutral-400">Opening:</span>
+                <span className="font-semibold text-[#e8272a]">3:30 AM</span>
+              </div>
+              <div className="flex justify-between border-b border-neutral-900 pb-2">
+                <span className="text-neutral-400">Closing:</span>
+                <span className="font-semibold text-[#e8272a]">11:00 PM</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-neutral-400">Days:</span>
+                <span className="text-emerald-400 font-medium">365 Days Open</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-heading text-xl text-white tracking-wide border-b border-neutral-800 pb-2">CONTACT & LOCATION</h3>
+            <ul className="space-y-3 text-sm text-neutral-300">
+              <li className="flex items-start gap-3"><MapPin className="w-5 h-5 text-[#e8272a] shrink-0 mt-0.5" /><span>{GYM_INFO.location}</span></li>
+              <li className="flex items-center gap-3"><Phone className="w-5 h-5 text-[#e8272a] shrink-0" /><span>{GYM_INFO.phone}</span></li>
+              <li className="flex items-center gap-3"><Mail className="w-5 h-5 text-[#e8272a] shrink-0" /><span>info@beastfactory.com.np</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-neutral-900 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 gap-4">
+          <p>© {new Date().getFullYear()} Beast Factory Gym. All Rights Reserved.</p>
+          <div className="flex items-center gap-2 text-neutral-400">
+            <Dumbbell className="w-4 h-4 text-[#e8272a]" />
+            <span>The Fitness Paradise — Damak, Jhapa</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};

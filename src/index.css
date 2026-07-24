@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #e8272a;
+  --color-brand-hover: #ff1e1e;
+  --color-brand-dark: #c41e20;
+  --color-bg: #0a0a0a;
+  --color-bg-light: #141414;
+  --color-bg-card: #111111;
+}
+
+:root {
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: 200%;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Glassmorphism */
+.glass-panel {
+  background: rgba(17, 17, 17, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-nav {
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(232, 39, 42, 0.15);
+}
+
+.neon-glow-red {
+  box-shadow: 0 0 30px rgba(232, 39, 42, 0.4);
+}
+
+.text-gradient-red {
+  background: linear-gradient(135deg, #ff1e1e 0%, #e8272a 50%, #c41e20 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom accent overrides for range inputs */
+input[type="range"]::-webkit-slider-thumb {
+  background: #e8272a;
+}
+input[type="range"] {
+  accent-color: #e8272a;
+}
