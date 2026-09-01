@@ -1,0 +1,149 @@
+import React, { useState } from 'react';
+import { ShoppingBag } from 'lucide-react';
+import { useData } from '../../hooks/useData';
+import { dataService } from '../../services/dataService';
+import { ProductItem } from '../../types';
+
+export const ProductsPage: React.FC = () => {
+  const { products } = useData();
+  const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [submitted, setSubmitted] = useState(false);
+
+  const activeProducts = products.filter((p) => p.isActive);
+
+  const handleOrderInquiry = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedProduct || !name || !phone) return;
+
+    dataService.addLead({
+      fullName: name,
+      phone: phone,
+      inquiryType: 'product',
+      message: `Product Order Request: ${selectedProduct.name} (Qty: ${quantity}) - Total: NPR ${(selectedProduct.priceNpr * quantity).toLocaleString()}`,
+    });
+
+    setSubmitted(true);
+  };
+
+  return (
+    <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      {/* HERO */}
+      <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden">
+        <div className="max-w-4xl mx-auto space-y-4">
+          <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold flex items-center justify-center gap-2">
+            <ShoppingBag className="w-4 h-4" /> OFFICIAL GEAR & MERCHANDISE
+          </span>
+          <h1 className="font-heading text-6xl sm:text-8xl text-white">
+            BEAST FACTORY <span className="text-[#e8272a]">STORE</span>
+          </h1>
+          <p className="text-neutral-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            High-performance gym apparel, insulated shakers, heavy lifting belts, and authentic supplements available directly at our Damak center.
+          </p>
+        </div>
+      </section>
+
+      {/* PRODUCTS GRID */}
+      <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {activeProducts.map((item) => (
+            <div key={item.id} className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/50 transition-all flex flex-col justify-between group">
+              <div className="relative h-64 overflow-hidden bg-neutral-900">
+                <img src={item.imageUrls[0]} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-neutral-900/90 border border-neutral-700 text-white text-[10px] font-bold uppercase">
+                  {item.category}
+                </span>
+                {item.inStock ? (
+                  <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase border border-emerald-500/40">
+                    IN STOCK
+                  </span>
+                ) : (
+                  <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-[10px] font-bold uppercase border border-red-500/40">
+                    OUT OF STOCK
+                  </span>
+                )}
+              </div>
+
+              <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors">{item.name}</h3>
+                  <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{item.description}</p>
+                </div>
+
+                <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] text-neutral-400 font-semibold block">PRICE</span>
+                    <span className="font-heading text-3xl text-white">NPR {item.priceNpr.toLocaleString()}</span>
+                  </div>
+                  <button onClick={() => { setSelectedProduct(item); setSubmitted(false); setQuantity(1); }} className="px-6 py-2.5 rounded-full bg-[#e8272a] text-white font-heading text-base hover:bg-[#ff1e1e] shadow-lg shadow-red-500/20 transition-all">
+                    ENQUIRE / BUY
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ORDER INQUIRY MODAL */}
+        {selectedProduct && (
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+            <div className="glass-panel max-w-lg w-full p-8 rounded-3xl border border-[#e8272a]/40 relative">
+              <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 text-neutral-400 hover:text-white font-bold text-xl">✕</button>
+
+              {submitted ? (
+                <div className="text-center space-y-4 py-6">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
+                  <h3 className="font-heading text-3xl text-white">ORDER INQUIRY RECEIVED!</h3>
+                  <p className="text-xs text-neutral-300">
+                    Thank you, <strong>{name}</strong>. We have received your order inquiry for <strong>{quantity}x {selectedProduct.name}</strong>. Our front desk team will contact you at <strong>{phone}</strong> for pick-up / delivery instructions.
+                  </p>
+                  <button onClick={() => setSelectedProduct(null)} className="px-6 py-2.5 rounded-full bg-[#e8272a] text-white font-heading text-sm">
+                    BACK TO STORE
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleOrderInquiry} className="space-y-4">
+                  <span className="text-[10px] text-[#e8272a] font-bold uppercase tracking-widest">PRODUCT INQUIRY</span>
+                  <h3 className="font-heading text-2xl text-white">{selectedProduct.name}</h3>
+                  <p className="text-xs text-neutral-400">{selectedProduct.description}</p>
+
+                  <div className="bg-neutral-900 p-3.5 rounded-2xl border border-neutral-800 flex items-center justify-between text-xs text-neutral-300">
+                    <span>Unit Price:</span>
+                    <span className="font-heading text-xl text-white">NPR {selectedProduct.priceNpr.toLocaleString()}</span>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-400 font-semibold mb-1">QUANTITY</label>
+                    <input type="number" min={1} max={10} value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-400 font-semibold mb-1">YOUR NAME *</label>
+                    <input type="text" required value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-400 font-semibold mb-1">PHONE / WHATSAPP *</label>
+                    <input type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                  </div>
+
+                  <div className="pt-2 border-t border-neutral-800 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-neutral-400 font-semibold block">TOTAL AMOUNT</span>
+                      <span className="font-heading text-2xl text-[#e8272a]">NPR {(selectedProduct.priceNpr * quantity).toLocaleString()}</span>
+                    </div>
+                    <button type="submit" className="px-6 py-3 rounded-xl bg-[#e8272a] text-white font-heading text-base font-bold hover:bg-[#ff1e1e]">
+                      SUBMIT ORDER
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+};

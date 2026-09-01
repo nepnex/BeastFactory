@@ -4,211 +4,458 @@ import groupfitnessImg from '../assets/images/services/groupfitness.webp';
 import cardioImg from '../assets/images/services/cardio.webp';
 import trainer1Img from '../assets/images/trainers/trainer1.webp';
 import trainer2Img from '../assets/images/trainers/trainer2.webp';
+import {
+  Founder,
+  Trainer,
+  ServiceItem,
+  BoxingPlan,
+  MembershipPlan,
+  SpaService,
+  ProductItem,
+  TransformationStory,
+  BusinessSettings,
+  Lead,
+  Booking
+} from '../types';
 
-export interface Program {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  image: string;
-  features: string[];
-  schedule: string;
-  intensity: 'High' | 'Extreme' | 'Moderate';
-}
+export const INITIAL_GYM_INFO: BusinessSettings = {
+  gymName: 'Beast Factory',
+  tagline: 'The Fitness Paradise',
+  phone: '+977 23577880',
+  email: 'info@beastfactory.com.np',
+  locationAddress: 'Damak-1, Falgunanda Chowk, Jhapa, Nepal',
+  operatingHours: '3:30 AM - 11:00 PM',
+  daysOpen: '365 Days Open',
+  facebookUrl: 'https://www.facebook.com/BeastFactoryGymCenter/',
+  instagramUrl: 'https://www.instagram.com/beastfactory21/',
+  tiktokUrl: 'https://www.tiktok.com/@beastfactory_official',
+};
 
-export interface Trainer {
-  id: string;
-  name: string;
-  role: string;
-  specialty: string;
-  experience: string;
-  bio: string;
-  image: string;
-  socials: {
-    facebook?: string;
-    instagram?: string;
-    tiktok?: string;
-  };
-}
-
-export interface Review {
-  id: string;
-  name: string;
-  rating: number;
-  date: string;
-  comment: string;
-  avatar: string;
-  verified: boolean;
-}
-
-export interface Service {
-  id: string;
-  title: string;
-  icon: string;
-}
-
-// Full list of services from the Beast Factory brochure
-export const SERVICES: Service[] = [
-  { id: 's1', title: 'Weight Loss Program', icon: '🔥' },
-  { id: 's2', title: 'Personal Training — Male Coach', icon: '💪' },
-  { id: 's3', title: 'Personal Training — Female Coach', icon: '💪' },
-  { id: 's4', title: 'Muscle Growth', icon: '🏋️' },
-  { id: 's5', title: 'Body Building', icon: '🦾' },
-  { id: 's6', title: 'Cross Fit', icon: '⚡' },
-  { id: 's7', title: 'Kick-Boxing', icon: '🥊' },
-  { id: 's8', title: 'Group Cycling', icon: '🚴' },
-  { id: 's9', title: 'Zumba / Yoga', icon: '🧘' },
-  { id: 's10', title: 'Sauna Steam & Jacuzzi', icon: '♨️' },
-  { id: 's11', title: 'Nutritious Supplement', icon: '💊' },
-  { id: 's12', title: 'Diet, Meal & Café', icon: '🍽️' },
-  { id: 's13', title: 'Physiotherapist Consultation', icon: '🩺' },
-  { id: 's14', title: 'Massage & Cupping Therapy', icon: '🙌' },
-  { id: 's15', title: 'Beast Futsal', icon: '⚽' },
-];
-
-export const PROGRAMS: Program[] = [
+export const INITIAL_FOUNDERS: Founder[] = [
   {
-    id: 'strength',
-    title: 'STRENGTH & BODY BUILDING',
-    category: 'Heavy Lifting',
-    description: 'Build raw power and maximum muscle mass with our world-class free weights, power racks, and Olympic lifting gear.',
-    image: groupfitnessImg,
-    features: ['Olympic Barbells & Bumper Plates', 'Heavy Dumbbells', 'Power Racks & Squat Platforms'],
-    schedule: '365 Days Open | 3:30 AM - 11:00 PM',
-    intensity: 'Extreme'
+    id: 'f1',
+    name: 'Bikram Gurung',
+    position: 'Co-Founder & Executive Director',
+    photoUrl: trainer1Img,
+    shortBio: 'Visionary fitness entrepreneur committed to bringing elite athletic training standards to Eastern Nepal.',
+    roleDescription: 'Directs strategic expansion, facility innovations, and community leadership initiatives.',
+    expertise: ['Gym Operations', 'Strategic Management', 'Community Building'],
+    socials: {
+      facebook: 'https://facebook.com',
+      instagram: 'https://instagram.com',
+    },
+    displayOrder: 1,
+    isActive: true,
   },
   {
-    id: 'coaching',
-    title: 'PERSONAL COACHING',
-    category: 'Custom Guidance',
-    description: 'Custom tailored workout programs, form correction, meal planning, and accountability with certified elite trainers — both male and female coaches available.',
-    image: cardioImg,
-    features: ['Personalized Nutrition Plan', 'Body Composition Tracking', 'Weekly Progress Audits'],
-    schedule: 'Flexible Appointment',
-    intensity: 'High'
+    id: 'f2',
+    name: 'Suman Rai',
+    position: 'Co-Founder & Head of Operations',
+    photoUrl: trainer2Img,
+    shortBio: 'Former competitive strength athlete and operations expert with over a decade of gym management experience.',
+    roleDescription: 'Oversees equipment procurement, trainer standardizations, and facility safety.',
+    expertise: ['Athletic Performance', 'Equipment Engineering', 'Staff Mentorship'],
+    socials: {
+      facebook: 'https://facebook.com',
+      instagram: 'https://instagram.com',
+    },
+    displayOrder: 2,
+    isActive: true,
   },
   {
-    id: 'fatloss',
-    title: 'FAT SHRED & CARDIO ZONE',
-    category: 'Conditioning',
-    description: 'High-intensity interval training (HIIT), sprint treadmills, rowers, group cycling and assault bikes designed to incinerate fat fast.',
-    image: cardioImg,
-    features: ['Treadmills & Stair Climbers', 'Group Cycling & Rowing Machines', 'HIIT Circuit Training'],
-    schedule: '365 Days Open',
-    intensity: 'High'
+    id: 'f3',
+    name: 'Anupama Shrestha',
+    position: 'Co-Founder & Wellness Director',
+    photoUrl: saunaImg,
+    shortBio: 'Certified holistic health consultant specializing in recovery, spa hydrotherapy, and female fitness empowerment.',
+    roleDescription: 'Leads the Beast Factory Spa, Sauna Steam Jacuzzi, and female coaching division.',
+    expertise: ['Spa Hydrotherapy', 'Female Conditioning', 'Holistic Nutrition'],
+    socials: {
+      instagram: 'https://instagram.com',
+    },
+    displayOrder: 3,
+    isActive: true,
   },
   {
-    id: 'crossfit',
-    title: 'CROSS FIT & KICK-BOXING',
-    category: 'Athleticism',
-    description: 'Master agility, functional strength, and combat-sport conditioning with our CrossFit and Kick-Boxing programs.',
-    image: groupfitnessImg,
-    features: ['Sled Turf & Battle Ropes', 'Kick-Boxing Ring & Gear', 'Group Functional Classes'],
-    schedule: 'Morning & Evening Batches',
-    intensity: 'Extreme'
-  },
-  {
-    id: 'recovery',
-    title: 'SAUNA, STEAM & JACUZZI',
-    category: 'Wellness & Recovery',
-    description: 'Accelerate muscle repair, boost circulation, and unwind after brutal workout sessions with our premium sauna steam & jacuzzi facility.',
-    image: saunaImg,
-    features: ['Finnish Hot Sauna Room', 'Steam & Jacuzzi Relaxation', 'Massage & Cupping Therapy'],
-    schedule: '365 Days Open | 3:30 AM - 11:00 PM',
-    intensity: 'Moderate'
-  },
-  {
-    id: 'nutrition',
-    title: 'DIET, MEAL & SUPPLEMENTS',
-    category: 'Nutrition',
-    description: 'Science-backed meal plans, premium supplements, and an in-house café to fuel your beast-mode transformation.',
-    image: nutritionImg,
-    features: ['Custom Diet Plans', 'Nutritious Supplements', 'In-House Café & Meals'],
-    schedule: 'Available with all plans',
-    intensity: 'Moderate'
-  },
-  {
-    id: 'yoga',
-    title: 'ZUMBA & YOGA',
-    category: 'Mind & Body',
-    description: 'Harmonize your body and mind with guided Zumba dance fitness and deep-stretch yoga sessions for flexibility and core stability.',
-    image: groupfitnessImg,
-    features: ['Zumba Dance Fitness', 'Yoga & Flexibility Training', 'Mindfulness Meditation'],
-    schedule: 'Morning & Evening',
-    intensity: 'Moderate'
+    id: 'f4',
+    name: 'Rohan Sharma',
+    position: 'Co-Founder & Combat Sports Lead',
+    photoUrl: groupfitnessImg,
+    shortBio: 'National kickboxing champion dedicated to introducing disciplined martial arts and functional agility training.',
+    roleDescription: 'Head coach and program designer for Beast Factory Boxing & Combat Zone.',
+    expertise: ['Boxing & Kickboxing', 'Combat Conditioning', 'HIIT Circuit Training'],
+    socials: {
+      facebook: 'https://facebook.com',
+      instagram: 'https://instagram.com',
+    },
+    displayOrder: 4,
+    isActive: true,
   },
 ];
 
-export const TRAINERS: Trainer[] = [
+export const INITIAL_TRAINERS: Trainer[] = [
   {
     id: 't1',
-    name: 'Coach — Trainer 1',
-    role: 'Head Strength Coach',
-    specialty: 'Powerlifting & Hypertrophy',
-    experience: '8+ Years Coaching',
-    bio: 'Pioneer of strength training in Jhapa. Expert in competitive bodybuilding and athletic performance coaching.',
-    image: trainer1Img,
+    fullName: 'Rohan Sharma',
+    photoUrl: trainer1Img,
+    title: 'Head Strength & Combat Coach',
+    shortBio: 'National Kickboxing champion with 8+ years coaching experience in powerlifting & hypertrophy.',
+    fullBio: 'Rohan has trained hundreds of athletes across Jhapa district. His coaching methodology combines science-backed progressive overload with combat conditioning.',
+    yearsExperience: 8,
+    specializations: ['Powerlifting', 'Kickboxing & Boxing', 'Hypertrophy'],
+    certifications: ['Certified Strength & Conditioning Specialist (CSCS)', 'REPs Level 3 Coach'],
+    languages: ['Nepali', 'English', 'Hindi'],
+    sessionPriceNpr: 1500,
     socials: {
       facebook: 'https://www.facebook.com/BeastFactoryGymCenter/',
       instagram: 'https://www.instagram.com/beastfactory21/',
-      tiktok: 'https://www.tiktok.com/@beastfactory_official'
-    }
+      tiktok: 'https://www.tiktok.com/@beastfactory_official',
+    },
+    isAvailable: true,
+    isFeatured: true,
+    displayOrder: 1,
   },
   {
     id: 't2',
-    name: 'Coach — Trainer 2',
-    role: 'Transformation Specialist',
-    specialty: 'Fat Loss & Athletic Conditioning',
-    experience: '6+ Years Experience',
-    bio: 'Specializes in body recomposition and high intensity functional training. Passionate about natural transformations.',
-    image: trainer2Img,
+    fullName: 'Pooja Thapa',
+    photoUrl: trainer2Img,
+    title: 'Transformation & Female Fitness Lead',
+    shortBio: 'Specialist in body recomposition, female functional fitness, and natural fat shredding.',
+    fullBio: 'Pooja focuses on sustainable transformations through customized nutrition and progressive weight training specifically tailored for women and beginner lifters.',
+    yearsExperience: 6,
+    specializations: ['Fat Loss', 'Female Conditioning', 'Nutrition Planning'],
+    certifications: ['ACE Certified Personal Trainer', 'Precision Nutrition Level 1'],
+    languages: ['Nepali', 'English'],
+    sessionPriceNpr: 1200,
     socials: {
-      facebook: 'https://www.facebook.com/BeastFactoryGymCenter/',
-      instagram: 'https://www.instagram.com/beastfactory21/'
-    }
+      instagram: 'https://www.instagram.com/beastfactory21/',
+    },
+    isAvailable: true,
+    isFeatured: true,
+    displayOrder: 2,
   },
 ];
 
-export const REVIEWS: Review[] = [
+export const INITIAL_SERVICES: ServiceItem[] = [
   {
-    id: 'r1',
-    name: 'Rohan Chaudhary',
-    rating: 5,
-    date: '2 weeks ago',
-    comment: 'Best gym in Damak without a doubt! The atmosphere here pushes you beyond your limits. The trainers actually guide you step by step.',
-    avatar: '',
-    verified: true
+    id: 's1',
+    name: 'Weight Loss Program',
+    slug: 'weight-loss',
+    shortDescription: 'Targeted fat shredding with high-intensity cardio and dietary supervision.',
+    longDescription: 'Our signature weight loss program combines cardiovascular interval training, metabolic conditioning, and structured meal guidelines designed to incinerate fat fast while preserving lean muscle mass.',
+    iconName: 'Flame',
+    coverImageUrl: cardioImg,
+    features: ['Customized Calorie Deficit Plan', 'Stair Climbers & HIIT Workouts', 'Bi-weekly Body Composition Scans'],
+    startingPriceNpr: 2500,
+    isFeatured: true,
+    isActive: true,
+    displayOrder: 1,
   },
   {
-    id: 'r2',
-    name: 'Saraswati Subedi',
-    rating: 5,
-    date: '1 month ago',
-    comment: 'Super clean equipment, supportive female community, and top-tier sauna facility! Great transformation results.',
-    avatar: '',
-    verified: true
+    id: 's2',
+    name: 'Personal Training — Male & Female Coaches',
+    slug: 'personal-training',
+    shortDescription: '1-on-1 dedicated coaching tailored to your individual physical goals.',
+    longDescription: 'Get dedicated attention from certified male or female personal trainers. Includes direct posture correction, customized workout routines, and direct phone/WhatsApp guidance.',
+    iconName: 'Dumbbell',
+    coverImageUrl: groupfitnessImg,
+    features: ['Dedicated 1-on-1 Coach', 'Form Correction & Safety', 'Custom Workout & Diet Blueprint'],
+    startingPriceNpr: 9000,
+    isFeatured: true,
+    isActive: true,
+    displayOrder: 2,
   },
   {
-    id: 'r3',
-    name: 'Anish Thapa',
-    rating: 5,
-    date: '3 weeks ago',
-    comment: 'The heavy dumbbells and power racks are top notch. Beast Factory is literally the iron temple of Jhapa district. 365 days open!',
-    avatar: '',
-    verified: true
-  }
+    id: 's3',
+    name: 'Muscle Growth & Body Building',
+    slug: 'muscle-growth',
+    shortDescription: 'Heavy Olympic lifting platforms and international grade hyper-trophy machines.',
+    longDescription: 'Built for bodybuilders and strength enthusiasts. Features heavy dumbbells up to 60kg, Olympic bumper plates, power racks, cable crossovers, and specialized isolation machines.',
+    iconName: 'Trophy',
+    coverImageUrl: groupfitnessImg,
+    features: ['Heavy Dumbbells & Olympic Racks', 'Hypertrophy Machines', '365 Days Open Access'],
+    startingPriceNpr: 2500,
+    isFeatured: true,
+    isActive: true,
+    displayOrder: 3,
+  },
+  {
+    id: 's4',
+    name: 'Sauna Steam & Jacuzzi',
+    slug: 'sauna-steam-jacuzzi',
+    shortDescription: 'Finnish hot sauna and steam hydrotherapy for muscle recovery.',
+    longDescription: 'Accelerate post-workout recovery, eliminate toxins, and un-wind in our luxury Finnish hot sauna steam room and jacuzzi facility.',
+    iconName: 'Waves',
+    coverImageUrl: saunaImg,
+    features: ['Finnish Hot Wood Sauna', 'Hydrotherapy Jacuzzi Jets', 'Locker & Towel Service'],
+    startingPriceNpr: 1000,
+    isFeatured: true,
+    isActive: true,
+    displayOrder: 4,
+  },
+  {
+    id: 's5',
+    name: 'Diet, Meal & In-House Café',
+    slug: 'diet-cafe',
+    shortDescription: 'Nutritious post-workout protein shakes, healthy meals, and supplement store.',
+    longDescription: 'Fuel your beast-mode workouts with our in-house nutrition bar offering fresh protein smoothies, balanced macro meal bowls, and genuine international supplements.',
+    iconName: 'Coffee',
+    coverImageUrl: nutritionImg,
+    features: ['Post-Workout Whey Protein Shakes', 'Macro Meal Bowls', 'Authentic Supplements'],
+    isFeatured: true,
+    isActive: true,
+    displayOrder: 5,
+  },
 ];
 
-// Gym contact info
-export const GYM_INFO = {
-  name: 'Beast Factory',
-  tagline: 'The Fitness Paradise',
-  phone: '+977 23577880',
-  location: 'Damak-1, Falgunanda Chowk, Jhapa, Nepal',
-  hours: '3:30 AM - 11:00 PM',
-  daysOpen: '365 Days Open',
-  established: 'Est. 2018',
-  facebook: 'https://www.facebook.com/BeastFactoryGymCenter/',
-  instagram: 'https://www.instagram.com/beastfactory21/',
-  tiktok: 'https://www.tiktok.com/@beastfactory_official',
-};
+export const INITIAL_BOXING_PLANS: BoxingPlan[] = [
+  {
+    id: 'b1',
+    programName: 'BOXING / KICKBOXING — REGULAR',
+    description: 'Fundamental footwork, heavy bag striking, mitt work, and boxing conditioning.',
+    durationText: '1 Month',
+    priceNpr: 3500,
+    scheduleDetails: 'Morning: 6:00 AM - 7:30 AM | Evening: 5:30 PM - 7:00 PM',
+    features: [
+      'Access to Boxing Ring & Heavy Bags',
+      'Guided Mitt & Footwork Drills',
+      'Cardio & Core Conditioning',
+      'Open Gym Access Included'
+    ],
+    isActive: true,
+    displayOrder: 1,
+  },
+  {
+    id: 'b2',
+    programName: 'BOXING / KICKBOXING — PRO COMBAT PASS',
+    description: 'Advanced sparring, tactical ring work, high-intensity pad sessions, and combat nutrition.',
+    durationText: '3 Months (Save 15%)',
+    priceNpr: 9000,
+    scheduleDetails: 'Daily Mon-Sat | Flexible Batches',
+    features: [
+      'Everything in Regular Boxing',
+      'Advanced Controlled Sparring',
+      '1-on-1 Pad Work Sessions',
+      'Free Beast Boxing Handwraps'
+    ],
+    isActive: true,
+    displayOrder: 2,
+  },
+];
+
+export const INITIAL_MEMBERSHIP_PLANS: MembershipPlan[] = [
+  {
+    id: 'regular',
+    name: 'REGULAR GYM ACCESS',
+    description: 'Full access to weightlifting, free weights, and cardio zones for consistent lifters.',
+    priceMonthlyNpr: 2500,
+    priceYearlyNpr: 24000,
+    features: [
+      'Full Weightlifting & Cardio Access',
+      'Locker Room & Shower Access',
+      'Standard Workout Orientation',
+      '365 Days Open — 3:30 AM to 11:00 PM'
+    ],
+    badgeText: 'POPULAR CHOICE',
+    isPopular: false,
+    isActive: true,
+    displayOrder: 1,
+  },
+  {
+    id: 'beast_pro',
+    name: 'BEAST PRO TRANSFORM',
+    description: 'Flagship plan including Group Classes, Sauna & Jacuzzi, and Diet Consultation.',
+    priceMonthlyNpr: 4500,
+    priceYearlyNpr: 42000,
+    features: [
+      'Everything in Regular Access',
+      'Sauna Steam & Jacuzzi Access',
+      'CrossFit, Kick-Boxing & Zumba Classes',
+      'Custom Diet & Nutrition Audit',
+      'Monthly Body Composition Scan'
+    ],
+    badgeText: 'BEST VALUE',
+    isPopular: true,
+    isActive: true,
+    displayOrder: 2,
+  },
+  {
+    id: 'vip_coaching',
+    name: 'VIP PERSONAL COACHING',
+    description: 'Exclusive 1-on-1 personal trainer (Male or Female coach), custom programs & daily accountability.',
+    priceMonthlyNpr: 9000,
+    priceYearlyNpr: 85000,
+    features: [
+      'Everything in Beast Pro',
+      'Dedicated 1-on-1 Personal Trainer',
+      'Customized Daily Workout Plan',
+      'Physiotherapist Consultation',
+      'Massage & Cupping Therapy Sessions'
+    ],
+    badgeText: 'ULTIMATE RESULTS',
+    isPopular: false,
+    isActive: true,
+    displayOrder: 3,
+  },
+];
+
+export const INITIAL_SPA_SERVICES: SpaService[] = [
+  {
+    id: 'spa1',
+    title: 'Finnish Dry Sauna Session',
+    description: 'Therapeutic heat therapy to boost blood flow, relax stiff muscles, and flush out metabolic toxins.',
+    durationMinutes: 45,
+    priceNpr: 1000,
+    imageUrl: saunaImg,
+    isAvailable: true,
+    displayOrder: 1,
+  },
+  {
+    id: 'spa2',
+    title: 'Eucalyptus Steam Bath',
+    description: 'Deep respiratory and skin cleansing eucalyptus steam session.',
+    durationMinutes: 30,
+    priceNpr: 800,
+    imageUrl: saunaImg,
+    isAvailable: true,
+    displayOrder: 2,
+  },
+  {
+    id: 'spa3',
+    title: 'Hydrotherapy Jacuzzi & Cold Plunge',
+    description: 'High-pressure water massage jets for total joint relief and muscle recovery.',
+    durationMinutes: 45,
+    priceNpr: 1200,
+    imageUrl: saunaImg,
+    isAvailable: true,
+    displayOrder: 3,
+  },
+  {
+    id: 'spa4',
+    title: 'Sports Massage & Hijama Cupping Therapy',
+    description: 'Targeted deep tissue massage and myofascial cupping for sports injuries and tension relief.',
+    durationMinutes: 60,
+    priceNpr: 2500,
+    imageUrl: groupfitnessImg,
+    isAvailable: true,
+    displayOrder: 4,
+  },
+];
+
+export const INITIAL_PRODUCTS: ProductItem[] = [
+  {
+    id: 'p1',
+    name: 'Beast Factory Stainless Steel Shaker Bottle (800ml)',
+    description: 'Double-walled insulated matte black gym bottle with leak-proof lid and stainless wire mixer ball.',
+    category: 'Merchandise',
+    priceNpr: 1800,
+    imageUrls: [cardioImg],
+    sku: 'BF-BTL-01',
+    inStock: true,
+    isFeatured: true,
+    displayOrder: 1,
+    isActive: true,
+  },
+  {
+    id: 'p2',
+    name: 'Beast Factory Hardcore Lifting Belt',
+    description: 'Heavy duty 10mm genuine leather powerlifting belt with quick-release steel lever buckle.',
+    category: 'Gear',
+    priceNpr: 4500,
+    imageUrls: [groupfitnessImg],
+    sku: 'BF-BLT-02',
+    inStock: true,
+    isFeatured: true,
+    displayOrder: 2,
+    isActive: true,
+  },
+  {
+    id: 'p3',
+    name: 'Beast Mode Oversized Gym Tee',
+    description: 'Heavyweight 240 GSM breathable cotton pump cover tee with red Beast Factory typography.',
+    category: 'Apparel',
+    priceNpr: 1500,
+    imageUrls: [trainer1Img],
+    sku: 'BF-TEE-03',
+    inStock: true,
+    isFeatured: true,
+    displayOrder: 3,
+    isActive: true,
+  },
+];
+
+export const INITIAL_TRANSFORMATIONS: TransformationStory[] = [
+  {
+    id: 'tr1',
+    clientName: 'Aayush Karki',
+    beforePhotoUrl: trainer1Img,
+    afterPhotoUrl: trainer2Img,
+    startingWeightKg: 94,
+    finalWeightKg: 76,
+    durationWeeks: 16,
+    programName: 'Beast Pro Fat Shred',
+    storyText: 'Aayush lost 18kg of fat while adding significant lean muscle strength through our structured weight loss & personal coaching program.',
+    testimonialQuote: 'Beast Factory changed my entire mindset towards discipline and nutrition. The coaches never let me give up!',
+    hasClientConsent: true,
+    isFeatured: true,
+    displayOrder: 1,
+    isPublished: true,
+  },
+  {
+    id: 'tr2',
+    clientName: 'Suman Rai',
+    beforePhotoUrl: trainer2Img,
+    afterPhotoUrl: trainer1Img,
+    startingWeightKg: 62,
+    finalWeightKg: 75,
+    durationWeeks: 24,
+    programName: 'Muscle Growth & Body Building',
+    storyText: 'Packed on 13kg of lean muscle mass in 6 months using progressive overload powerlifting routines.',
+    testimonialQuote: 'The heavy equipment and hardcore atmosphere in Damak is unmatched. If you want real gains, this is the temple.',
+    hasClientConsent: true,
+    isFeatured: true,
+    displayOrder: 2,
+    isPublished: true,
+  },
+];
+
+export const INITIAL_LEADS: Lead[] = [
+  {
+    id: 'lead-101',
+    fullName: 'Rajesh Gurung',
+    phone: '9801234567',
+    email: 'rajesh@example.com',
+    inquiryType: 'membership',
+    message: 'Interested in annual Beast Pro plan membership.',
+    status: 'new',
+    adminNotes: 'Wants to start from next Monday.',
+    createdAt: '2026-09-01T10:30:00Z',
+  },
+  {
+    id: 'lead-102',
+    fullName: 'Sita Dahal',
+    phone: '9845678901',
+    email: 'sita@example.com',
+    inquiryType: 'free_trial',
+    message: 'Requesting a free 1-day pass for morning Zumba class.',
+    status: 'contacted',
+    adminNotes: 'Called on WhatsApp, confirmed for tomorrow 7:00 AM.',
+    createdAt: '2026-09-01T11:15:00Z',
+  },
+];
+
+export const INITIAL_BOOKINGS: Booking[] = [
+  {
+    id: 'bk-201',
+    bookingType: 'spa',
+    serviceOrPlanId: 'spa1',
+    customerName: 'Bikash Adhikari',
+    customerPhone: '9812345678',
+    customerEmail: 'bikash@example.com',
+    preferredDate: '2026-09-02',
+    preferredTimeSlot: '5:00 PM - 6:00 PM',
+    status: 'pending',
+    adminNotes: 'Requested Sauna Session.',
+    createdAt: '2026-09-01T14:00:00Z',
+  },
+];
