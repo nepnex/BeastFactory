@@ -368,18 +368,6 @@ export const Navbar: React.FC = () => {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
-
-              {/* Admin Portal link inside mobile drawer footer */}
-              <div className="text-center pt-1">
-                <Link
-                  to="/admin"
-                  onClick={() => setIsOpen(false)}
-                  className="inline-flex items-center gap-1.5 text-[11px] text-neutral-500 hover:text-neutral-300 transition-colors"
-                >
-                  <Lock className="w-3 h-3" />
-                  <span>Admin Operations Portal</span>
-                </Link>
-              </div>
             </div>
           </motion.div>
         )}

@@ -89,11 +89,6 @@ export const Footer: React.FC = () => {
               <li className="flex items-center gap-3"><Phone className="w-5 h-5 text-[#e8272a] shrink-0" /><span>{settings.phone}</span></li>
               <li className="flex items-center gap-3"><Mail className="w-5 h-5 text-[#e8272a] shrink-0" /><span>{settings.email}</span></li>
             </ul>
-            <div className="pt-2">
-              <Link to="/admin" className="inline-flex items-center gap-2 text-xs text-neutral-500 hover:text-white transition-colors">
-                <Lock className="w-3.5 h-3.5" /> <span>Admin Operations Portal</span>
-              </Link>
-            </div>
           </div>
         </div>
 
