@@ -156,10 +156,16 @@ export const HomePage: React.FC = () => {
       {/* 7. TRAINERS */}
       <section className="py-24 bg-[#111111] border-y border-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold">ELITE COACHING TEAM</span>
-            <h2 className="font-heading text-4xl sm:text-6xl text-white mt-1">MEET THE <span className="text-[#e8272a]">BEAST COACHES</span></h2>
-            <p className="text-neutral-400 text-sm mt-3">Certified professionals dedicated to maximizing your strength, technique, and discipline.</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
+            <div>
+              <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold">ELITE COACHING TEAM</span>
+              <h2 className="font-heading text-4xl sm:text-6xl text-white mt-1">MEET THE <span className="text-[#e8272a]">BEAST COACHES</span></h2>
+              <p className="text-neutral-400 text-sm mt-3">Certified professionals dedicated to maximizing your strength, technique, and discipline.</p>
+            </div>
+            <Link to="/trainers" className="mt-4 md:mt-0 text-sm font-bold text-[#e8272a] hover:text-[#ff1e1e] flex items-center gap-1 shrink-0">
+              <span>VIEW ALL COACHES</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {featuredTrainers.map((trainer) => (
