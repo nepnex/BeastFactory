@@ -4,6 +4,7 @@ import { useData } from '../../hooks/useData';
 import { dataService } from '../../services/dataService';
 import { notificationService } from '../../services/notificationService';
 import { TiltCard } from '../../components/3d/TiltCard';
+import boxingGlovesImg from '../../assets/images/boxing_gloves.png';
 
 export const BoxingPage: React.FC = () => {
   const { boxingPlans } = useData();
@@ -45,11 +46,29 @@ export const BoxingPage: React.FC = () => {
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
       {/* HERO BANNER */}
       <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#e8272a]/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="max-w-4xl mx-auto space-y-4 relative z-10">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#e8272a]/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="max-w-4xl mx-auto space-y-6 relative z-10">
           <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold flex items-center justify-center gap-2">
             <Shield className="w-4 h-4 text-[#e8272a]" /> DEDICATED COMBAT ZONE
           </span>
+          
+          {/* 3D BOXING GLOVES HERO VISUAL */}
+          <div className="w-full max-w-lg mx-auto h-56 sm:h-72 my-4">
+            <TiltCard depth={30} maxDegree={8} className="w-full h-full">
+              <div className="w-full h-full rounded-3xl overflow-hidden border border-neutral-800/80 glass-panel-3d relative group shadow-2xl shadow-red-500/20">
+                <img
+                  src={boxingGlovesImg}
+                  alt="Beast Boxing Gloves Impact"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter contrast-125 brightness-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-black/80 border border-[#e8272a]/50 backdrop-blur-md">
+                  <span className="text-[10px] font-heading tracking-widest text-[#e8272a] uppercase">EXPLOSIVE COMBAT TRAINING</span>
+                </div>
+              </div>
+            </TiltCard>
+          </div>
+
           <h1 className="font-heading text-6xl sm:text-8xl text-white drop-shadow-2xl">
             BEAST <span className="text-gradient-red text-3d-red">BOXING</span>
           </h1>
