@@ -25,7 +25,7 @@ export const INITIAL_GYM_INFO: BusinessSettings = {
   gymName: 'Beast Factory',
   tagline: 'The Fitness Paradise',
   phone: '+977 23577880',
-  email: 'info@beastfactory.com.np',
+  email: 'beastfactorynepal@gmail.com',
   locationAddress: 'Damak-1, Falgunanda Chowk, Jhapa, Nepal',
   operatingHours: '3:30 AM - 11:00 PM',
   daysOpen: '365 Days Open',

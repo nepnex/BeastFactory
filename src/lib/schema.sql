@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS gym_settings (
   gym_name TEXT NOT NULL DEFAULT 'Beast Factory',
   tagline TEXT DEFAULT 'The Fitness Paradise',
   phone TEXT DEFAULT '+977 23577880',
-  email TEXT DEFAULT 'info@beastfactory.com.np',
+  email TEXT DEFAULT 'beastfactorynepal@gmail.com',
   location_address TEXT DEFAULT 'Damak-1, Falgunanda Chowk, Jhapa, Nepal',
   operating_hours TEXT DEFAULT '3:30 AM - 11:00 PM',
   days_open TEXT DEFAULT '365 Days Open',
