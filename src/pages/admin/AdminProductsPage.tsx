@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Edit3 } from 'lucide-react';
+import { Plus, Trash2, Edit3, ShoppingBag } from 'lucide-react';
 import { useData } from '../../hooks/useData';
 import { dataService } from '../../services/dataService';
 import { AdminLayout } from '../../layouts/AdminLayout';
 import { ProductItem } from '../../types';
+import { ImageUploader } from '../../components/admin/ImageUploader';
 
 export const AdminProductsPage: React.FC = () => {
   const { products } = useData();
@@ -15,7 +16,7 @@ export const AdminProductsPage: React.FC = () => {
     description: '',
     category: 'Merchandise',
     priceNpr: 1500,
-    imageUrls: ['/src/assets/images/services/cardio.webp'],
+    imageUrls: [''],
     sku: '',
     inStock: true,
     isFeatured: true,
@@ -30,7 +31,7 @@ export const AdminProductsPage: React.FC = () => {
       description: '',
       category: 'Merchandise',
       priceNpr: 1500,
-      imageUrls: ['/src/assets/images/services/cardio.webp'],
+      imageUrls: [''],
       sku: `SKU-${Date.now()}`,
       inStock: true,
       isFeatured: true,
@@ -42,7 +43,7 @@ export const AdminProductsPage: React.FC = () => {
 
   const openEditModal = (p: ProductItem) => {
     setEditingId(p.id);
-    setFormData({ ...p });
+    setFormData({ ...p, imageUrls: p.imageUrls?.length ? p.imageUrls : [''] });
     setModalOpen(true);
   };
 
@@ -79,7 +80,18 @@ export const AdminProductsPage: React.FC = () => {
           {products.map((p) => (
             <div key={p.id} className="glass-panel rounded-3xl p-6 border border-neutral-800 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
-                <span className="text-[10px] text-sky-400 font-bold uppercase">{p.category}</span>
+                <div className="h-44 rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800 relative">
+                  {p.imageUrls && p.imageUrls[0] ? (
+                    <img src={p.imageUrls[0]} alt={p.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-neutral-600">
+                      <ShoppingBag className="w-8 h-8" />
+                    </div>
+                  )}
+                  <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md text-[10px] text-sky-400 font-bold uppercase border border-neutral-700">
+                    {p.category}
+                  </span>
+                </div>
                 <h3 className="font-heading text-2xl text-white">{p.name}</h3>
                 <p className="text-xs text-neutral-400 line-clamp-2">{p.description}</p>
                 <div className="font-heading text-3xl text-white">NPR {p.priceNpr.toLocaleString()}</div>
@@ -100,11 +112,19 @@ export const AdminProductsPage: React.FC = () => {
 
         {modalOpen && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-            <div className="glass-panel max-w-lg w-full p-8 rounded-3xl border border-neutral-800 relative">
+            <div className="glass-panel max-w-lg w-full p-8 rounded-3xl border border-neutral-800 relative max-h-[90vh] overflow-y-auto">
               <button onClick={() => setModalOpen(false)} className="absolute top-4 right-4 text-neutral-400 hover:text-white font-bold">✕</button>
               <h3 className="font-heading text-3xl text-white mb-4">{editingId ? 'EDIT PRODUCT' : 'ADD PRODUCT'}</h3>
 
               <form onSubmit={handleSave} className="space-y-4 text-xs">
+                {/* PRODUCT PHOTO UPLOADER */}
+                <ImageUploader
+                  label="Product Photo"
+                  value={formData.imageUrls[0] || ''}
+                  onChange={(url) => setFormData({ ...formData, imageUrls: [url] })}
+                  bucket="beast-factory-assets"
+                />
+
                 <div>
                   <label className="block text-neutral-400 font-semibold mb-1">PRODUCT NAME *</label>
                   <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-white" />
