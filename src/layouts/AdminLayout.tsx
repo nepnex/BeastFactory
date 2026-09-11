@@ -21,6 +21,10 @@ import {
 import { useAuth } from '../hooks/useAuth';
 import logoImg from '../assets/images/logo.png';
 
+import { NotificationCenter } from '../components/admin/NotificationCenter';
+import { useData } from '../hooks/useData';
+import { notificationService } from '../services/notificationService';
+
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
@@ -30,6 +34,17 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const updateUnread = async () => {
+      const list = await notificationService.getNotifications(50);
+      setUnreadCount(list.filter((n) => !n.isRead).length);
+    };
+    updateUnread();
+    window.addEventListener('beast_factory_storage_update', updateUnread);
+    return () => window.removeEventListener('beast_factory_storage_update', updateUnread);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -41,6 +56,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       group: 'DASHBOARD',
       items: [
         { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+        { name: 'Notifications', path: '/admin/notifications', icon: Inbox, badge: unreadCount },
       ]
     },
     {
@@ -103,9 +119,16 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 const Icon = item.icon;
                 const active = isActive(item.path);
                 return (
-                  <Link key={item.path} to={item.path} className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${active ? 'bg-[#e8272a] text-white font-bold shadow-md shadow-red-500/20' : 'text-neutral-400 hover:bg-neutral-900 hover:text-white'}`}>
-                    <Icon className="w-4 h-4 shrink-0" />
-                    <span>{item.name}</span>
+                  <Link key={item.path} to={item.path} className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${active ? 'bg-[#e8272a] text-white font-bold shadow-md shadow-red-500/20' : 'text-neutral-400 hover:bg-neutral-900 hover:text-white'}`}>
+                    <div className="flex items-center gap-3">
+                      <Icon className="w-4 h-4 shrink-0" />
+                      <span>{item.name}</span>
+                    </div>
+                    {Boolean(item.badge && item.badge > 0) && (
+                      <span className="px-1.5 py-0.5 rounded-full bg-[#C8102E] text-white text-[10px] font-bold">
+                        {item.badge}
+                      </span>
+                    )}
                   </Link>
                 );
               })}
@@ -138,9 +161,16 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     {sec.items.map((item) => {
                       const Icon = item.icon;
                       return (
-                        <Link key={item.path} to={item.path} onClick={() => setMobileOpen(false)} className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium ${isActive(item.path) ? 'bg-[#e8272a] text-white font-bold' : 'text-neutral-400'}`}>
-                          <Icon className="w-4 h-4" />
-                          <span>{item.name}</span>
+                        <Link key={item.path} to={item.path} onClick={() => setMobileOpen(false)} className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium ${isActive(item.path) ? 'bg-[#e8272a] text-white font-bold' : 'text-neutral-400'}`}>
+                          <div className="flex items-center gap-3">
+                            <Icon className="w-4 h-4" />
+                            <span>{item.name}</span>
+                          </div>
+                          {Boolean(item.badge && item.badge > 0) && (
+                            <span className="px-1.5 py-0.5 rounded-full bg-[#C8102E] text-white text-[10px] font-bold">
+                              {item.badge}
+                            </span>
+                          )}
                         </Link>
                       );
                     })}
@@ -169,10 +199,14 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
+            <div className="hidden sm:flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider">SYSTEM ONLINE</span>
             </div>
+
+            {/* NOTIFICATION CENTER BELL */}
+            <NotificationCenter />
+
             <Link to="/" target="_blank" className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-800 text-xs text-neutral-300 hover:text-white font-medium">
               <span>Public Website</span>
               <ExternalLink className="w-3 h-3" />

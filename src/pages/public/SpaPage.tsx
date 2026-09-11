@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Waves, Clock, Calendar, Phone, User, Mail, Send } from 'lucide-react';
 import { useData } from '../../hooks/useData';
 import { dataService } from '../../services/dataService';
+import { notificationService } from '../../services/notificationService';
 import { SpaService } from '../../types';
 
 export const SpaPage: React.FC = () => {
@@ -25,12 +26,12 @@ export const SpaPage: React.FC = () => {
     setIsSubmitted(false);
   };
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
+  const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedSpa || !name || !phone) return;
 
     // Persist booking to backend / dataService
-    dataService.addBooking({
+    const booking = dataService.addBooking({
       bookingType: 'spa',
       serviceOrPlanId: selectedSpa.id,
       customerName: name,
@@ -40,6 +41,20 @@ export const SpaPage: React.FC = () => {
       preferredTimeSlot: timeSlot,
       adminNotes: `Spa Hydrotherapy Request: ${selectedSpa.title}`,
     });
+
+    try {
+      await notificationService.createNotification({
+        type: 'new_spa_booking',
+        priority: 'HIGH',
+        title: 'NEW SPA BOOKING',
+        message: `${name} booked ${selectedSpa.title} for ${date} (${timeSlot}).`,
+        relatedId: booking.id,
+        relatedType: 'booking',
+        actionUrl: '/admin/bookings',
+      });
+    } catch (err) {
+      console.warn('Notification creation handled gracefully:', err);
+    }
 
     // Also record lead entry
     dataService.addLead({

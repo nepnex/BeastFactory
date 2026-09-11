@@ -4,6 +4,8 @@ import { useData } from '../../hooks/useData';
 import { dataService } from '../../services/dataService';
 import { ProductItem } from '../../types';
 
+import { notificationService } from '../../services/notificationService';
+
 export const ProductsPage: React.FC = () => {
   const { products } = useData();
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
@@ -14,16 +16,30 @@ export const ProductsPage: React.FC = () => {
 
   const activeProducts = products.filter((p) => p.isActive);
 
-  const handleOrderInquiry = (e: React.FormEvent) => {
+  const handleOrderInquiry = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedProduct || !name || !phone) return;
 
-    dataService.addLead({
+    const lead = dataService.addLead({
       fullName: name,
       phone: phone,
       inquiryType: 'product',
       message: `Product Order Request: ${selectedProduct.name} (Qty: ${quantity}) - Total: NPR ${(selectedProduct.priceNpr * quantity).toLocaleString()}`,
     });
+
+    try {
+      await notificationService.createNotification({
+        type: 'new_product_inquiry',
+        priority: 'NORMAL',
+        title: 'NEW PRODUCT INQUIRY',
+        message: `${name} requested ${quantity}x ${selectedProduct.name} (${phone}).`,
+        relatedId: lead.id,
+        relatedType: 'inquiry',
+        actionUrl: '/admin/inquiries',
+      });
+    } catch (err) {
+      console.warn('Notification trigger handled gracefully:', err);
+    }
 
     setSubmitted(true);
   };

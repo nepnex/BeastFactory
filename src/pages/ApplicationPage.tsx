@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { CheckCircle2, Send } from 'lucide-react';
-import { GYM_INFO } from '../data/gymData';
+import { dataService } from '../services/dataService';
+import { notificationService } from '../services/notificationService';
 
 export const ApplicationPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -18,8 +19,45 @@ export const ApplicationPage: React.FC = () => {
     notes: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.fullName || !formData.phone) return;
+
+    const isFreePass = formData.plan === 'free_pass';
+    const lead = dataService.addLead({
+      fullName: formData.fullName,
+      phone: formData.phone,
+      email: formData.email,
+      inquiryType: isFreePass ? 'free_trial' : 'membership',
+      message: `Plan: ${formData.plan} | Goal: ${formData.fitnessGoal} | Time: ${formData.preferredTime} | Notes: ${formData.notes}`,
+    });
+
+    try {
+      if (isFreePass) {
+        await notificationService.createNotification({
+          type: 'new_free_trial',
+          priority: 'HIGH',
+          title: 'NEW FREE TRIAL REQUEST',
+          message: `${formData.fullName} requested a free 1-day trial pass (${formData.preferredTime}).`,
+          relatedId: lead.id,
+          relatedType: 'inquiry',
+          actionUrl: '/admin/inquiries',
+        });
+      } else {
+        await notificationService.createNotification({
+          type: 'new_membership_inquiry',
+          priority: 'HIGH',
+          title: 'NEW MEMBERSHIP INQUIRY',
+          message: `${formData.fullName} applied for ${formData.plan} plan (${formData.phone}).`,
+          relatedId: lead.id,
+          relatedType: 'inquiry',
+          actionUrl: '/admin/inquiries',
+        });
+      }
+    } catch (err) {
+      console.warn('Notification trigger handled gracefully:', err);
+    }
+
     setSubmitted(true);
   };
 

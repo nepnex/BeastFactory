@@ -3,6 +3,8 @@ import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import { useData } from '../hooks/useData';
 import { dataService } from '../services/dataService';
 
+import { notificationService } from '../services/notificationService';
+
 export const ContactPage: React.FC = () => {
   const { settings } = useData();
   const [name, setName] = useState('');
@@ -10,16 +12,30 @@ export const ContactPage: React.FC = () => {
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !phone) return;
 
-    dataService.addLead({
+    const lead = dataService.addLead({
       fullName: name,
       phone: phone,
       inquiryType: 'contact_general',
       message: message || 'General contact inquiry from website.',
     });
+
+    try {
+      await notificationService.createNotification({
+        type: 'new_contact_inquiry',
+        priority: 'HIGH',
+        title: 'NEW CONTACT INQUIRY',
+        message: `${name} submitted a general inquiry (${phone}).`,
+        relatedId: lead.id,
+        relatedType: 'inquiry',
+        actionUrl: '/admin/inquiries',
+      });
+    } catch (err) {
+      console.warn('Notification trigger handled gracefully:', err);
+    }
 
     setSubmitted(true);
   };

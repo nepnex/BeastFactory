@@ -225,3 +225,40 @@ CREATE TABLE IF NOT EXISTS bookings (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- 15. NOTIFICATIONS
+CREATE TABLE IF NOT EXISTS notifications (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  type TEXT NOT NULL,
+  priority TEXT NOT NULL DEFAULT 'NORMAL' CHECK (priority IN ('HIGH', 'NORMAL', 'SYSTEM')),
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  related_id UUID,
+  related_type TEXT,
+  action_url TEXT NOT NULL DEFAULT '/admin',
+  is_read BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_notifications_is_read ON notifications(is_read);
+CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON notifications(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_notifications_priority ON notifications(priority);
+
+-- RLS Policies
+ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
+
+-- Allow public users / anon to INSERT notifications during public submissions
+CREATE POLICY "Public insert notifications" ON notifications
+  FOR INSERT WITH CHECK (true);
+
+-- Allow authenticated admins full access to read and update notifications
+CREATE POLICY "Admin select notifications" ON notifications
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Admin update notifications" ON notifications
+  FOR UPDATE USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Admin delete notifications" ON notifications
+  FOR DELETE USING (auth.role() = 'authenticated');
+

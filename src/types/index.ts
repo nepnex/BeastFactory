@@ -204,6 +204,33 @@ export interface BusinessSettings extends BaseEntity {
   tiktokUrl: string;
 }
 
+export type NotificationPriority = 'HIGH' | 'NORMAL' | 'SYSTEM';
+
+export type NotificationType =
+  | 'new_membership_inquiry'
+  | 'new_free_trial'
+  | 'new_trainer_booking'
+  | 'new_spa_booking'
+  | 'new_contact_inquiry'
+  | 'new_product_inquiry'
+  | 'new_transformation'
+  | 'new_testimonial'
+  | 'content_published'
+  | 'content_unpublished'
+  | 'image_uploaded';
+
+export interface AdminNotification extends BaseEntity {
+  type: NotificationType;
+  priority: NotificationPriority;
+  title: string;
+  message: string;
+  relatedId?: string;
+  relatedType?: 'inquiry' | 'booking' | 'product' | 'transformation' | 'testimonial' | 'service';
+  actionUrl: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
 export interface AsyncState<T> {
   data: T | null;
   loading: boolean;

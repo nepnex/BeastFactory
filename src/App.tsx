@@ -37,6 +37,7 @@ import { AdminTransformationsPage } from './pages/admin/AdminTransformationsPage
 import { AdminGalleryPage } from './pages/admin/AdminGalleryPage';
 import { AdminTestimonialsPage } from './pages/admin/AdminTestimonialsPage';
 import { AdminFaqPage } from './pages/admin/AdminFaqPage';
+import { AdminNotificationsPage } from './pages/admin/AdminNotificationsPage';
 import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
 
 const ScrollToTop = () => {
@@ -105,6 +106,7 @@ export function App() {
         {/* ADMIN PROTECTED ROUTES */}
         <Route path="/admin" element={<ProtectedAdminRoute><AdminDashboardOverview /></ProtectedAdminRoute>} />
         <Route path="/admin/dashboard" element={<Navigate to="/admin" replace />} />
+        <Route path="/admin/notifications" element={<ProtectedAdminRoute><AdminNotificationsPage /></ProtectedAdminRoute>} />
         
         <Route path="/admin/services" element={<ProtectedAdminRoute><AdminServicesPage /></ProtectedAdminRoute>} />
         <Route path="/admin/trainers" element={<ProtectedAdminRoute><AdminTrainersPage /></ProtectedAdminRoute>} />

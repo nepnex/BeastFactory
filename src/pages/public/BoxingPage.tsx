@@ -3,6 +3,8 @@ import { Shield, Zap, Flame, CheckCircle, Clock } from 'lucide-react';
 import { useData } from '../../hooks/useData';
 import { dataService } from '../../services/dataService';
 
+import { notificationService } from '../../services/notificationService';
+
 export const BoxingPage: React.FC = () => {
   const { boxingPlans } = useData();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
@@ -11,15 +13,31 @@ export const BoxingPage: React.FC = () => {
 
   const activePlans = boxingPlans.filter((p) => p.isActive);
 
-  const handleEnroll = (e: React.FormEvent) => {
+  const handleEnroll = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!applicant.name || !applicant.phone) return;
-    dataService.addLead({
+
+    const lead = dataService.addLead({
       fullName: applicant.name,
       phone: applicant.phone,
-      inquiryType: 'membership',
+      inquiryType: 'boxing',
       message: `Enrolling in Boxing Plan: ${selectedPlan || 'General Boxing'} (${applicant.batch})`,
     });
+
+    try {
+      await notificationService.createNotification({
+        type: 'new_membership_inquiry',
+        priority: 'HIGH',
+        title: 'NEW BOXING ENROLLMENT',
+        message: `${applicant.name} enrolled in ${selectedPlan || 'Boxing Plan'} (${applicant.batch}).`,
+        relatedId: lead.id,
+        relatedType: 'inquiry',
+        actionUrl: '/admin/inquiries',
+      });
+    } catch (err) {
+      console.warn('Notification trigger handled gracefully:', err);
+    }
+
     setSuccess(true);
   };
 

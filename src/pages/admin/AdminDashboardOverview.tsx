@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Inbox,
@@ -11,13 +11,27 @@ import {
   ArrowUpRight,
   UserPlus,
   PackagePlus,
-  CalendarPlus
+  CalendarPlus,
+  Bell
 } from 'lucide-react';
 import { useData } from '../../hooks/useData';
 import { AdminLayout } from '../../layouts/AdminLayout';
+import { notificationService } from '../../services/notificationService';
+import { AdminNotification } from '../../types';
 
 export const AdminDashboardOverview: React.FC = () => {
   const { leads, bookings, trainers, services, membershipPlans } = useData();
+  const [recentNotifs, setRecentNotifs] = useState<AdminNotification[]>([]);
+
+  useEffect(() => {
+    const loadNotifs = async () => {
+      const list = await notificationService.getNotifications(10);
+      setRecentNotifs(list);
+    };
+    loadNotifs();
+    window.addEventListener('beast_factory_storage_update', loadNotifs);
+    return () => window.removeEventListener('beast_factory_storage_update', loadNotifs);
+  }, []);
 
   const todayStr = new Date().toISOString().split('T')[0];
 
@@ -118,6 +132,40 @@ export const AdminDashboardOverview: React.FC = () => {
               <Inbox className="w-4 h-4 text-rose-400" />
               <span>View Inquiries</span>
             </Link>
+          </div>
+        </div>
+
+        {/* RECENT NOTIFICATIONS / ACTIVITY SECTION */}
+        <div className="bg-[#0a0a0a] p-6 rounded-3xl border border-neutral-800 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
+            <h3 className="font-heading text-2xl text-white flex items-center gap-2">
+              <Bell className="w-5 h-5 text-[#e8272a]" /> RECENT ACTIVITY & NOTIFICATIONS
+            </h3>
+            <Link to="/admin/notifications" className="text-xs font-bold text-[#e8272a] hover:underline flex items-center gap-0.5">
+              <span>VIEW ALL</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {recentNotifs.slice(0, 4).map((n) => (
+              <Link
+                key={n.id}
+                to={n.actionUrl || '/admin'}
+                className={`p-4 rounded-2xl border transition-all flex items-start gap-3 group ${
+                  n.isRead ? 'bg-neutral-900/40 border-neutral-800' : 'bg-neutral-900 border-[#C8102E]/40 shadow-lg shadow-red-600/5'
+                }`}
+              >
+                <span className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${n.priority === 'HIGH' ? 'bg-[#C8102E] animate-pulse' : 'bg-amber-400'}`} />
+                <div className="space-y-1 flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <h4 className="font-heading text-lg text-white group-hover:text-[#C8102E] transition-colors truncate">{n.title}</h4>
+                    <span className="text-[10px] text-neutral-500 shrink-0">{new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                  <p className="text-xs text-neutral-300 line-clamp-1">{n.message}</p>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
 
