@@ -32,7 +32,7 @@ export const BoxingPage: React.FC = () => {
             <Shield className="w-4 h-4" /> DEDICATED COMBAT ZONE
           </span>
           <h1 className="font-heading text-6xl sm:text-8xl text-white">
-            BEAST <span className="text-[#e8272a]">BOXING & KICKBOXING</span>
+            BEAST <span className="text-[#e8272a]">BOXING</span>
           </h1>
           <p className="text-neutral-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Forge agility, explosive power, and mental toughness in Damak's premier combat sports facility. Independent combat training modules separate from standard gym membership.

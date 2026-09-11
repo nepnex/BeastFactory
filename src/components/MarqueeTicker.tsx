@@ -6,7 +6,7 @@ export const MarqueeTicker: React.FC = () => {
     'PERSONAL COACHING',
     'CARDIO & FAT LOSS',
     'CROSS FIT',
-    'KICK-BOXING',
+    'BOXING',
     'SAUNA & JACUZZI',
     'ZUMBA & YOGA',
     'BEAST MODE ON',

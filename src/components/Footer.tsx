@@ -53,7 +53,7 @@ export const Footer: React.FC = () => {
               {[
                 { to: '/about', label: 'About Us & Founders' },
                 { to: '/services', label: 'Programs & Training' },
-                { to: '/boxing', label: 'Boxing & Kickboxing' },
+                { to: '/boxing', label: 'Boxing & Combat Zone' },
                 { to: '/spa', label: 'Sauna, Steam & Jacuzzi' },
                 { to: '/membership', label: 'Membership Pricing' },
                 { to: '/products', label: 'Store & Merchandise' },

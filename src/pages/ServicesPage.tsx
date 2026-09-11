@@ -19,7 +19,7 @@ export const ServicesPage: React.FC = () => {
           OUR SERVICES & <span className="text-[#e8272a]">FACILITIES</span>
         </h1>
         <p className="text-neutral-400 text-base max-w-2xl mx-auto">
-          Explore our comprehensive range of fitness programs — from weight loss and bodybuilding to sauna steam, kick-boxing, zumba, and physiotherapy.
+          Explore our comprehensive range of fitness programs — from weight loss and bodybuilding to sauna steam, boxing, zumba, and physiotherapy.
         </p>
       </div>
 

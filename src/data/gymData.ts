@@ -234,7 +234,7 @@ export const INITIAL_SERVICES: ServiceItem[] = [
 export const INITIAL_BOXING_PLANS: BoxingPlan[] = [
   {
     id: 'b1',
-    programName: 'BOXING / KICKBOXING — REGULAR',
+    programName: 'BOXING — REGULAR PASS',
     description: 'Fundamental footwork, heavy bag striking, mitt work, and boxing conditioning.',
     durationText: '1 Month',
     priceNpr: 3500,
@@ -250,7 +250,7 @@ export const INITIAL_BOXING_PLANS: BoxingPlan[] = [
   },
   {
     id: 'b2',
-    programName: 'BOXING / KICKBOXING — PRO COMBAT PASS',
+    programName: 'BOXING — PRO COMBAT PASS',
     description: 'Advanced sparring, tactical ring work, high-intensity pad sessions, and combat nutrition.',
     durationText: '3 Months (Save 15%)',
     priceNpr: 9000,
@@ -293,7 +293,7 @@ export const INITIAL_MEMBERSHIP_PLANS: MembershipPlan[] = [
     features: [
       'Everything in Regular Access',
       'Sauna Steam & Jacuzzi Access',
-      'CrossFit, Kick-Boxing & Zumba Classes',
+      'CrossFit, Boxing & Zumba Classes',
       'Custom Diet & Nutrition Audit',
       'Monthly Body Composition Scan'
     ],

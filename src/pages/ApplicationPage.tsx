@@ -93,7 +93,7 @@ export const ApplicationPage: React.FC = () => {
                 <select value={formData.fitnessGoal} onChange={(e) => setFormData({ ...formData, fitnessGoal: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]">
                   <option value="Muscle Gain & Strength">Muscle Gain & Body Building</option>
                   <option value="Weight Loss & Conditioning">Weight Loss Program</option>
-                  <option value="CrossFit & Kick-Boxing">CrossFit & Kick-Boxing</option>
+                  <option value="CrossFit & Boxing">CrossFit & Boxing</option>
                   <option value="Zumba & Yoga">Zumba & Yoga</option>
                   <option value="General Health">General Health & Wellness</option>
                 </select>
