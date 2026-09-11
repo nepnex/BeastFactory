@@ -186,7 +186,37 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 8. REVIEWS */}
+      {/* 8. PHOTO GALLERY SHOWCASE */}
+      <section className="py-24 bg-[#111111] border-t border-neutral-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+              <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold">FACILITY & ATMOSPHERE</span>
+              <h2 className="font-heading text-4xl sm:text-6xl text-white mt-1">PHOTO <span className="text-[#e8272a]">GALLERY</span></h2>
+              <p className="text-neutral-400 text-sm mt-2">Take a visual tour of our heavy lifting zone, combat ring, Finnish sauna, and luxury spa.</p>
+            </div>
+            <Link to="/gallery" className="mt-4 md:mt-0 text-sm font-bold text-[#e8272a] hover:text-[#ff1e1e] flex items-center gap-1 shrink-0">
+              <span>EXPLORE FULL GALLERY</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {useData().galleryItems.filter(g => g.isActive).slice(0, 4).map((item) => (
+              <Link key={item.id} to="/gallery" className="group glass-panel rounded-2xl overflow-hidden border border-neutral-800 relative h-64">
+                <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80"></div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <span className="text-[10px] text-[#e8272a] font-bold uppercase tracking-wider block">{item.category}</span>
+                  <h4 className="font-heading text-xl text-white group-hover:text-[#ff1e1e] transition-colors">{item.title}</h4>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 9. REVIEWS */}
       <section className="py-24 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">

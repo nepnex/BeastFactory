@@ -13,7 +13,8 @@ import {
   X, 
   Calendar,
   Lock,
-  ArrowRight
+  ArrowRight,
+  Camera
 } from 'lucide-react';
 import logoImg from '../assets/images/logo.png';
 import { useData } from '../hooks/useData';
@@ -77,6 +78,7 @@ export const Navbar: React.FC = () => {
 
   // Secondary navigation links in "More" dropdown
   const moreNavLinks = [
+    { name: 'Photo Gallery', path: '/gallery', icon: Camera, desc: 'Facility & atmosphere photos' },
     { name: 'Store', path: '/products', icon: ShoppingBag, desc: 'Gym merch & supplements' },
     { name: 'Transformations', path: '/transformations', icon: TrendingUp, desc: 'Real member results' },
     { name: 'Calculator', path: '/calculator', icon: Calculator, desc: 'BMI & fitness tools' },
@@ -93,6 +95,7 @@ export const Navbar: React.FC = () => {
     { name: 'BOXING', path: '/boxing' },
     { name: 'SPA & SAUNA', path: '/spa' },
     { name: 'MEMBERSHIP', path: '/membership' },
+    { name: 'GALLERY', path: '/gallery' },
     { name: 'TRANSFORMATIONS', path: '/transformations' },
     { name: 'STORE', path: '/products' },
     { name: 'CALCULATOR', path: '/calculator' },
