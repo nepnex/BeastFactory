@@ -44,35 +44,30 @@ export const BoxingPage: React.FC = () => {
 
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
-      {/* HERO BANNER */}
-      <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#e8272a]/15 rounded-full blur-3xl pointer-events-none"></div>
+      {/* HERO BANNER WITH BOXING GLOVES BACKGROUND */}
+      <section className="relative py-28 px-4 text-center border-b border-neutral-900 overflow-hidden flex items-center justify-center min-h-[70vh]">
+        {/* BACKGROUND IMAGE & OVERLAYS */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={boxingGlovesImg}
+            alt="Beast Boxing Background"
+            className="w-full h-full object-cover opacity-30 filter contrast-125 saturate-125"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/90 via-[#0a0a0a]/75 to-[#0a0a0a]"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#e8272a]/15 rounded-full blur-3xl pointer-events-none"></div>
+        </div>
+
+        {/* HERO CONTENT */}
         <div className="max-w-4xl mx-auto space-y-6 relative z-10">
-          <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold flex items-center justify-center gap-2">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-900/80 border border-[#e8272a]/40 backdrop-blur-md text-xs uppercase tracking-widest text-[#e8272a] font-semibold">
             <Shield className="w-4 h-4 text-[#e8272a]" /> DEDICATED COMBAT ZONE
           </span>
-          
-          {/* 3D BOXING GLOVES HERO VISUAL */}
-          <div className="w-full max-w-lg mx-auto h-56 sm:h-72 my-4">
-            <TiltCard depth={30} maxDegree={8} className="w-full h-full">
-              <div className="w-full h-full rounded-3xl overflow-hidden border border-neutral-800/80 glass-panel-3d relative group shadow-2xl shadow-red-500/20">
-                <img
-                  src={boxingGlovesImg}
-                  alt="Beast Boxing Gloves Impact"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter contrast-125 brightness-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-black/80 border border-[#e8272a]/50 backdrop-blur-md">
-                  <span className="text-[10px] font-heading tracking-widest text-[#e8272a] uppercase">EXPLOSIVE COMBAT TRAINING</span>
-                </div>
-              </div>
-            </TiltCard>
-          </div>
 
-          <h1 className="font-heading text-6xl sm:text-8xl text-white drop-shadow-2xl">
+          <h1 className="font-heading text-6xl sm:text-8xl md:text-9xl text-white drop-shadow-2xl">
             BEAST <span className="text-gradient-red text-3d-red">BOXING</span>
           </h1>
-          <p className="text-neutral-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+
+          <p className="text-neutral-300 text-base sm:text-xl max-w-2xl mx-auto leading-relaxed">
             Forge agility, explosive power, and mental toughness in Damak's premier combat sports facility. Independent combat training modules separate from standard gym membership.
           </p>
         </div>
