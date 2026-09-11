@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 interface Tilt3DCardProps {
@@ -12,7 +12,6 @@ export const Tilt3DCard: React.FC<Tilt3DCardProps> = ({
   children,
   className = '',
   depth = 20,
-  glowColor = 'rgba(232, 39, 42, 0.25)',
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -25,16 +24,13 @@ export const Tilt3DCard: React.FC<Tilt3DCardProps> = ({
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [depth, -depth]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-depth, depth]);
 
-  const glowX = useTransform(mouseXSpring, [-0.5, 0.5], ['0%', '100%']);
-  const glowY = useTransform(mouseYSpring, [-0.5, 0.5], ['0%', '100%']);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const updateCoordinates = (clientX: number, clientY: number) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    const mouseX = clientX - rect.left;
+    const mouseY = clientY - rect.top;
 
     const xPct = mouseX / width - 0.5;
     const yPct = mouseY / height - 0.5;
@@ -43,22 +39,56 @@ export const Tilt3DCard: React.FC<Tilt3DCardProps> = ({
     y.set(yPct);
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    updateCoordinates(e.clientX, e.clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length > 0) {
+      updateCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  };
+
+  const handleEnd = () => {
     x.set(0);
     y.set(0);
   };
+
+  // Device orientation support for mobile devices
+  useEffect(() => {
+    const handleOrientation = (event: DeviceOrientationEvent) => {
+      if (event.gamma !== null && event.beta !== null) {
+        const gammaClamped = Math.max(-30, Math.min(30, event.gamma)) / 30;
+        const betaClamped = Math.max(-30, Math.min(30, event.beta - 45)) / 30;
+
+        x.set(gammaClamped * 0.5);
+        y.set(betaClamped * 0.5);
+      }
+    };
+
+    if (typeof window !== 'undefined' && 'DeviceOrientationEvent' in window) {
+      window.addEventListener('deviceorientation', handleOrientation, true);
+    }
+    return () => {
+      if (typeof window !== 'undefined' && 'DeviceOrientationEvent' in window) {
+        window.removeEventListener('deviceorientation', handleOrientation, true);
+      }
+    };
+  }, [x, y]);
 
   return (
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseLeave={handleEnd}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleEnd}
       style={{
         rotateX,
         rotateY,
         transformStyle: 'preserve-3d',
       }}
-      className={`relative perspective-1000 transition-shadow duration-300 ${className}`}
+      className={`relative perspective-1000 transition-shadow duration-300 touch-pan-y ${className}`}
     >
       <div
         style={{
