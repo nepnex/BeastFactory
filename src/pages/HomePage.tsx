@@ -7,6 +7,7 @@ import logoImg from '../assets/images/logo.png';
 import { MarqueeTicker } from '../components/MarqueeTicker';
 import { BmiCalculatorWidget } from '../components/BmiCalculatorWidget';
 import { useData } from '../hooks/useData';
+import { Tilt3DCard } from '../components/Tilt3DCard';
 
 export const HomePage: React.FC = () => {
   const { services, trainers, testimonials, settings } = useData();
@@ -25,7 +26,7 @@ export const HomePage: React.FC = () => {
         <div className="absolute inset-0 z-0">
           <img src={heroBg} alt="Beast Factory Gym" className="w-full h-full object-cover opacity-35" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/95 via-[#0a0a0a]/70 to-[#0a0a0a]/20"></div>
-          <div className="absolute top-[20%] left-[30%] w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(232,39,42,0.12)_0%,transparent_70%)] pointer-events-none"></div>
+          <div className="absolute top-[20%] left-[30%] w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(232,39,42,0.15)_0%,transparent_70%)] pointer-events-none blur-3xl animate-pulse"></div>
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8">
@@ -36,12 +37,14 @@ export const HomePage: React.FC = () => {
             </span>
           </motion.div>
 
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.7, delay: 0.1 }} className="w-40 h-40 sm:w-48 sm:h-48 mx-auto">
-            <img src={logoImg} alt="Beast Factory Emblem" className="w-full h-full object-contain drop-shadow-2xl" />
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.7, delay: 0.1 }} className="w-44 h-44 sm:w-52 sm:h-52 mx-auto">
+            <Tilt3DCard depth={25} className="w-full h-full">
+              <img src={logoImg} alt="Beast Factory Emblem" className="w-full h-full object-contain filter drop-shadow-[0_20px_30px_rgba(232,39,42,0.4)]" />
+            </Tilt3DCard>
           </motion.div>
 
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }} className="font-heading text-6xl sm:text-8xl md:text-9xl tracking-tight leading-none text-white drop-shadow-2xl">
-            BEAST <span className="text-gradient-red">FACTORY</span>
+            BEAST <span className="text-gradient-red text-3d-red">FACTORY</span>
           </motion.h1>
           
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.25 }} className="font-heading text-xl sm:text-2xl text-[#e8272a] tracking-widest">
@@ -53,7 +56,7 @@ export const HomePage: React.FC = () => {
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.4 }} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link to="/apply" className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#e8272a] text-white font-heading text-xl tracking-wider hover:bg-[#ff1e1e] hover:scale-105 transition-all shadow-xl shadow-red-500/30 flex items-center justify-center gap-2 group">
+            <Link to="/apply" className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#e8272a] text-white font-heading text-xl tracking-wider hover:bg-[#ff1e1e] hover:scale-105 transition-all shadow-2xl shadow-red-500/40 flex items-center justify-center gap-2 group border border-red-500/30">
               <span>JOIN NOW →</span>
             </Link>
             <Link to="/membership" className="w-full sm:w-auto px-8 py-4 rounded-full bg-neutral-900/90 border border-neutral-700 text-white font-heading text-xl tracking-wider hover:bg-neutral-800 hover:border-[#e8272a]/50 transition-all flex items-center justify-center gap-2">
@@ -76,10 +79,12 @@ export const HomePage: React.FC = () => {
               { val: '50+', label: 'Heavy Machines' },
               { val: '365', label: 'Days Open / Year' },
             ].map((s) => (
-              <div key={s.label} className="glass-panel p-6 rounded-2xl border border-neutral-800">
-                <div className="font-heading text-4xl sm:text-5xl text-[#e8272a] mb-1">{s.val}</div>
-                <div className="text-xs text-neutral-400 font-semibold uppercase tracking-widest">{s.label}</div>
-              </div>
+              <Tilt3DCard key={s.label} depth={15}>
+                <div className="glass-panel-3d p-6 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/40 transition-all duration-300">
+                  <div className="font-heading text-4xl sm:text-5xl text-[#e8272a] mb-1 drop-shadow-md">{s.val}</div>
+                  <div className="text-xs text-neutral-400 font-semibold uppercase tracking-widest">{s.label}</div>
+                </div>
+              </Tilt3DCard>
             ))}
           </div>
         </div>
@@ -95,10 +100,15 @@ export const HomePage: React.FC = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {activeServices.map((svc) => (
-              <div key={svc.id} className="glass-panel p-5 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/40 transition-all duration-300 text-center group hover:-translate-y-1">
-                <div className="text-3xl mb-3">⚡</div>
-                <h4 className="font-heading text-base sm:text-lg text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.name}</h4>
-              </div>
+              <Tilt3DCard key={svc.id} depth={12}>
+                <div className="glass-panel-3d p-5 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/60 transition-all duration-300 text-center group h-full flex flex-col justify-between">
+                  <div>
+                    <div className="text-3xl mb-3 filter drop-shadow-md">⚡</div>
+                    <h4 className="font-heading text-base sm:text-lg text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.name}</h4>
+                  </div>
+                  <p className="text-xs text-neutral-400 mt-2 line-clamp-2">{svc.description}</p>
+                </div>
+              </Tilt3DCard>
             ))}
           </div>
         </div>
@@ -120,27 +130,29 @@ export const HomePage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredServices.slice(0, 3).map((program) => (
-              <div key={program.id} className="group glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/40 transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between">
-                <div className="relative h-56 overflow-hidden">
-                  <img src={program.coverImageUrl} alt={program.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent"></div>
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#e8272a] text-white text-xs font-bold uppercase tracking-wider">Training</span>
-                </div>
-                <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors">{program.name}</h3>
-                    <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{program.shortDescription}</p>
+              <Tilt3DCard key={program.id} depth={18}>
+                <div className="group glass-panel-3d rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/60 transition-all duration-300 flex flex-col justify-between h-full">
+                  <div className="relative h-56 overflow-hidden">
+                    <img src={program.coverImageUrl} alt={program.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent"></div>
+                    <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#e8272a] text-white text-xs font-bold uppercase tracking-wider shadow-lg">Training</span>
                   </div>
-                  <ul className="space-y-2 pt-2 border-t border-neutral-800/80">
-                    {program.features.map((feat, idx) => (
-                      <li key={idx} className="text-xs text-neutral-300 flex items-center gap-2">
-                        <Dumbbell className="w-3.5 h-3.5 text-[#e8272a] shrink-0" />
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors">{program.name}</h3>
+                      <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{program.shortDescription}</p>
+                    </div>
+                    <ul className="space-y-2 pt-2 border-t border-neutral-800/80">
+                      {program.features.map((feat, idx) => (
+                        <li key={idx} className="text-xs text-neutral-300 flex items-center gap-2">
+                          <Dumbbell className="w-3.5 h-3.5 text-[#e8272a] shrink-0" />
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              </Tilt3DCard>
             ))}
           </div>
         </div>
@@ -169,18 +181,20 @@ export const HomePage: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {featuredTrainers.map((trainer) => (
-              <div key={trainer.id} className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 group hover:border-[#e8272a]/50 transition-all duration-300">
-                <div className="relative h-80 overflow-hidden">
-                  <img src={trainer.photoUrl} alt={trainer.fullName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+              <Tilt3DCard key={trainer.id} depth={20}>
+                <div className="glass-panel-3d rounded-3xl overflow-hidden border border-neutral-800 group hover:border-[#e8272a]/60 transition-all duration-300">
+                  <div className="relative h-80 overflow-hidden">
+                    <img src={trainer.photoUrl} alt={trainer.fullName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+                  </div>
+                  <div className="p-6 space-y-2">
+                    <span className="text-xs font-bold text-[#e8272a] uppercase tracking-widest">{trainer.title}</span>
+                    <h3 className="font-heading text-2xl text-white">{trainer.fullName}</h3>
+                    <p className="text-xs text-neutral-400">{trainer.specializations.join(', ')} • {trainer.yearsExperience}+ Years</p>
+                    <p className="text-neutral-300 text-xs pt-2 border-t border-neutral-800">{trainer.shortBio}</p>
+                  </div>
                 </div>
-                <div className="p-6 space-y-2">
-                  <span className="text-xs font-bold text-[#e8272a] uppercase tracking-widest">{trainer.title}</span>
-                  <h3 className="font-heading text-2xl text-white">{trainer.fullName}</h3>
-                  <p className="text-xs text-neutral-400">{trainer.specializations.join(', ')} • {trainer.yearsExperience}+ Years</p>
-                  <p className="text-neutral-300 text-xs pt-2 border-t border-neutral-800">{trainer.shortBio}</p>
-                </div>
-              </div>
+              </Tilt3DCard>
             ))}
           </div>
         </div>

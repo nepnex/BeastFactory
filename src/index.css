@@ -65,6 +65,42 @@ h1, h2, h3, h4, .font-heading {
   background-clip: text;
 }
 
+/* 3D Perspective & Elevation Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.card-3d-glow {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-3d-glow:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px -15px rgba(232, 39, 42, 0.35), 0 0 25px rgba(232, 39, 42, 0.2);
+}
+
+.text-3d-red {
+  text-shadow: 
+    0 1px 0 #9e1416,
+    0 2px 0 #871113,
+    0 3px 0 #700e10,
+    0 4px 0 #590b0c,
+    0 6px 15px rgba(232, 39, 42, 0.5);
+}
+
+.glass-panel-3d {
+  background: rgba(17, 17, 17, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
 /* Custom accent overrides for range inputs */
 input[type="range"]::-webkit-slider-thumb {
   background: #e8272a;
