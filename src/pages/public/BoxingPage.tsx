@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Shield, Zap, Flame, CheckCircle, Clock } from 'lucide-react';
 import { useData } from '../../hooks/useData';
 import { dataService } from '../../services/dataService';
-
 import { notificationService } from '../../services/notificationService';
+import { TiltCard } from '../../components/3d/TiltCard';
 
 export const BoxingPage: React.FC = () => {
   const { boxingPlans } = useData();
@@ -45,12 +45,13 @@ export const BoxingPage: React.FC = () => {
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
       {/* HERO BANNER */}
       <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden">
-        <div className="max-w-4xl mx-auto space-y-4">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#e8272a]/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="max-w-4xl mx-auto space-y-4 relative z-10">
           <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold flex items-center justify-center gap-2">
-            <Shield className="w-4 h-4" /> DEDICATED COMBAT ZONE
+            <Shield className="w-4 h-4 text-[#e8272a]" /> DEDICATED COMBAT ZONE
           </span>
-          <h1 className="font-heading text-6xl sm:text-8xl text-white">
-            BEAST <span className="text-[#e8272a]">BOXING</span>
+          <h1 className="font-heading text-6xl sm:text-8xl text-white drop-shadow-2xl">
+            BEAST <span className="text-gradient-red text-3d-red">BOXING</span>
           </h1>
           <p className="text-neutral-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Forge agility, explosive power, and mental toughness in Damak's premier combat sports facility. Independent combat training modules separate from standard gym membership.

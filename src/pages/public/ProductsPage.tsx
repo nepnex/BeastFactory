@@ -3,8 +3,8 @@ import { ShoppingBag } from 'lucide-react';
 import { useData } from '../../hooks/useData';
 import { dataService } from '../../services/dataService';
 import { ProductItem } from '../../types';
-
 import { notificationService } from '../../services/notificationService';
+import { TiltCard } from '../../components/3d/TiltCard';
 
 export const ProductsPage: React.FC = () => {
   const { products } = useData();
@@ -65,40 +65,42 @@ export const ProductsPage: React.FC = () => {
       <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {activeProducts.map((item) => (
-            <div key={item.id} className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/50 transition-all flex flex-col justify-between group">
-              <div className="relative h-64 overflow-hidden bg-neutral-900">
-                <img src={item.imageUrls[0]} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-neutral-900/90 border border-neutral-700 text-white text-[10px] font-bold uppercase">
-                  {item.category}
-                </span>
-                {item.inStock ? (
-                  <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase border border-emerald-500/40">
-                    IN STOCK
+            <TiltCard key={item.id} maxDegree={5} depth={20}>
+              <div className="glass-panel-3d rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/60 transition-all flex flex-col justify-between group h-full">
+                <div className="relative h-64 overflow-hidden bg-neutral-900">
+                  <img src={item.imageUrls[0]} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-neutral-900/90 border border-neutral-700 text-white text-[10px] font-bold uppercase backdrop-blur-md">
+                    {item.category}
                   </span>
-                ) : (
-                  <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-[10px] font-bold uppercase border border-red-500/40">
-                    OUT OF STOCK
-                  </span>
-                )}
-              </div>
-
-              <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors">{item.name}</h3>
-                  <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{item.description}</p>
+                  {item.inStock ? (
+                    <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase border border-emerald-500/40 backdrop-blur-md">
+                      AVAILABLE AT BEAST FACTORY
+                    </span>
+                  ) : (
+                    <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-[10px] font-bold uppercase border border-red-500/40 backdrop-blur-md">
+                      OUT OF STOCK
+                    </span>
+                  )}
                 </div>
 
-                <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
+                <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] text-neutral-400 font-semibold block">PRICE</span>
-                    <span className="font-heading text-3xl text-white">NPR {item.priceNpr.toLocaleString()}</span>
+                    <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors">{item.name}</h3>
+                    <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{item.description}</p>
                   </div>
-                  <button onClick={() => { setSelectedProduct(item); setSubmitted(false); setQuantity(1); }} className="px-6 py-2.5 rounded-full bg-[#e8272a] text-white font-heading text-base hover:bg-[#ff1e1e] shadow-lg shadow-red-500/20 transition-all">
-                    ENQUIRE / BUY
-                  </button>
+
+                  <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-neutral-400 font-semibold block">PRICE</span>
+                      <span className="font-heading text-3xl text-white">NPR {item.priceNpr.toLocaleString()}</span>
+                    </div>
+                    <button onClick={() => { setSelectedProduct(item); setSubmitted(false); setQuantity(1); }} className="px-6 py-2.5 rounded-full bg-[#e8272a] text-white font-heading text-base hover:bg-[#ff1e1e] shadow-lg shadow-red-500/20 transition-all">
+                      ENQUIRE / BUY
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            </TiltCard>
           ))}
         </div>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Trophy, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useData } from '../../hooks/useData';
 import { Link } from 'react-router-dom';
+import { BeforeAfterSlider } from '../../components/3d/BeforeAfterSlider';
 
 export const TransformationsPage: React.FC = () => {
   const { transformations } = useData();
@@ -28,23 +29,11 @@ export const TransformationsPage: React.FC = () => {
       {/* TRANSFORMATIONS GALLERY */}
       <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-16">
-          {publishedTransformations.map((item, index) => (
-            <div key={item.id} className="glass-panel rounded-3xl p-8 border border-neutral-800 hover:border-[#e8272a]/40 transition-all flex flex-col lg:flex-row gap-8 items-center">
-              {/* BEFORE & AFTER PHOTO SIDE-BY-SIDE */}
-              <div className="w-full lg:w-1/2 grid grid-cols-2 gap-4 relative rounded-2xl overflow-hidden">
-                <div className="relative h-72 rounded-xl overflow-hidden border border-neutral-800">
-                  <img src={item.beforePhotoUrl} alt={`${item.clientName} Before`} className="w-full h-full object-cover filter grayscale" />
-                  <span className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/80 text-neutral-300 text-xs font-bold uppercase tracking-wider border border-neutral-700">
-                    BEFORE {item.startingWeightKg ? `(${item.startingWeightKg} kg)` : ''}
-                  </span>
-                </div>
-
-                <div className="relative h-72 rounded-xl overflow-hidden border border-[#e8272a]/50">
-                  <img src={item.afterPhotoUrl} alt={`${item.clientName} After`} className="w-full h-full object-cover" />
-                  <span className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-[#e8272a] text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-500/20">
-                    AFTER {item.finalWeightKg ? `(${item.finalWeightKg} kg)` : ''}
-                  </span>
-                </div>
+          {publishedTransformations.map((item) => (
+            <div key={item.id} className="glass-panel rounded-3xl p-6 sm:p-10 border border-neutral-800 hover:border-[#e8272a]/40 transition-all flex flex-col lg:flex-row gap-8 items-center">
+              {/* DRAGGABLE BEFORE/AFTER SLIDER */}
+              <div className="w-full lg:w-1/2">
+                <BeforeAfterSlider item={item} />
               </div>
 
               {/* STORY & TESTIMONIAL DETAILS */}

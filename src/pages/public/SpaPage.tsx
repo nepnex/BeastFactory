@@ -69,18 +69,24 @@ export const SpaPage: React.FC = () => {
   };
 
   return (
-    <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
-      {/* HERO */}
-      <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden">
+    <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen relative overflow-hidden">
+      {/* ATMOSPHERIC STEAM LAYERS */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-40">
+        <div className="absolute -top-10 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-steam"></div>
+        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-sky-500/10 rounded-full blur-3xl animate-steam" style={{ animationDelay: '3s' }}></div>
+      </div>
+
+      {/* HERO BANNER */}
+      <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden z-10">
         <div className="max-w-4xl mx-auto space-y-4">
-          <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold flex items-center justify-center gap-2">
-            <Waves className="w-4 h-4" /> WELLNESS & RECOVERY
+          <span className="text-xs uppercase tracking-widest text-cyan-400 font-semibold flex items-center justify-center gap-2">
+            <Waves className="w-4 h-4 text-cyan-400" /> LUXURY RECOVERY & HYDROTHERAPY
           </span>
           <h1 className="font-heading text-6xl sm:text-8xl text-white">
-            BEAST FACTORY <span className="text-[#e8272a]">SPA & JACUZZI</span>
+            SPA & <span className="text-cyan-400">RECOVERY</span>
           </h1>
           <p className="text-neutral-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Accelerate muscle repair, alleviate joint stiffness, and release mental stress in Damak's premier Finnish dry sauna, steam bath, and hydrotherapy jacuzzi suite.
+            Steam sauna, ice bath plunge, and deep tissue recovery therapies designed to accelerate muscle repair and mental clarity. {settings.daysOpen} • {settings.operatingHours}
           </p>
         </div>
       </section>
