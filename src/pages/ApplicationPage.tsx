@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { CheckCircle2, Send } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { notificationService } from '../services/notificationService';
+import { GYM_INFO } from '../data/gymData';
 
 export const ApplicationPage: React.FC = () => {
   const [searchParams] = useSearchParams();
