@@ -1,5 +1,6 @@
 import React from 'react';
 import { useData } from '../hooks/useData';
+import logoImg from '../assets/images/logo.png';
 
 export const TrainersPage: React.FC = () => {
   const { trainers } = useData();
@@ -23,8 +24,17 @@ export const TrainersPage: React.FC = () => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
         {activeTrainers.map((trainer) => (
           <div key={trainer.id} className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/40 transition-all space-y-4 p-6">
-            <div className="h-80 rounded-2xl overflow-hidden relative">
-              <img src={trainer.photoUrl} alt={trainer.fullName} className="w-full h-full object-cover" />
+            <div className="h-72 sm:h-80 rounded-2xl overflow-hidden relative bg-neutral-900">
+              <img
+                src={trainer.photoUrl}
+                alt={trainer.fullName}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = logoImg;
+                }}
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
             </div>
             <div className="space-y-3 text-left flex-1 flex flex-col justify-between">
