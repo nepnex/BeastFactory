@@ -52,6 +52,8 @@ export interface Trainer extends BaseEntity {
     facebook?: string;
     instagram?: string;
     tiktok?: string;
+    whatsapp?: string;
+    email?: string;
   };
   isAvailable: boolean;
   isFeatured: boolean;

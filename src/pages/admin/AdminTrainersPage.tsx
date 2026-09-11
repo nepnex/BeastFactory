@@ -142,6 +142,16 @@ export const AdminTrainersPage: React.FC = () => {
                   <label className="block text-neutral-400 font-semibold mb-1">SHORT BIO</label>
                   <textarea rows={2} value={formData.shortBio} onChange={(e) => setFormData({ ...formData, shortBio: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-white"></textarea>
                 </div>
+                <div className="border-t border-neutral-800 pt-3">
+                  <label className="block text-neutral-400 font-semibold mb-2">SOCIAL & CONTACT LINKS</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <input type="text" placeholder="Facebook URL" value={formData.socials?.facebook || ''} onChange={(e) => setFormData({ ...formData, socials: { ...formData.socials, facebook: e.target.value } })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white text-xs" />
+                    <input type="text" placeholder="Instagram URL" value={formData.socials?.instagram || ''} onChange={(e) => setFormData({ ...formData, socials: { ...formData.socials, instagram: e.target.value } })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white text-xs" />
+                    <input type="text" placeholder="TikTok URL" value={formData.socials?.tiktok || ''} onChange={(e) => setFormData({ ...formData, socials: { ...formData.socials, tiktok: e.target.value } })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white text-xs" />
+                    <input type="text" placeholder="WhatsApp Number" value={formData.socials?.whatsapp || ''} onChange={(e) => setFormData({ ...formData, socials: { ...formData.socials, whatsapp: e.target.value } })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white text-xs" />
+                  </div>
+                  <input type="email" placeholder="Gmail / Email Address" value={formData.socials?.email || ''} onChange={(e) => setFormData({ ...formData, socials: { ...formData.socials, email: e.target.value } })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white text-xs mt-3" />
+                </div>
                 <button type="submit" className="w-full py-3.5 rounded-xl bg-[#e8272a] text-white font-heading text-lg font-bold hover:bg-[#ff1e1e]">
                   SAVE COACH PROFILE
                 </button>
