@@ -9,7 +9,10 @@ import {
   TransformationStory,
   Lead,
   Booking,
-  BusinessSettings
+  BusinessSettings,
+  GalleryItem,
+  Testimonial,
+  FAQItem
 } from '../types';
 import {
   INITIAL_FOUNDERS,
@@ -22,7 +25,10 @@ import {
   INITIAL_TRANSFORMATIONS,
   INITIAL_LEADS,
   INITIAL_BOOKINGS,
-  INITIAL_GYM_INFO
+  INITIAL_GYM_INFO,
+  INITIAL_GALLERY,
+  INITIAL_TESTIMONIALS,
+  INITIAL_FAQS
 } from '../data/gymData';
 
 const getStorageItem = <T>(key: string, defaultValue: T): T => {
@@ -237,4 +243,16 @@ export const dataService = {
   // SETTINGS
   getSettings: (): BusinessSettings => getStorageItem('settings', INITIAL_GYM_INFO),
   saveSettings: (settings: BusinessSettings) => setStorageItem('settings', settings),
+
+  // GALLERY
+  getGallery: (): GalleryItem[] => getStorageItem('gallery', INITIAL_GALLERY),
+  saveGallery: (gallery: GalleryItem[]) => setStorageItem('gallery', gallery),
+
+  // TESTIMONIALS
+  getTestimonials: (): Testimonial[] => getStorageItem('testimonials', INITIAL_TESTIMONIALS),
+  saveTestimonials: (items: Testimonial[]) => setStorageItem('testimonials', items),
+
+  // FAQS
+  getFaqs: (): FAQItem[] => getStorageItem('faqs', INITIAL_FAQS),
+  saveFaqs: (faqs: FAQItem[]) => setStorageItem('faqs', faqs),
 };

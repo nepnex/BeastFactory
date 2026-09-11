@@ -18,6 +18,8 @@ import { BoxingPage } from './pages/public/BoxingPage';
 import { SpaPage } from './pages/public/SpaPage';
 import { ProductsPage } from './pages/public/ProductsPage';
 import { TransformationsPage } from './pages/public/TransformationsPage';
+import { GalleryPage } from './pages/public/GalleryPage';
+import { FaqPage } from './pages/public/FaqPage';
 
 // Admin Pages
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
@@ -32,6 +34,9 @@ import { AdminMembershipPlansPage } from './pages/admin/AdminMembershipPlansPage
 import { AdminSpaPage } from './pages/admin/AdminSpaPage';
 import { AdminProductsPage } from './pages/admin/AdminProductsPage';
 import { AdminTransformationsPage } from './pages/admin/AdminTransformationsPage';
+import { AdminGalleryPage } from './pages/admin/AdminGalleryPage';
+import { AdminTestimonialsPage } from './pages/admin/AdminTestimonialsPage';
+import { AdminFaqPage } from './pages/admin/AdminFaqPage';
 import { AdminSettingsPage } from './pages/admin/AdminSettingsPage';
 
 const ScrollToTop = () => {
@@ -88,6 +93,8 @@ export function App() {
         <Route path="/products" element={<PublicLayoutWrapper><ProductsPage /></PublicLayoutWrapper>} />
         <Route path="/transformations" element={<PublicLayoutWrapper><TransformationsPage /></PublicLayoutWrapper>} />
         <Route path="/trainers" element={<PublicLayoutWrapper><TrainersPage /></PublicLayoutWrapper>} />
+        <Route path="/gallery" element={<PublicLayoutWrapper><GalleryPage /></PublicLayoutWrapper>} />
+        <Route path="/faq" element={<PublicLayoutWrapper><FaqPage /></PublicLayoutWrapper>} />
         <Route path="/calculator" element={<PublicLayoutWrapper><CalculatorPage /></PublicLayoutWrapper>} />
         <Route path="/contact" element={<PublicLayoutWrapper><ContactPage /></PublicLayoutWrapper>} />
         <Route path="/apply" element={<PublicLayoutWrapper><ApplicationPage /></PublicLayoutWrapper>} />
@@ -96,17 +103,32 @@ export function App() {
         <Route path="/admin/login" element={<AdminLoginPage />} />
 
         {/* ADMIN PROTECTED ROUTES */}
-        <Route path="/admin/dashboard" element={<ProtectedAdminRoute><AdminDashboardOverview /></ProtectedAdminRoute>} />
-        <Route path="/admin/leads" element={<ProtectedAdminRoute><AdminLeadsPage /></ProtectedAdminRoute>} />
-        <Route path="/admin/bookings" element={<ProtectedAdminRoute><AdminBookingsPage /></ProtectedAdminRoute>} />
-        <Route path="/admin/founders" element={<ProtectedAdminRoute><AdminFoundersPage /></ProtectedAdminRoute>} />
-        <Route path="/admin/trainers" element={<ProtectedAdminRoute><AdminTrainersPage /></ProtectedAdminRoute>} />
+        <Route path="/admin" element={<ProtectedAdminRoute><AdminDashboardOverview /></ProtectedAdminRoute>} />
+        <Route path="/admin/dashboard" element={<Navigate to="/admin" replace />} />
+        
         <Route path="/admin/services" element={<ProtectedAdminRoute><AdminServicesPage /></ProtectedAdminRoute>} />
+        <Route path="/admin/trainers" element={<ProtectedAdminRoute><AdminTrainersPage /></ProtectedAdminRoute>} />
+        <Route path="/admin/founders" element={<ProtectedAdminRoute><AdminFoundersPage /></ProtectedAdminRoute>} />
+        
+        <Route path="/admin/memberships" element={<ProtectedAdminRoute><AdminMembershipPlansPage /></ProtectedAdminRoute>} />
+        <Route path="/admin/membership-plans" element={<Navigate to="/admin/memberships" replace />} />
+        
         <Route path="/admin/boxing" element={<ProtectedAdminRoute><AdminBoxingPage /></ProtectedAdminRoute>} />
-        <Route path="/admin/membership-plans" element={<ProtectedAdminRoute><AdminMembershipPlansPage /></ProtectedAdminRoute>} />
-        <Route path="/admin/spa-services" element={<ProtectedAdminRoute><AdminSpaPage /></ProtectedAdminRoute>} />
+        
+        <Route path="/admin/spa" element={<ProtectedAdminRoute><AdminSpaPage /></ProtectedAdminRoute>} />
+        <Route path="/admin/spa-services" element={<Navigate to="/admin/spa" replace />} />
+        
         <Route path="/admin/products" element={<ProtectedAdminRoute><AdminProductsPage /></ProtectedAdminRoute>} />
         <Route path="/admin/transformations" element={<ProtectedAdminRoute><AdminTransformationsPage /></ProtectedAdminRoute>} />
+        <Route path="/admin/gallery" element={<ProtectedAdminRoute><AdminGalleryPage /></ProtectedAdminRoute>} />
+        <Route path="/admin/testimonials" element={<ProtectedAdminRoute><AdminTestimonialsPage /></ProtectedAdminRoute>} />
+        <Route path="/admin/faq" element={<ProtectedAdminRoute><AdminFaqPage /></ProtectedAdminRoute>} />
+        
+        <Route path="/admin/bookings" element={<ProtectedAdminRoute><AdminBookingsPage /></ProtectedAdminRoute>} />
+        
+        <Route path="/admin/inquiries" element={<ProtectedAdminRoute><AdminLeadsPage /></ProtectedAdminRoute>} />
+        <Route path="/admin/leads" element={<Navigate to="/admin/inquiries" replace />} />
+        
         <Route path="/admin/settings" element={<ProtectedAdminRoute><AdminSettingsPage /></ProtectedAdminRoute>} />
 
         {/* CATCH-ALL 404 */}

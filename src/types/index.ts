@@ -1,9 +1,24 @@
+export type Role = 'admin' | 'staff';
+
 export type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
 export type LeadStatus = 'new' | 'contacted' | 'interested' | 'converted' | 'not_interested' | 'closed';
-export type LeadType = 'membership' | 'free_trial' | 'trainer_session' | 'spa' | 'product' | 'contact_general';
+export type LeadType = 'membership' | 'free_trial' | 'trainer_session' | 'spa' | 'product' | 'contact_general' | 'boxing';
 
-export interface Founder {
+export interface BaseEntity {
   id: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  fullName?: string;
+  role: Role;
+  lastLoginAt?: string;
+}
+
+export interface Founder extends BaseEntity {
   name: string;
   position: string;
   photoUrl: string;
@@ -19,8 +34,7 @@ export interface Founder {
   isActive: boolean;
 }
 
-export interface Trainer {
-  id: string;
+export interface Trainer extends BaseEntity {
   fullName: string;
   photoUrl: string;
   title: string;
@@ -44,8 +58,7 @@ export interface Trainer {
   displayOrder: number;
 }
 
-export interface ServiceItem {
-  id: string;
+export interface ServiceItem extends BaseEntity {
   name: string;
   slug: string;
   shortDescription: string;
@@ -59,8 +72,7 @@ export interface ServiceItem {
   displayOrder: number;
 }
 
-export interface BoxingPlan {
-  id: string;
+export interface BoxingPlan extends BaseEntity {
   programName: string;
   description: string;
   durationText: string;
@@ -71,8 +83,7 @@ export interface BoxingPlan {
   displayOrder: number;
 }
 
-export interface MembershipPlan {
-  id: string;
+export interface MembershipPlan extends BaseEntity {
   name: string;
   description: string;
   priceMonthlyNpr: number;
@@ -84,8 +95,7 @@ export interface MembershipPlan {
   displayOrder: number;
 }
 
-export interface SpaService {
-  id: string;
+export interface SpaService extends BaseEntity {
   title: string;
   description: string;
   durationMinutes: number;
@@ -95,8 +105,7 @@ export interface SpaService {
   displayOrder: number;
 }
 
-export interface ProductItem {
-  id: string;
+export interface ProductItem extends BaseEntity {
   name: string;
   description: string;
   category: string;
@@ -109,8 +118,7 @@ export interface ProductItem {
   isActive: boolean;
 }
 
-export interface TransformationStory {
-  id: string;
+export interface TransformationStory extends BaseEntity {
   clientName: string;
   beforePhotoUrl: string;
   afterPhotoUrl: string;
@@ -118,6 +126,7 @@ export interface TransformationStory {
   finalWeightKg?: number;
   durationWeeks?: number;
   programName?: string;
+  serviceId?: string;
   storyText: string;
   testimonialQuote?: string;
   hasClientConsent: boolean;
@@ -126,22 +135,49 @@ export interface TransformationStory {
   isPublished: boolean;
 }
 
-export interface Lead {
-  id: string;
+export interface GalleryItem extends BaseEntity {
+  title: string;
+  category: string;
+  imageUrl: string;
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface Testimonial extends BaseEntity {
+  name: string;
+  comment: string;
+  rating: number;
+  isVerified: boolean;
+  displayOrder: number;
+  isPublished: boolean;
+}
+
+export interface FAQItem extends BaseEntity {
+  question: string;
+  answer: string;
+  category?: string;
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface Lead extends BaseEntity {
   fullName: string;
   phone: string;
   email?: string;
   inquiryType: LeadType;
   message?: string;
+  membershipPlanId?: string;
+  boxingProgramId?: string;
   status: LeadStatus;
   adminNotes?: string;
   assignedStaff?: string;
   createdAt: string;
 }
 
-export interface Booking {
-  id: string;
+export interface Booking extends BaseEntity {
   bookingType: 'spa' | 'trainer' | 'free_trial';
+  spaServiceId?: string;
+  trainerId?: string;
   serviceOrPlanId?: string;
   customerName: string;
   customerPhone: string;
@@ -153,7 +189,7 @@ export interface Booking {
   createdAt: string;
 }
 
-export interface BusinessSettings {
+export interface BusinessSettings extends BaseEntity {
   gymName: string;
   tagline: string;
   phone: string;
@@ -164,4 +200,10 @@ export interface BusinessSettings {
   facebookUrl: string;
   instagramUrl: string;
   tiktokUrl: string;
+}
+
+export interface AsyncState<T> {
+  data: T | null;
+  loading: boolean;
+  error: string | null;
 }

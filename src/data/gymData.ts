@@ -1,7 +1,7 @@
 import saunaImg from '../assets/images/services/sauna.webp';
 import nutritionImg from '../assets/images/services/nutrition.webp';
-import groupfitnessImg from '../assets/images/services/groupfitness.webp';
 import cardioImg from '../assets/images/services/cardio.webp';
+const groupfitnessImg = cardioImg;
 import trainer1Img from '../assets/images/trainers/trainer1.webp';
 import trainer2Img from '../assets/images/trainers/trainer2.webp';
 import {
@@ -15,7 +15,10 @@ import {
   TransformationStory,
   BusinessSettings,
   Lead,
-  Booking
+  Booking,
+  GalleryItem,
+  Testimonial,
+  FAQItem
 } from '../types';
 
 export const INITIAL_GYM_INFO: BusinessSettings = {
@@ -29,6 +32,20 @@ export const INITIAL_GYM_INFO: BusinessSettings = {
   facebookUrl: 'https://www.facebook.com/BeastFactoryGymCenter/',
   instagramUrl: 'https://www.instagram.com/beastfactory21/',
   tiktokUrl: 'https://www.tiktok.com/@beastfactory_official',
+};
+
+// Aliases for compatibility
+export const GYM_INFO = {
+  established: 'Est. 2021',
+  daysOpen: INITIAL_GYM_INFO.daysOpen,
+  hours: INITIAL_GYM_INFO.operatingHours,
+  tagline: INITIAL_GYM_INFO.tagline,
+  phone: INITIAL_GYM_INFO.phone,
+  email: INITIAL_GYM_INFO.email,
+  address: INITIAL_GYM_INFO.locationAddress,
+  facebook: INITIAL_GYM_INFO.facebookUrl,
+  instagram: INITIAL_GYM_INFO.instagramUrl,
+  tiktok: INITIAL_GYM_INFO.tiktokUrl,
 };
 
 export const INITIAL_FOUNDERS: Founder[] = [
@@ -459,3 +476,108 @@ export const INITIAL_BOOKINGS: Booking[] = [
     createdAt: '2026-09-01T14:00:00Z',
   },
 ];
+
+export const SERVICES = INITIAL_SERVICES.map(s => ({
+  id: s.id,
+  title: s.name,
+  icon: '⚡',
+  description: s.shortDescription,
+  image: s.coverImageUrl,
+  features: s.features,
+}));
+
+export const PROGRAMS = INITIAL_SERVICES.map(s => ({
+  id: s.id,
+  title: s.name,
+  category: 'Training',
+  description: s.shortDescription,
+  image: s.coverImageUrl,
+  features: s.features,
+}));
+
+export const TRAINERS = INITIAL_TRAINERS.map(t => ({
+  id: t.id,
+  name: t.fullName,
+  role: t.title,
+  specialty: t.specializations.join(', '),
+  experience: `${t.yearsExperience}+ Years`,
+  image: t.photoUrl,
+  bio: t.shortBio,
+}));
+
+export const INITIAL_TESTIMONIALS: Testimonial[] = [
+  {
+    id: 'r1',
+    name: 'Anish Pokhrel',
+    comment: 'The best gym facility in Jhapa! Top-class equipment, clean sauna, and very helpful trainers.',
+    rating: 5,
+    isVerified: true,
+    displayOrder: 1,
+    isPublished: true,
+  },
+  {
+    id: 'r2',
+    name: 'Sarita Rai',
+    comment: 'Personal training program helped me lose 12kg in just 3 months. Great environment for women!',
+    rating: 5,
+    isVerified: true,
+    displayOrder: 2,
+    isPublished: true,
+  },
+  {
+    id: 'r3',
+    name: 'Kiran Thapa',
+    comment: 'Hardcore bodybuilding setup with heavy dumbbells and Olympic plates. 365 days open is super convenient.',
+    rating: 5,
+    isVerified: true,
+    displayOrder: 3,
+    isPublished: true,
+  },
+];
+
+export const INITIAL_GALLERY: GalleryItem[] = [
+  {
+    id: 'gal1',
+    title: 'Heavy Strength Training Zone',
+    category: 'Strength Area',
+    imageUrl: cardioImg,
+    displayOrder: 1,
+    isActive: true,
+  },
+  {
+    id: 'gal2',
+    title: 'Finnish Wood Sauna Hydrotherapy',
+    category: 'Sauna',
+    imageUrl: saunaImg,
+    displayOrder: 2,
+    isActive: true,
+  },
+];
+
+export const INITIAL_FAQS: FAQItem[] = [
+  {
+    id: 'faq1',
+    question: 'What are the operating hours of Beast Factory Gym?',
+    answer: 'We are open 365 days a year from 3:30 AM in the early morning to 11:00 PM at night.',
+    category: 'General',
+    displayOrder: 1,
+    isActive: true,
+  },
+  {
+    id: 'faq2',
+    question: 'Do you offer separate personal training for female members?',
+    answer: 'Yes! We have certified female transformation leads and dedicated spaces for privacy and comfort.',
+    category: 'Coaching',
+    displayOrder: 2,
+    isActive: true,
+  },
+];
+
+export const REVIEWS = INITIAL_TESTIMONIALS.map(t => ({
+  id: t.id,
+  name: t.name,
+  comment: t.comment,
+  rating: t.rating,
+}));
+
+

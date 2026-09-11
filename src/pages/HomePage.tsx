@@ -5,10 +5,18 @@ import { Dumbbell, ArrowRight, Star } from 'lucide-react';
 import heroBg from '../assets/images/hero_bg.png';
 import logoImg from '../assets/images/logo.png';
 import { MarqueeTicker } from '../components/MarqueeTicker';
-import { PROGRAMS, TRAINERS, REVIEWS, SERVICES, GYM_INFO } from '../data/gymData';
 import { BmiCalculatorWidget } from '../components/BmiCalculatorWidget';
+import { useData } from '../hooks/useData';
 
 export const HomePage: React.FC = () => {
+  const { services, trainers, testimonials, settings } = useData();
+
+  const activeServices = services.filter((s) => s.isActive);
+  const featuredServices = activeServices.filter((s) => s.isFeatured).length > 0 ? activeServices.filter((s) => s.isFeatured) : activeServices;
+  const activeTrainers = trainers.filter((t) => t.isAvailable);
+  const featuredTrainers = activeTrainers.filter((t) => t.isFeatured).length > 0 ? activeTrainers.filter((t) => t.isFeatured) : activeTrainers;
+  const publishedTestimonials = testimonials.filter((t) => t.isPublished);
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-hidden">
       
@@ -24,7 +32,7 @@ export const HomePage: React.FC = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-900/80 border border-[#e8272a]/40 backdrop-blur-md shadow-lg shadow-red-500/10">
             <span className="w-2 h-2 rounded-full bg-[#e8272a] animate-pulse"></span>
             <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold">
-              {GYM_INFO.established} · {GYM_INFO.daysOpen} · {GYM_INFO.hours}
+              Est. 2021 · {settings.daysOpen} · {settings.operatingHours}
             </span>
           </motion.div>
 
@@ -37,7 +45,7 @@ export const HomePage: React.FC = () => {
           </motion.h1>
           
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.25 }} className="font-heading text-xl sm:text-2xl text-[#e8272a] tracking-widest">
-            {GYM_INFO.tagline}
+            {settings.tagline}
           </motion.p>
 
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }} className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-neutral-300 font-normal leading-relaxed">
@@ -86,10 +94,10 @@ export const HomePage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {SERVICES.map((svc) => (
+            {activeServices.map((svc) => (
               <div key={svc.id} className="glass-panel p-5 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/40 transition-all duration-300 text-center group hover:-translate-y-1">
-                <div className="text-3xl mb-3">{svc.icon}</div>
-                <h4 className="font-heading text-base sm:text-lg text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.title}</h4>
+                <div className="text-3xl mb-3">⚡</div>
+                <h4 className="font-heading text-base sm:text-lg text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.name}</h4>
               </div>
             ))}
           </div>
@@ -111,17 +119,17 @@ export const HomePage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {PROGRAMS.slice(0, 3).map((program) => (
+            {featuredServices.slice(0, 3).map((program) => (
               <div key={program.id} className="group glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/40 transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between">
                 <div className="relative h-56 overflow-hidden">
-                  <img src={program.image} alt={program.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <img src={program.coverImageUrl} alt={program.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent"></div>
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#e8272a] text-white text-xs font-bold uppercase tracking-wider">{program.category}</span>
+                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#e8272a] text-white text-xs font-bold uppercase tracking-wider">Training</span>
                 </div>
                 <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors">{program.title}</h3>
-                    <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{program.description}</p>
+                    <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors">{program.name}</h3>
+                    <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{program.shortDescription}</p>
                   </div>
                   <ul className="space-y-2 pt-2 border-t border-neutral-800/80">
                     {program.features.map((feat, idx) => (
@@ -154,17 +162,17 @@ export const HomePage: React.FC = () => {
             <p className="text-neutral-400 text-sm mt-3">Certified professionals dedicated to maximizing your strength, technique, and discipline.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {TRAINERS.map((trainer) => (
+            {featuredTrainers.map((trainer) => (
               <div key={trainer.id} className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 group hover:border-[#e8272a]/50 transition-all duration-300">
                 <div className="relative h-80 overflow-hidden">
-                  <img src={trainer.image} alt={trainer.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={trainer.photoUrl} alt={trainer.fullName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
                 </div>
                 <div className="p-6 space-y-2">
-                  <span className="text-xs font-bold text-[#e8272a] uppercase tracking-widest">{trainer.role}</span>
-                  <h3 className="font-heading text-2xl text-white">{trainer.name}</h3>
-                  <p className="text-xs text-neutral-400">{trainer.specialty} • {trainer.experience}</p>
-                  <p className="text-neutral-300 text-xs pt-2 border-t border-neutral-800">{trainer.bio}</p>
+                  <span className="text-xs font-bold text-[#e8272a] uppercase tracking-widest">{trainer.title}</span>
+                  <h3 className="font-heading text-2xl text-white">{trainer.fullName}</h3>
+                  <p className="text-xs text-neutral-400">{trainer.specializations.join(', ')} • {trainer.yearsExperience}+ Years</p>
+                  <p className="text-neutral-300 text-xs pt-2 border-t border-neutral-800">{trainer.shortBio}</p>
                 </div>
               </div>
             ))}
@@ -182,7 +190,7 @@ export const HomePage: React.FC = () => {
             <h2 className="font-heading text-4xl sm:text-5xl text-white">WHAT OUR <span className="text-[#e8272a]">MEMBERS SAY</span></h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {REVIEWS.map((rev) => (
+            {publishedTestimonials.map((rev) => (
               <div key={rev.id} className="glass-panel p-6 rounded-3xl border border-neutral-800 flex flex-col justify-between space-y-4">
                 <p className="text-neutral-300 text-sm italic leading-relaxed">"{rev.comment}"</p>
                 <div className="flex items-center gap-3 pt-4 border-t border-neutral-800">
@@ -203,7 +211,7 @@ export const HomePage: React.FC = () => {
         <div className="absolute inset-0 bg-[#e8272a]"></div>
         <div className="relative max-w-5xl mx-auto px-4 text-center space-y-6">
           <h2 className="font-heading text-5xl sm:text-7xl text-white font-bold tracking-tight">READY TO RELEASE YOUR INNER BEAST?</h2>
-          <p className="text-white/80 font-medium text-lg max-w-xl mx-auto">Join Damak's most powerful fitness community today. {GYM_INFO.daysOpen} • {GYM_INFO.hours}</p>
+          <p className="text-white/80 font-medium text-lg max-w-xl mx-auto">Join Damak's most powerful fitness community today. {settings.daysOpen} • {settings.operatingHours}</p>
           <div>
             <Link to="/apply" className="inline-block px-10 py-4 rounded-full bg-[#0a0a0a] text-white font-heading text-2xl tracking-wider hover:bg-neutral-900 transition-transform hover:scale-105 shadow-2xl">
               CLAIM YOUR FREE TRIAL PASS

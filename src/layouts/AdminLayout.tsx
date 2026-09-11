@@ -38,35 +38,38 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
   const navSections = [
     {
+      group: 'DASHBOARD',
+      items: [
+        { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+      ]
+    },
+    {
+      group: 'CONTENT',
+      items: [
+        { name: 'Services', path: '/admin/services', icon: Sparkles },
+        { name: 'Trainers', path: '/admin/trainers', icon: Dumbbell },
+        { name: 'Founders', path: '/admin/founders', icon: Award },
+        { name: 'Memberships', path: '/admin/memberships', icon: Layers },
+        { name: 'Boxing', path: '/admin/boxing', icon: Shield },
+        { name: 'Spa', path: '/admin/spa', icon: Waves },
+        { name: 'Products', path: '/admin/products', icon: ShoppingBag },
+        { name: 'Transformations', path: '/admin/transformations', icon: Users },
+        { name: 'Gallery', path: '/admin/gallery', icon: Sparkles },
+        { name: 'Testimonials', path: '/admin/testimonials', icon: Award },
+        { name: 'FAQ', path: '/admin/faq', icon: Layers },
+      ]
+    },
+    {
       group: 'OPERATIONS',
       items: [
-        { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
-        { name: 'Leads & Inquiries', path: '/admin/leads', icon: Inbox },
-        { name: 'Bookings & Trials', path: '/admin/bookings', icon: CalendarCheck },
-      ]
-    },
-    {
-      group: 'BUSINESS & PRICING',
-      items: [
-        { name: 'Membership Plans', path: '/admin/membership-plans', icon: Layers },
-        { name: 'Boxing Programs', path: '/admin/boxing', icon: Shield },
-        { name: 'Spa Services', path: '/admin/spa-services', icon: Waves },
-        { name: 'Products Catalog', path: '/admin/products', icon: ShoppingBag },
-      ]
-    },
-    {
-      group: 'CONTENT MANAGEMENT',
-      items: [
-        { name: 'Founders / Team', path: '/admin/founders', icon: Award },
-        { name: 'Coaches & Trainers', path: '/admin/trainers', icon: Dumbbell },
-        { name: 'Services & Facilities', path: '/admin/services', icon: Sparkles },
-        { name: 'Transformations', path: '/admin/transformations', icon: Users },
+        { name: 'Bookings', path: '/admin/bookings', icon: CalendarCheck },
+        { name: 'Inquiries', path: '/admin/inquiries', icon: Inbox },
       ]
     },
     {
       group: 'SYSTEM',
       items: [
-        { name: 'Business Settings', path: '/admin/settings', icon: Settings },
+        { name: 'Settings', path: '/admin/settings', icon: Settings },
       ]
     }
   ];
@@ -79,7 +82,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       <aside className="hidden lg:flex w-64 flex-col bg-[#0a0a0a] border-r border-neutral-900 fixed top-0 bottom-0 z-40">
         {/* BRAND HEADER */}
         <div className="p-5 border-b border-neutral-900 flex items-center justify-between">
-          <Link to="/admin/dashboard" className="flex items-center gap-3">
+          <Link to="/admin" className="flex items-center gap-3">
             <img src={logoImg} alt="Logo" className="w-8 h-8 object-contain" />
             <div>
               <span className="font-heading text-lg text-white block leading-none">BEAST <span className="text-[#e8272a]">ADMIN</span></span>

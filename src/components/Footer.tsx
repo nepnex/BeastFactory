@@ -4,6 +4,8 @@ import { Phone, Mail, MapPin, Dumbbell, Clock, Lock } from 'lucide-react';
 import logoImg from '../assets/images/logo.png';
 import { useData } from '../hooks/useData';
 
+import nepnexLogo from '../assets/images/nepnex_logo.png';
+
 export const Footer: React.FC = () => {
   const { settings } = useData();
 
@@ -44,6 +46,8 @@ export const Footer: React.FC = () => {
                 { to: '/membership', label: 'Membership Pricing' },
                 { to: '/products', label: 'Store & Merchandise' },
                 { to: '/transformations', label: 'Member Transformations' },
+                { to: '/gallery', label: 'Photo Gallery' },
+                { to: '/faq', label: 'Support & FAQs' },
               ].map((l) => (
                 <li key={l.to}><Link to={l.to} className="hover:text-[#ff1e1e] transition-colors flex items-center gap-2"><span className="text-[#e8272a]">›</span> {l.label}</Link></li>
               ))}
@@ -74,19 +78,28 @@ export const Footer: React.FC = () => {
               <li className="flex items-center gap-3"><Mail className="w-5 h-5 text-[#e8272a] shrink-0" /><span>{settings.email}</span></li>
             </ul>
             <div className="pt-2">
-              <Link to="/admin/dashboard" className="inline-flex items-center gap-2 text-xs text-neutral-500 hover:text-white transition-colors">
+              <Link to="/admin" className="inline-flex items-center gap-2 text-xs text-neutral-500 hover:text-white transition-colors">
                 <Lock className="w-3.5 h-3.5" /> <span>Admin Operations Portal</span>
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-neutral-900 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 gap-4">
-          <p>© {new Date().getFullYear()} Beast Factory Gym. All Rights Reserved.</p>
-          <div className="flex items-center gap-2 text-neutral-400">
-            <Dumbbell className="w-4 h-4 text-[#e8272a]" />
-            <span>The Fitness Paradise — Damak, Jhapa</span>
+        <div className="border-t border-neutral-900 pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-neutral-400 gap-4">
+          <div className="flex items-center gap-2">
+            <p>© {new Date().getFullYear()} Beast Factory Gym. All Rights Reserved.</p>
           </div>
+          
+          <a
+            href="https://nepnex.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-neutral-900/90 border border-neutral-800 hover:border-[#0088cc]/60 hover:bg-neutral-800 transition-all text-neutral-300 hover:text-white group"
+          >
+            <span className="text-[11px] text-neutral-400">Developed by</span>
+            <img src={nepnexLogo} alt="NepNex Technologies" className="h-5 object-contain" />
+            <span className="font-bold text-xs bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent group-hover:from-sky-300 group-hover:to-blue-400">NepNex Technologies</span>
+          </a>
         </div>
       </div>
     </footer>

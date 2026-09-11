@@ -70,7 +70,7 @@ export const Navbar: React.FC = () => {
 
           {/* ACTION BUTTONS */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link to="/admin/dashboard" className="p-2.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white transition-colors" title="Admin Portal">
+            <Link to="/admin" className="p-2.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white transition-colors" title="Admin Portal">
               <Lock className="w-4 h-4" />
             </Link>
             <a href={`tel:${settings.phone}`} className="flex items-center gap-2 text-xs font-semibold text-neutral-300 hover:text-[#ff1e1e] transition-colors">
@@ -104,7 +104,7 @@ export const Navbar: React.FC = () => {
             </Link>
           ))}
           <div className="pt-3 border-t border-neutral-800 space-y-2">
-            <Link to="/admin/dashboard" onClick={() => setIsOpen(false)} className="block w-full text-center py-2.5 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-300 font-semibold text-xs">
+            <Link to="/admin" onClick={() => setIsOpen(false)} className="block w-full text-center py-2.5 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-300 font-semibold text-xs">
               ADMIN DASHBOARD PORTAL
             </Link>
             <Link to="/apply" onClick={() => setIsOpen(false)} className="block w-full text-center py-3 rounded-xl bg-[#e8272a] text-white font-heading text-base font-bold shadow-lg shadow-red-500/20">
