@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Check, Flame } from 'lucide-react';
 import { useData } from '../hooks/useData';
@@ -8,7 +8,6 @@ import { getBreadcrumbSchema } from '../utils/schemaHelper';
 
 export const MembershipPage: React.FC = () => {
   const { membershipPlans, settings } = useData();
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
 
   const activePlans = membershipPlans
     .filter((p) => p.isActive)
@@ -23,7 +22,7 @@ export const MembershipPage: React.FC = () => {
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
       <SEO
         title="Membership Plans & Pricing | Gym in Damak, Jhapa"
-        description="Affordable & transparent gym membership packages in Damak, Jhapa at Beast Factory. Monthly & annual passes for regular gym access, Beast Pro, and VIP coaching."
+        description="Affordable & transparent gym membership packages in Damak, Jhapa at Beast Factory. Monthly passes for regular gym access, Beast Pro, and VIP coaching."
         canonicalPath="/membership"
         structuredData={breadcrumbSchema}
       />
@@ -36,21 +35,6 @@ export const MembershipPage: React.FC = () => {
         <p className="text-neutral-400 text-base max-w-2xl mx-auto">
           No hidden fees. Transparent pricing for maximum value and results. {settings.daysOpen} • {settings.operatingHours}
         </p>
-
-        <div className="pt-4 flex items-center justify-center gap-4">
-          <button
-            onClick={() => setBillingCycle('monthly')}
-            className={`px-6 py-2 rounded-full text-xs font-bold transition-all ${
-              billingCycle === 'monthly' ? 'bg-[#e8272a] text-white shadow-md shadow-red-500/20' : 'bg-neutral-900 border border-neutral-800 text-neutral-400'
-            }`}
-          >MONTHLY BILLING</button>
-          <button
-            onClick={() => setBillingCycle('yearly')}
-            className={`px-6 py-2 rounded-full text-xs font-bold transition-all relative ${
-              billingCycle === 'yearly' ? 'bg-[#e8272a] text-white shadow-md shadow-red-500/20' : 'bg-neutral-900 border border-neutral-800 text-neutral-400'
-            }`}
-          >YEARLY PASS <span className="text-[10px] text-emerald-400 ml-1 font-extrabold">(SAVE 20%)</span></button>
-        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -68,10 +52,10 @@ export const MembershipPage: React.FC = () => {
                 <p className="text-xs text-neutral-400 leading-relaxed">{plan.description}</p>
                 <div className="pt-2">
                   <span className="font-heading text-4xl sm:text-5xl text-white">
-                    NPR {billingCycle === 'monthly' ? plan.priceMonthlyNpr.toLocaleString() : (plan.priceYearlyNpr || plan.priceMonthlyNpr * 12).toLocaleString()}
+                    NPR {plan.priceMonthlyNpr.toLocaleString()}
                   </span>
                   <span className="text-xs text-neutral-400 font-sans ml-1">
-                    {billingCycle === 'monthly' ? '/ month' : '/ year'}
+                    / month
                   </span>
                 </div>
               </div>
