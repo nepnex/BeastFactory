@@ -58,41 +58,7 @@ export const BmiCalculatorWidget: React.FC = () => {
   if (fitnessGoal === 'cut') targetCalories = Math.max(1200, tdee - 500);
   if (fitnessGoal === 'bulk') targetCalories = tdee + 350;
 
-  // Macro Percentage Distributions based on Diet Style & Activity Level
-  let proteinRatio = 0.35;
-  let carbRatio = 0.45;
-  let fatRatio = 0.20;
-
-  if (dietStyle === 'balanced') {
-    proteinRatio = 0.30;
-    carbRatio = 0.45;
-    fatRatio = 0.25;
-  } else if (dietStyle === 'low_carb') {
-    proteinRatio = 0.35;
-    carbRatio = 0.15;
-    fatRatio = 0.50;
-  } else if (dietStyle === 'shred') {
-    proteinRatio = 0.40;
-    carbRatio = 0.30;
-    fatRatio = 0.30;
-  }
-
-  // Adjust protein & carbs dynamically for higher activity levels
-  if (activity >= 1.725 && dietStyle !== 'low_carb') {
-    proteinRatio += 0.03;
-    carbRatio += 0.02;
-    fatRatio -= 0.05;
-  }
-
-  const proteinCalories = targetCalories * proteinRatio;
-  const carbCalories = targetCalories * carbRatio;
-  const fatCalories = targetCalories * fatRatio;
-
-  const proteinGrams = Math.round(proteinCalories / 4);
-  const carbGrams = Math.round(carbCalories / 4);
-  const fatGrams = Math.round(fatCalories / 9);
-
-  // Daily Water Requirement (Liters) - Scales dynamically with Activity
+  // Daily Water Requirement (Liters)
   const dailyWaterLiters = (weightKg * 0.035 + (activity - 1.0) * 1.2).toFixed(1);
   const waterGlasses = Math.round(parseFloat(dailyWaterLiters) * 4); // 250ml per glass
 
@@ -116,9 +82,9 @@ export const BmiCalculatorWidget: React.FC = () => {
   const category = getBmiCategory(bmi);
 
   const getActivityLabel = (val: number) => {
-    if (val >= 1.725) return 'Very Active / Athlete (6-7 Heavy Lifting Days)';
-    if (val >= 1.55) return 'Moderately Active (3-5 Intense Gym Workouts)';
-    if (val >= 1.375) return 'Lightly Active (1-3 Gym Days/Week)';
+    if (val >= 1.725) return 'Very Active / Athlete (6-7 Heavy Days)';
+    if (val >= 1.55) return 'Moderately Active (3-5 Gym Days)';
+    if (val >= 1.375) return 'Lightly Active (1-3 Gym Days)';
     return 'Sedentary (Minimal Exercise)';
   };
 
@@ -327,25 +293,9 @@ export const BmiCalculatorWidget: React.FC = () => {
                 </div>
               </div>
 
-              {/* DIET STYLE & FITNESS GOAL SELECTOR */}
+              {/* FITNESS GOAL SELECTOR */}
               {activeTab === 'macros' && (
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs text-neutral-400 font-semibold uppercase tracking-wider mb-2">
-                      DIET MACRO RATIO STYLE
-                    </label>
-                    <select
-                      value={dietStyle}
-                      onChange={(e: any) => setDietStyle(e.target.value)}
-                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-xs text-white font-semibold focus:outline-none focus:border-[#e8272a]"
-                    >
-                      <option value="high_protein">Beast Hypertrophy (High Protein 35% / Carbs 45% / Fat 20%)</option>
-                      <option value="balanced">Balanced Athletic (Protein 30% / Carbs 45% / Fat 25%)</option>
-                      <option value="shred">Fat Loss Shred (Protein 40% / Carbs 30% / Fat 30%)</option>
-                      <option value="low_carb">Keto / Low Carb (Protein 35% / Carbs 15% / Fat 50%)</option>
-                    </select>
-                  </div>
-
                   <div>
                     <label className="block text-xs text-neutral-400 font-semibold uppercase tracking-wider mb-2">
                       PRIMARY FITNESS GOAL
@@ -452,13 +402,13 @@ export const BmiCalculatorWidget: React.FC = () => {
             <div className="space-y-6">
               <div className="text-center pb-6 border-b border-neutral-800">
                 <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold block mb-1">
-                  ACTIVITY-ADJUSTED DIET CALORIES
+                  TOTAL RECOMMENDED DAILY CALORIES
                 </span>
                 <div className="font-heading text-6xl sm:text-7xl text-white">
-                  {targetCalories} <span className="text-xl text-neutral-400 font-sans">kcal/day</span>
+                  {targetCalories} <span className="text-xl text-neutral-400 font-sans">kcal / day</span>
                 </div>
 
-                <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e8272a]/15 border border-[#e8272a]/30 text-[#e8272a] text-xs font-bold uppercase">
+                <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e8272a]/15 border border-[#e8272a]/30 text-[#e8272a] text-xs font-bold uppercase">
                   <TrendingUp className="w-3.5 h-3.5" />
                   <span>
                     Includes +{activityBurn} kcal for {getActivityLabel(activity).split('(')[0]}
@@ -466,38 +416,28 @@ export const BmiCalculatorWidget: React.FC = () => {
                 </div>
               </div>
 
-              {/* MACROS BREAKDOWN CARDS */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center text-xs text-neutral-400 font-bold uppercase tracking-wider">
-                  <span>DAILY MACRONUTRIENT DISTRIBUTION</span>
-                  <span>{targetCalories} TOTAL KCAL</span>
+              {/* CALORIE BREAKDOWN SUMMARY */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
+                  <span className="text-[10px] text-neutral-400 font-bold uppercase block">RESTING BMR</span>
+                  <div className="font-heading text-2xl text-white">{bmr} <span className="text-xs font-sans text-neutral-400">kcal</span></div>
+                  <span className="text-[10px] text-neutral-500 block">Body At Rest</span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
-                    <span className="text-[10px] text-[#e8272a] font-bold uppercase block">PROTEIN</span>
-                    <div className="font-heading text-3xl text-white">{proteinGrams}g</div>
-                    <span className="text-[10px] text-neutral-400 block">{proteinCalories} kcal ({Math.round(proteinRatio * 100)}%)</span>
-                  </div>
-
-                  <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
-                    <span className="text-[10px] text-amber-400 font-bold uppercase block">CARBS</span>
-                    <div className="font-heading text-3xl text-white">{carbGrams}g</div>
-                    <span className="text-[10px] text-neutral-400 block">{carbCalories} kcal ({Math.round(carbRatio * 100)}%)</span>
-                  </div>
-
-                  <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
-                    <span className="text-[10px] text-sky-400 font-bold uppercase block">FATS</span>
-                    <div className="font-heading text-3xl text-white">{fatGrams}g</div>
-                    <span className="text-[10px] text-neutral-400 block">{fatCalories} kcal ({Math.round(fatRatio * 100)}%)</span>
-                  </div>
+                <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
+                  <span className="text-[10px] text-[#e8272a] font-bold uppercase block">ACTIVITY BURN</span>
+                  <div className="font-heading text-2xl text-white">+{activityBurn} <span className="text-xs font-sans text-neutral-400">kcal</span></div>
+                  <span className="text-[10px] text-neutral-500 block">From Movement & Exercise</span>
                 </div>
               </div>
 
-              <div className="bg-neutral-900/70 p-4 rounded-2xl border border-neutral-800 text-xs text-neutral-300 space-y-1.5">
-                <span className="font-bold text-white uppercase block">Diet Plan Summary</span>
-                <p className="leading-relaxed">
-                  For your weight of <strong>{unitSystem === 'metric' ? `${weightKg}kg` : `${weightLbs}lbs`}</strong> and <strong>{getActivityLabel(activity)}</strong>, your daily diet target is <strong>{targetCalories} kcal</strong> ({proteinGrams}g Protein, {carbGrams}g Carbs, {fatGrams}g Fat).
+              <div className="bg-neutral-900/90 p-5 rounded-2xl border border-neutral-800 space-y-2">
+                <div className="flex items-center justify-between text-xs text-white font-bold uppercase">
+                  <span>EASY DIET SUMMARY</span>
+                  <span className="text-[#e8272a] font-heading text-sm">{targetCalories} KCAL / DAY</span>
+                </div>
+                <p className="text-xs text-neutral-300 leading-relaxed">
+                  Based on your weight of <strong>{unitSystem === 'metric' ? `${weightKg} kg` : `${weightLbs} lbs`}</strong> and <strong>{getActivityLabel(activity)}</strong>, your total daily energy burn is <strong>{tdee} kcal</strong>. To reach your <strong>{fitnessGoal.toUpperCase()}</strong> goal, consume <strong>{targetCalories} calories per day</strong>.
                 </p>
               </div>
             </div>
