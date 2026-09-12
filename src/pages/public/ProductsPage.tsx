@@ -5,6 +5,7 @@ import { dataService } from '../../services/dataService';
 import { ProductItem } from '../../types';
 import { notificationService } from '../../services/notificationService';
 import { TiltCard } from '../../components/3d/TiltCard';
+import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../../utils/validation';
 
 export const ProductsPage: React.FC = () => {
   const { products } = useData();
@@ -12,17 +13,30 @@ export const ProductsPage: React.FC = () => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [errorMsg, setErrorMsg] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const activeProducts = products.filter((p) => p.isActive);
 
   const handleOrderInquiry = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedProduct || !name || !phone) return;
+    setErrorMsg('');
+
+    if (!selectedProduct) return;
+
+    if (!isValidName(name)) {
+      setErrorMsg('Please enter a valid name (letters only).');
+      return;
+    }
+
+    if (!isValidPhone(phone)) {
+      setErrorMsg('Please enter a valid phone number (7 to 15 digits).');
+      return;
+    }
 
     const lead = dataService.addLead({
-      fullName: name,
-      phone: phone,
+      fullName: name.trim(),
+      phone: phone.trim(),
       inquiryType: 'product',
       message: `Product Order Request: ${selectedProduct.name} (Qty: ${quantity}) - Total: NPR ${(selectedProduct.priceNpr * quantity).toLocaleString()}`,
     });
@@ -127,6 +141,12 @@ export const ProductsPage: React.FC = () => {
                   <h3 className="font-heading text-2xl text-white">{selectedProduct.name}</h3>
                   <p className="text-xs text-neutral-400">{selectedProduct.description}</p>
 
+                  {errorMsg && (
+                    <div className="p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-red-400 text-xs font-semibold text-center">
+                      {errorMsg}
+                    </div>
+                  )}
+
                   <div className="bg-neutral-900 p-3.5 rounded-2xl border border-neutral-800 flex items-center justify-between text-xs text-neutral-300">
                     <span>Unit Price:</span>
                     <span className="font-heading text-xl text-white">NPR {selectedProduct.priceNpr.toLocaleString()}</span>
@@ -139,12 +159,12 @@ export const ProductsPage: React.FC = () => {
 
                   <div>
                     <label className="block text-xs text-neutral-400 font-semibold mb-1">YOUR NAME *</label>
-                    <input type="text" required value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                    <input type="text" required value={name} onChange={(e) => setName(sanitizeNameInput(e.target.value))} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
                   </div>
 
                   <div>
                     <label className="block text-xs text-neutral-400 font-semibold mb-1">PHONE / WHATSAPP *</label>
-                    <input type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                    <input type="tel" required value={phone} onChange={(e) => setPhone(sanitizePhoneInput(e.target.value))} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
                   </div>
 
                   <div className="pt-2 border-t border-neutral-800 flex items-center justify-between">

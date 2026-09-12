@@ -5,22 +5,34 @@ import { dataService } from '../../services/dataService';
 import { notificationService } from '../../services/notificationService';
 import { TiltCard } from '../../components/3d/TiltCard';
 import boxingGlovesImg from '../../assets/images/boxing_gloves.png';
+import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../../utils/validation';
 
 export const BoxingPage: React.FC = () => {
   const { boxingPlans } = useData();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [applicant, setApplicant] = useState({ name: '', phone: '', batch: 'Morning (6:00 AM)' });
+  const [errorMsg, setErrorMsg] = useState('');
   const [success, setSuccess] = useState(false);
 
   const activePlans = boxingPlans.filter((p) => p.isActive);
 
   const handleEnroll = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!applicant.name || !applicant.phone) return;
+    setErrorMsg('');
+
+    if (!isValidName(applicant.name)) {
+      setErrorMsg('Please enter a valid name (letters only).');
+      return;
+    }
+
+    if (!isValidPhone(applicant.phone)) {
+      setErrorMsg('Please enter a valid phone number (7 to 15 digits).');
+      return;
+    }
 
     const lead = dataService.addLead({
-      fullName: applicant.name,
-      phone: applicant.phone,
+      fullName: applicant.name.trim(),
+      phone: applicant.phone.trim(),
       inquiryType: 'boxing',
       message: `Enrolling in Boxing Plan: ${selectedPlan || 'General Boxing'} (${applicant.batch})`,
     });
@@ -155,14 +167,32 @@ export const BoxingPage: React.FC = () => {
                   <h3 className="font-heading text-3xl text-white">BOXING ENROLLMENT</h3>
                   <p className="text-xs text-[#e8272a] font-semibold">{selectedPlan}</p>
 
+                  {errorMsg && (
+                    <div className="p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-red-400 text-xs font-semibold text-center">
+                      {errorMsg}
+                    </div>
+                  )}
+
                   <div>
                     <label className="block text-xs text-neutral-400 font-semibold mb-1">YOUR NAME *</label>
-                    <input type="text" required value={applicant.name} onChange={(e) => setApplicant({ ...applicant, name: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                    <input
+                      type="text"
+                      required
+                      value={applicant.name}
+                      onChange={(e) => setApplicant({ ...applicant, name: sanitizeNameInput(e.target.value) })}
+                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]"
+                    />
                   </div>
 
                   <div>
                     <label className="block text-xs text-neutral-400 font-semibold mb-1">PHONE / WHATSAPP *</label>
-                    <input type="tel" required value={applicant.phone} onChange={(e) => setApplicant({ ...applicant, phone: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                    <input
+                      type="tel"
+                      required
+                      value={applicant.phone}
+                      onChange={(e) => setApplicant({ ...applicant, phone: sanitizePhoneInput(e.target.value) })}
+                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#e8272a]"
+                    />
                   </div>
 
                   <div>

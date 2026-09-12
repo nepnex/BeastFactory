@@ -4,12 +4,14 @@ import { CheckCircle2, Send } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { notificationService } from '../services/notificationService';
 import { GYM_INFO } from '../data/gymData';
+import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../utils/validation';
 
 export const ApplicationPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const selectedPlanParam = searchParams.get('plan') || 'regular';
 
   const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -22,13 +24,23 @@ export const ApplicationPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.phone) return;
+    setErrorMsg('');
+
+    if (!isValidName(formData.fullName)) {
+      setErrorMsg('Please enter a valid full name (letters only).');
+      return;
+    }
+
+    if (!isValidPhone(formData.phone)) {
+      setErrorMsg('Please enter a valid phone number (7 to 15 digits).');
+      return;
+    }
 
     const isFreePass = formData.plan === 'free_pass';
     const lead = dataService.addLead({
-      fullName: formData.fullName,
-      phone: formData.phone,
-      email: formData.email,
+      fullName: formData.fullName.trim(),
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
       inquiryType: isFreePass ? 'free_trial' : 'membership',
       message: `Plan: ${formData.plan} | Goal: ${formData.fitnessGoal} | Time: ${formData.preferredTime} | Notes: ${formData.notes}`,
     });
@@ -91,14 +103,34 @@ export const ApplicationPage: React.FC = () => {
         ) : (
           <form onSubmit={handleSubmit} className="glass-panel p-6 sm:p-10 rounded-3xl border border-neutral-800 space-y-6">
             
+            {errorMsg && (
+              <div className="p-4 rounded-xl bg-red-500/15 border border-red-500/40 text-red-400 text-xs font-semibold text-center">
+                {errorMsg}
+              </div>
+            )}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <label className="block text-xs font-semibold text-neutral-300 mb-2">FULL NAME *</label>
-                <input type="text" required placeholder="e.g. Bikram Gurung" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Bikram Gurung"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: sanitizeNameInput(e.target.value) })}
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]"
+                />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-neutral-300 mb-2">PHONE NUMBER *</label>
-                <input type="tel" required placeholder="e.g. 9801234567" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                <input
+                  type="tel"
+                  required
+                  placeholder="e.g. 9801234567"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: sanitizePhoneInput(e.target.value) })}
+                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]"
+                />
               </div>
             </div>
 

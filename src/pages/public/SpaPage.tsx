@@ -4,6 +4,7 @@ import { useData } from '../../hooks/useData';
 import { dataService } from '../../services/dataService';
 import { notificationService } from '../../services/notificationService';
 import { SpaService } from '../../types';
+import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../../utils/validation';
 
 export const SpaPage: React.FC = () => {
   const { spaServices, settings } = useData();
@@ -206,16 +207,16 @@ export const SpaPage: React.FC = () => {
                   </div>
                 )}
 
-                {/* STEP 4: CUSTOMER NAME */}
+                {/* STEP 4: FULL NAME */}
                 {step === 4 && (
                   <div className="space-y-4">
                     <label className="block text-xs text-neutral-400 font-semibold flex items-center gap-2">
                       <User className="w-4 h-4 text-[#e8272a]" /> YOUR FULL NAME *
                     </label>
-                    <input type="text" required placeholder="e.g. Ramesh Karki" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                    <input type="text" required placeholder="e.g. Ramesh Karki" value={name} onChange={(e) => setName(sanitizeNameInput(e.target.value))} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
                     <div className="flex gap-3">
                       <button type="button" onClick={() => setStep(3)} className="w-1/3 py-3 rounded-xl bg-neutral-900 border border-neutral-800 text-xs font-bold">BACK</button>
-                      <button type="button" onClick={() => { if (name) setStep(5); }} className="w-2/3 py-3 rounded-xl bg-[#e8272a] text-white font-heading text-lg font-bold">CONTINUE →</button>
+                      <button type="button" onClick={() => { if (isValidName(name)) setStep(5); }} className="w-2/3 py-3 rounded-xl bg-[#e8272a] text-white font-heading text-lg font-bold">CONTINUE →</button>
                     </div>
                   </div>
                 )}
@@ -226,10 +227,10 @@ export const SpaPage: React.FC = () => {
                     <label className="block text-xs text-neutral-400 font-semibold flex items-center gap-2">
                       <Phone className="w-4 h-4 text-[#e8272a]" /> PHONE / WHATSAPP NUMBER *
                     </label>
-                    <input type="tel" required placeholder="e.g. 9801234567" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                    <input type="tel" required placeholder="e.g. 9801234567" value={phone} onChange={(e) => setPhone(sanitizePhoneInput(e.target.value))} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
                     <div className="flex gap-3">
                       <button type="button" onClick={() => setStep(4)} className="w-1/3 py-3 rounded-xl bg-neutral-900 border border-neutral-800 text-xs font-bold">BACK</button>
-                      <button type="button" onClick={() => { if (phone) setStep(6); }} className="w-2/3 py-3 rounded-xl bg-[#e8272a] text-white font-heading text-lg font-bold">CONTINUE →</button>
+                      <button type="button" onClick={() => { if (isValidPhone(phone)) setStep(6); }} className="w-2/3 py-3 rounded-xl bg-[#e8272a] text-white font-heading text-lg font-bold">CONTINUE →</button>
                     </div>
                   </div>
                 )}

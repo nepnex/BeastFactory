@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import { useData } from '../hooks/useData';
+import { GYM_INFO } from '../data/gymData';
 import { dataService } from '../services/dataService';
-
 import { notificationService } from '../services/notificationService';
+import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../utils/validation';
 
 export const ContactPage: React.FC = () => {
   const { settings } = useData();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
+    setErrorMsg('');
+
+    if (!isValidName(name)) {
+      setErrorMsg('Please enter a valid name (letters only).');
+      return;
+    }
+
+    if (!isValidPhone(phone)) {
+      setErrorMsg('Please enter a valid phone number (7 to 15 digits).');
+      return;
+    }
 
     const lead = dataService.addLead({
-      fullName: name,
-      phone: phone,
-      inquiryType: 'contact_general',
+      fullName: sanitizeNameInput(name),
+      phone: sanitizePhoneInput(phone),
+      inquiryType: 'general',
       message: message || 'General contact inquiry from website.',
     });
 
@@ -114,14 +126,34 @@ export const ContactPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="glass-panel p-8 rounded-3xl border border-neutral-800 space-y-6">
               <h3 className="font-heading text-3xl text-white">SEND A DIRECT MESSAGE</h3>
 
+              {errorMsg && (
+                <div className="p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-red-400 text-xs font-semibold text-center">
+                  {errorMsg}
+                </div>
+              )}
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-semibold text-neutral-300 mb-2">YOUR NAME *</label>
-                  <input type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="John Doe" className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(sanitizeNameInput(e.target.value))}
+                    placeholder="e.g. Bikram Gurung"
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]"
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-neutral-300 mb-2">PHONE / WHATSAPP *</label>
-                  <input type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="9800000000" className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]" />
+                  <input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(sanitizePhoneInput(e.target.value))}
+                    placeholder="e.g. 9801234567"
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#e8272a]"
+                  />
                 </div>
               </div>
 
