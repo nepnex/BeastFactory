@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dumbbell, Award, GraduationCap, Trophy, Globe, Flame } from 'lucide-react';
 import { useData } from '../hooks/useData';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 import { getBreadcrumbSchema, getTrainerSchema } from '../utils/schemaHelper';
 import logoImg from '../assets/images/logo.png';
+import { ImageLightboxModal } from '../components/ImageLightboxModal';
+import { Trainer } from '../types';
 
 export const TrainersPage: React.FC = () => {
   const { trainers, settings } = useData();
+  const [selectedTrainer, setSelectedTrainer] = useState<Trainer | null>(null);
 
   const activeTrainers = trainers
     .filter((t) => t.isAvailable)
@@ -40,24 +43,30 @@ export const TrainersPage: React.FC = () => {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
         {activeTrainers.map((trainer) => (
-          <div key={trainer.id} className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/40 transition-all space-y-4 p-6">
-            <div className="h-72 sm:h-80 rounded-2xl overflow-hidden relative bg-neutral-900">
+          <div key={trainer.id} className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/40 transition-all space-y-4 p-6 flex flex-col justify-between group">
+            <div
+              onClick={() => setSelectedTrainer(trainer)}
+              className="h-72 sm:h-80 rounded-2xl overflow-hidden relative bg-neutral-900 cursor-pointer group/photo"
+            >
               <img
                 src={trainer.photoUrl}
                 alt={trainer.fullName}
                 loading="lazy"
                 decoding="async"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover/photo:scale-105 transition-transform duration-500"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = logoImg;
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+              <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider border border-neutral-800 group-hover/photo:border-[#e8272a] transition-all">
+                ZOOM PHOTO 🔍
+              </span>
             </div>
             <div className="space-y-3 text-left flex-1 flex flex-col justify-between">
               <div>
                 <span className="text-xs font-bold text-[#e8272a] uppercase tracking-widest">{trainer.title}</span>
-                <h3 className="font-heading text-3xl text-white">{trainer.fullName}</h3>
+                <h3 className="font-heading text-3xl text-white group-hover:text-[#ff1e1e] transition-colors">{trainer.fullName}</h3>
                 <p className="text-xs text-neutral-400 font-medium">{trainer.specializations.join(', ')} • {trainer.yearsExperience}+ Years</p>
                 <p className="text-neutral-300 text-xs pt-3 border-t border-neutral-800 leading-relaxed">{trainer.shortBio}</p>
               </div>
@@ -104,6 +113,17 @@ export const TrainersPage: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {/* TRAINER PHOTO LIGHTBOX MODAL */}
+      <ImageLightboxModal
+        isOpen={!!selectedTrainer}
+        onClose={() => setSelectedTrainer(null)}
+        imageUrl={selectedTrainer?.photoUrl || ''}
+        title={selectedTrainer?.fullName || ''}
+        subtitle={selectedTrainer?.title}
+        details={`${selectedTrainer?.shortBio || ''} ${selectedTrainer?.fullBio || ''}`}
+        category="BEAST FACTORY CERTIFIED COACH"
+      />
     </div>
   );
 };

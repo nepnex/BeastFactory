@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Image as ImageIcon, Sparkles } from 'lucide-react';
+import { Image as ImageIcon } from 'lucide-react';
 import { useData } from '../../hooks/useData';
+import { ImageLightboxModal } from '../../components/ImageLightboxModal';
+import { GalleryItem } from '../../types';
 
 export const GalleryPage: React.FC = () => {
   const { galleryItems } = useData();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedGalleryItem, setSelectedGalleryItem] = useState<GalleryItem | null>(null);
 
   const activeGallery = galleryItems
     .filter((item) => item.isActive)
@@ -28,7 +31,7 @@ export const GalleryPage: React.FC = () => {
             BEAST FACTORY <span className="text-[#e8272a]">GALLERY</span>
           </h1>
           <p className="text-neutral-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Take a visual tour of our international heavy equipment, combat boxing ring, Finnish wood sauna, and high-energy training zones.
+            Take a visual tour of our international heavy equipment, combat boxing ring, Finnish wood sauna, and high-energy training zones. Click any image to view in full resolution.
           </p>
         </div>
       </section>
@@ -59,7 +62,11 @@ export const GalleryPage: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredItems.map((item) => (
-              <div key={item.id} className="glass-panel rounded-2xl overflow-hidden border border-neutral-800 group hover:border-[#e8272a]/40 transition-all">
+              <div
+                key={item.id}
+                onClick={() => setSelectedGalleryItem(item)}
+                className="glass-panel rounded-2xl overflow-hidden border border-neutral-800 group hover:border-[#e8272a]/60 transition-all cursor-pointer hover:scale-[1.02]"
+              >
                 <div className="relative h-64 overflow-hidden bg-neutral-900">
                   <img
                     src={item.imageUrl}
@@ -70,6 +77,9 @@ export const GalleryPage: React.FC = () => {
                   <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider">
                     {item.category}
                   </span>
+                  <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider border border-neutral-800 group-hover:border-[#e8272a]">
+                    VIEW PHOTO 🔍
+                  </span>
                 </div>
                 <div className="p-4">
                   <h4 className="font-heading text-xl text-white group-hover:text-[#ff1e1e] transition-colors">{item.title}</h4>
@@ -78,7 +88,18 @@ export const GalleryPage: React.FC = () => {
             ))}
           </div>
         )}
+
+        {/* LIGHTBOX MODAL */}
+        <ImageLightboxModal
+          isOpen={!!selectedGalleryItem}
+          onClose={() => setSelectedGalleryItem(null)}
+          imageUrl={selectedGalleryItem?.imageUrl || ''}
+          title={selectedGalleryItem?.title || ''}
+          category={selectedGalleryItem?.category}
+          details={`High-definition photograph of Beast Factory ${selectedGalleryItem?.category || 'Facility'}.`}
+        />
       </section>
     </div>
   );
 };
+

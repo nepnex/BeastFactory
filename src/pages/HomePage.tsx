@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Dumbbell, ArrowRight, Star } from 'lucide-react';
+import { Dumbbell, ArrowRight, Star, ExternalLink } from 'lucide-react';
 import heroBg from '../assets/images/hero_bg.png';
 import logoImg from '../assets/images/logo.png';
 import { MarqueeTicker } from '../components/MarqueeTicker';
@@ -243,25 +243,67 @@ export const HomePage: React.FC = () => {
       {/* 9. REVIEWS */}
       <section className="py-24 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="flex items-center justify-center gap-1 text-[#e8272a] mb-2">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <div className="flex items-center justify-center gap-1 text-[#e8272a]">
               {[...Array(5)].map((_, i) => (<Star key={i} className="w-5 h-5 fill-current" />))}
             </div>
             <h2 className="font-heading text-4xl sm:text-5xl text-white">WHAT OUR <span className="text-[#e8272a]">MEMBERS SAY</span></h2>
+            <p className="text-neutral-400 text-xs sm:text-sm">
+              Genuine testimonials submitted and verified by Beast Factory Damak members.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {publishedTestimonials.map((rev) => (
-              <div key={rev.id} className="glass-panel p-6 rounded-3xl border border-neutral-800 flex flex-col justify-between space-y-4">
-                <p className="text-neutral-300 text-sm italic leading-relaxed">"{rev.comment}"</p>
-                <div className="flex items-center gap-3 pt-4 border-t border-neutral-800">
-                  <div className="w-10 h-10 rounded-full bg-[#e8272a]/20 border border-[#e8272a]/40 flex items-center justify-center text-[#e8272a] font-heading text-lg">{rev.name.charAt(0)}</div>
-                  <div>
-                    <h4 className="font-heading text-lg text-white">{rev.name}</h4>
-                    <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Verified Member</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {publishedTestimonials.map((rev) => {
+              const reviewerName = rev.memberName || rev.name || 'Member';
+              return (
+                <div key={rev.id} className="glass-panel p-6 rounded-3xl border border-neutral-800 flex flex-col justify-between space-y-4 hover:border-[#e8272a]/40 transition-all">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1 text-amber-400">
+                        {[...Array(rev.rating || 5)].map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                        ))}
+                      </div>
+                      <span className="px-2 py-0.5 rounded-full bg-neutral-900 border border-neutral-800 text-[10px] text-neutral-300 font-bold uppercase">
+                        {rev.source || 'Direct Member'}
+                      </span>
+                    </div>
+                    <p className="text-neutral-300 text-xs sm:text-sm italic leading-relaxed">"{rev.comment}"</p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-neutral-800">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-[#e8272a]/20 border border-[#e8272a]/40 flex items-center justify-center text-[#e8272a] font-heading text-lg">
+                        {reviewerName.charAt(0)}
+                      </div>
+                      <div>
+                        <h4 className="font-heading text-base text-white">{reviewerName}</h4>
+                        <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block">
+                          {rev.isVerified ? 'Verified Member' : 'Member Review'}
+                        </span>
+                      </div>
+                    </div>
+                    {rev.sourceUrl && (
+                      <a href={rev.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors p-1.5 rounded-lg bg-neutral-900 border border-neutral-800" title="View Review Source">
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
+          </div>
+
+          <div className="text-center pt-4">
+            <a
+              href={settings.googleMapsUrl || 'https://maps.google.com/?q=26.6697485,87.7029086'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-neutral-900 border border-neutral-700 text-white font-heading text-sm hover:bg-[#e8272a] hover:border-[#e8272a] transition-all shadow-lg group"
+            >
+              <span>VIEW ALL REVIEWS ON GOOGLE MAPS</span>
+              <ExternalLink className="w-4 h-4 text-[#e8272a] group-hover:text-white transition-colors" />
+            </a>
           </div>
         </div>
       </section>

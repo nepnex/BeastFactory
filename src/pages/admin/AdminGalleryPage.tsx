@@ -43,7 +43,7 @@ export const AdminGalleryPage: React.FC = () => {
       category: item.category,
       imageUrl: item.imageUrl,
       displayOrder: item.displayOrder,
-      isActive: item.isActive,
+      isActive: item.isActive ?? true,
     });
     setIsModalOpen(true);
   };

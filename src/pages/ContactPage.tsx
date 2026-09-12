@@ -91,6 +91,9 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <h4 className="text-xs text-neutral-400 font-bold uppercase">LOCATION ADDRESS</h4>
                   <p className="text-sm text-neutral-200 mt-0.5">{settings.locationAddress}</p>
+                  <span className="text-[10px] text-neutral-500 block mt-1">
+                    GPS Coordinates: 26.6697485° N, 87.7029086° E
+                  </span>
                 </div>
               </div>
 
@@ -123,6 +126,18 @@ export const ContactPage: React.FC = () => {
                   <p className="text-sm text-neutral-200 mt-0.5">{settings.daysOpen} — {settings.operatingHours}</p>
                 </div>
               </div>
+            </div>
+
+            <div className="pt-4 border-t border-neutral-800">
+              <a
+                href={settings.googleMapsUrl || 'https://maps.google.com/?q=26.6697485,87.7029086'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl bg-neutral-900 border border-neutral-700 text-white font-heading text-sm font-bold hover:bg-[#e8272a] hover:border-[#e8272a] transition-all flex items-center justify-center gap-2 group"
+              >
+                <MapPin className="w-4 h-4 text-[#e8272a] group-hover:text-white transition-colors" />
+                <span>GET DIRECTIONS ON GOOGLE MAPS</span>
+              </a>
             </div>
           </div>
         </div>

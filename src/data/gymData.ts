@@ -22,6 +22,7 @@ import {
 } from '../types';
 
 export const INITIAL_GYM_INFO: BusinessSettings = {
+  id: 'settings_1',
   gymName: 'Beast Factory',
   tagline: 'The Fitness Paradise',
   phone: '+977 23577880',
@@ -32,11 +33,13 @@ export const INITIAL_GYM_INFO: BusinessSettings = {
   facebookUrl: 'https://www.facebook.com/BeastFactoryGymCenter/',
   instagramUrl: 'https://www.instagram.com/beastfactory21/',
   tiktokUrl: 'https://www.tiktok.com/@beastfactory_official',
+  latitude: 26.6697485,
+  longitude: 87.7029086,
   siteTitle: 'Beast Factory Gym | Best Fitness Center in Damak, Jhapa',
   defaultMetaDescription: 'Beast Factory is the premier gym & fitness center in Damak-1, Falgunanda Chowk, Jhapa. Elite personal training, heavy bodybuilding, boxing, sauna spa & hydrotherapy. Open 365 days, 3:30 AM – 11:00 PM.',
   defaultOgImage: 'https://beastfactorynepal.com/assets/hero_bg.png',
   siteUrl: 'https://beastfactorynepal.com',
-  googleMapsUrl: 'https://maps.google.com/?q=Damak-1+Falgunanda+Chowk+Jhapa+Nepal',
+  googleMapsUrl: 'https://maps.google.com/?q=26.6697485,87.7029086',
 };
 
 // Aliases for compatibility

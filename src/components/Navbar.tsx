@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { 
   Phone, 
   ChevronDown, 
@@ -107,18 +107,18 @@ export const Navbar: React.FC = () => {
   const isMoreActive = moreNavLinks.some(link => location.pathname === link.path);
 
   // Framer Motion variants
-  const mobileOverlayVariants = {
+  const mobileOverlayVariants: Variants = {
     closed: {
       opacity: 0,
-      transition: { duration: 0.25, ease: [0.32, 0, 0.67, 0] }
+      transition: { duration: 0.25, ease: 'easeIn' }
     },
     open: {
       opacity: 1,
-      transition: { duration: 0.3, ease: [0.33, 1, 0.68, 1] }
+      transition: { duration: 0.3, ease: 'easeOut' }
     }
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     closed: {},
     open: {
       transition: {
@@ -128,7 +128,7 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     closed: { opacity: 0, y: 15 },
     open: { opacity: 1, y: 0, transition: { duration: 0.25, ease: 'easeOut' } }
   };

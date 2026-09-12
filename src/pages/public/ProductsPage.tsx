@@ -8,10 +8,12 @@ import { TiltCard } from '../../components/3d/TiltCard';
 import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../../utils/validation';
 import { SEO } from '../../components/SEO';
 import { getBreadcrumbSchema, getProductSchema } from '../../utils/schemaHelper';
+import { ImageLightboxModal } from '../../components/ImageLightboxModal';
 
 export const ProductsPage: React.FC = () => {
   const { products, settings } = useData();
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
+  const [lightboxProduct, setLightboxProduct] = useState<ProductItem | null>(null);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -85,7 +87,7 @@ export const ProductsPage: React.FC = () => {
             BEAST FACTORY <span className="text-[#e8272a]">STORE</span>
           </h1>
           <p className="text-neutral-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            High-performance gym apparel, insulated shakers, heavy lifting belts, and authentic supplements available directly at our Damak center.
+            High-performance gym apparel, insulated shakers, heavy lifting belts, and authentic supplements available directly at our Damak center. Click product images to view full resolution.
           </p>
         </div>
       </section>
@@ -96,10 +98,16 @@ export const ProductsPage: React.FC = () => {
           {activeProducts.map((item) => (
             <TiltCard key={item.id} maxDegree={5} depth={20}>
               <div className="glass-panel-3d rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/60 transition-all flex flex-col justify-between group h-full">
-                <div className="relative h-64 overflow-hidden bg-neutral-900">
+                <div
+                  onClick={() => setLightboxProduct(item)}
+                  className="relative h-64 overflow-hidden bg-neutral-900 cursor-pointer"
+                >
                   <img src={item.imageUrls[0]} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-neutral-900/90 border border-neutral-700 text-white text-[10px] font-bold uppercase backdrop-blur-md">
                     {item.category}
+                  </span>
+                  <span className="absolute bottom-3 right-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider border border-neutral-800 group-hover:border-[#e8272a]">
+                    VIEW PHOTO 🔍
                   </span>
                   {item.inStock ? (
                     <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase border border-emerald-500/40 backdrop-blur-md">
@@ -114,7 +122,7 @@ export const ProductsPage: React.FC = () => {
 
                 <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors">{item.name}</h3>
+                    <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors cursor-pointer" onClick={() => setLightboxProduct(item)}>{item.name}</h3>
                     <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{item.description}</p>
                   </div>
 
@@ -132,6 +140,17 @@ export const ProductsPage: React.FC = () => {
             </TiltCard>
           ))}
         </div>
+
+        {/* PRODUCT LIGHTBOX MODAL */}
+        <ImageLightboxModal
+          isOpen={!!lightboxProduct}
+          onClose={() => setLightboxProduct(null)}
+          imageUrl={lightboxProduct?.imageUrls[0] || ''}
+          title={lightboxProduct?.name || ''}
+          subtitle={`NPR ${lightboxProduct?.priceNpr?.toLocaleString() || 0}`}
+          details={lightboxProduct?.description}
+          category={lightboxProduct?.category}
+        />
 
         {/* ORDER INQUIRY MODAL */}
         {selectedProduct && (
@@ -200,3 +219,4 @@ export const ProductsPage: React.FC = () => {
     </div>
   );
 };
+

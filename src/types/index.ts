@@ -2,7 +2,7 @@ export type Role = 'admin' | 'staff';
 
 export type BookingStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled';
 export type LeadStatus = 'new' | 'contacted' | 'interested' | 'converted' | 'not_interested' | 'closed';
-export type LeadType = 'membership' | 'free_trial' | 'trainer_session' | 'spa' | 'product' | 'contact_general' | 'boxing';
+export type LeadType = 'membership' | 'free_trial' | 'trainer_session' | 'spa' | 'product' | 'contact_general' | 'boxing' | 'general';
 
 export interface BaseEntity {
   id: string;
@@ -65,9 +65,13 @@ export interface Trainer extends BaseEntity {
 
 export interface ServiceItem extends BaseEntity {
   name: string;
-  category: 'strength' | 'cardio' | 'boxing' | 'group' | 'spa' | 'coaching';
+  category?: 'strength' | 'cardio' | 'boxing' | 'group' | 'spa' | 'coaching' | string;
   shortDescription: string;
-  fullDescription: string;
+  fullDescription?: string;
+  description?: string;
+  longDescription?: string;
+  startingPriceNpr?: number;
+  iconName?: string;
   coverImageUrl: string;
   features: string[];
   isFeatured: boolean;
@@ -84,6 +88,7 @@ export interface BoxingPlan extends BaseEntity {
   priceNpr: number;
   description: string;
   features: string[];
+  scheduleDetails?: string;
   displayOrder: number;
   isActive: boolean;
   slug?: string;
@@ -108,12 +113,13 @@ export interface MembershipPlan extends BaseEntity {
 
 export interface SpaService extends BaseEntity {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   description: string;
   durationMinutes: number;
   priceNpr: number;
-  coverImageUrl: string;
-  benefits: string[];
+  coverImageUrl?: string;
+  imageUrl?: string;
+  benefits?: string[];
   temperatureControl?: string;
   capacity?: string;
   displayOrder: number;
@@ -125,10 +131,11 @@ export interface SpaService extends BaseEntity {
 
 export interface ProductItem extends BaseEntity {
   name: string;
-  category: 'apparel' | 'supplements' | 'accessories' | 'gear';
+  category: 'apparel' | 'supplements' | 'accessories' | 'gear' | string;
   priceNpr: number;
   description: string;
   imageUrls: string[];
+  sku?: string;
   inStock: boolean;
   isFeatured: boolean;
   displayOrder: number;
@@ -149,6 +156,7 @@ export interface TransformationStory extends BaseEntity {
   storyText: string;
   testimonialQuote?: string;
   hasClientConsent: boolean;
+  isFeatured?: boolean;
   displayOrder: number;
   isPublished: boolean;
   slug?: string;
@@ -156,22 +164,30 @@ export interface TransformationStory extends BaseEntity {
   seoDescription?: string;
 }
 
+export type TransformationItem = TransformationStory;
+
 export interface GalleryItem extends BaseEntity {
   title: string;
-  category: 'facility' | 'boxing' | 'spa' | 'community' | 'transformations';
+  category: 'facility' | 'boxing' | 'spa' | 'community' | 'transformations' | string;
   imageUrl: string;
   caption?: string;
   displayOrder: number;
-  isPublished: boolean;
+  isActive?: boolean;
+  isPublished?: boolean;
 }
 
 export interface Testimonial extends BaseEntity {
-  memberName: string;
+  memberName?: string;
+  name?: string;
   memberTitle?: string;
   avatarUrl?: string;
   comment: string;
   rating: number;
-  isVerified: boolean;
+  reviewDate?: string;
+  source?: 'Google' | 'Facebook' | 'Direct' | string;
+  sourceUrl?: string;
+  isFeatured?: boolean;
+  isVerified?: boolean;
   displayOrder: number;
   isPublished: boolean;
 }
@@ -224,6 +240,8 @@ export interface BusinessSettings extends BaseEntity {
   facebookUrl: string;
   instagramUrl: string;
   tiktokUrl: string;
+  latitude?: number;
+  longitude?: number;
   // Extended SEO Controls
   siteTitle?: string;
   defaultMetaDescription?: string;

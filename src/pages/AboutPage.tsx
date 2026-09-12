@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Trophy, Users, Target, Award } from 'lucide-react';
 import aboutBg from '../assets/images/backgrounds/about-bg.webp';
 import { useData } from '../hooks/useData';
 import { SEO } from '../components/SEO';
 import { getBreadcrumbSchema } from '../utils/schemaHelper';
+import { ImageLightboxModal } from '../components/ImageLightboxModal';
+import { Founder } from '../types';
 
 export const AboutPage: React.FC = () => {
   const { founders, settings } = useData();
+  const [selectedFounder, setSelectedFounder] = useState<Founder | null>(null);
 
   const activeFounders = founders.filter((f) => f.isActive);
 
@@ -89,16 +92,23 @@ export const AboutPage: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {activeFounders.map((founder) => (
-            <div key={founder.id} className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/50 transition-all duration-300 flex flex-col justify-between group">
+            <div
+              key={founder.id}
+              onClick={() => setSelectedFounder(founder)}
+              className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/60 transition-all duration-300 flex flex-col justify-between group cursor-pointer hover:scale-[1.02]"
+            >
               <div className="relative h-72 overflow-hidden bg-neutral-900">
                 <img src={founder.photoUrl} alt={founder.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+                <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider border border-neutral-800 group-hover:border-[#e8272a]">
+                  VIEW PHOTO 🔍
+                </span>
               </div>
 
               <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
                 <div>
                   <span className="text-[10px] font-bold text-[#e8272a] uppercase tracking-widest block">{founder.position}</span>
-                  <h3 className="font-heading text-2xl text-white mt-0.5">{founder.name}</h3>
+                  <h3 className="font-heading text-2xl text-white mt-0.5 group-hover:text-[#ff1e1e] transition-colors">{founder.name}</h3>
                   <p className="text-neutral-400 text-xs mt-2 leading-relaxed">{founder.shortBio}</p>
                 </div>
 
@@ -116,6 +126,17 @@ export const AboutPage: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {/* FOUNDER IMAGE LIGHTBOX MODAL */}
+        <ImageLightboxModal
+          isOpen={!!selectedFounder}
+          onClose={() => setSelectedFounder(null)}
+          imageUrl={selectedFounder?.photoUrl || ''}
+          title={selectedFounder?.name || ''}
+          subtitle={selectedFounder?.position}
+          details={`${selectedFounder?.shortBio || ''} ${selectedFounder?.roleDescription || ''}`}
+          category="BEAST FACTORY FOUNDER"
+        />
       </section>
     </div>
   );
