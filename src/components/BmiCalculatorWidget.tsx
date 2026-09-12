@@ -94,28 +94,28 @@ export const BmiCalculatorWidget: React.FC = () => {
   };
 
   return (
-    <div className="glass-panel rounded-3xl p-6 sm:p-10 border border-neutral-800 shadow-2xl relative overflow-hidden space-y-8">
+    <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-8 lg:p-10 border border-neutral-800 shadow-2xl relative overflow-hidden space-y-6 sm:space-y-8">
       {/* GLOW DECORATION */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-[#e8272a]/10 rounded-full blur-3xl pointer-events-none"></div>
 
       {/* HEADER & TOP CONTROLS */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-neutral-800 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-neutral-800 pb-5 sm:pb-6">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-[#e8272a]/15 border border-[#e8272a]/30 flex items-center justify-center text-[#e8272a]">
-            <Calculator className="w-6 h-6" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#e8272a]/15 border border-[#e8272a]/30 flex items-center justify-center text-[#e8272a] shrink-0">
+            <Calculator className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <h3 className="font-heading text-2xl sm:text-3xl text-white tracking-wide">BEAST BODY & DIET CALCULATOR</h3>
-            <p className="text-xs text-neutral-400">Activity-adjusted BMI, TDEE, Custom Diet Plans & 1-Rep Max</p>
+            <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl text-white tracking-wide leading-tight">BEAST BODY & DIET CALCULATOR</h3>
+            <p className="text-[11px] sm:text-xs text-neutral-400">Activity-adjusted BMI, TDEE, Caloric Target & Strength Benchmarks</p>
           </div>
         </div>
 
         {/* METRIC / IMPERIAL TOGGLE */}
-        <div className="flex items-center gap-1 p-1 bg-neutral-900 border border-neutral-800 rounded-full self-start md:self-auto">
+        <div className="flex items-center justify-center w-full md:w-auto gap-1 p-1 bg-neutral-900 border border-neutral-800 rounded-full shrink-0">
           <button
             type="button"
             onClick={() => setUnitSystem('metric')}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+            className={`flex-1 md:flex-none px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all text-center ${
               unitSystem === 'metric' ? 'bg-[#e8272a] text-white shadow-md' : 'text-neutral-400 hover:text-white'
             }`}
           >
@@ -124,7 +124,7 @@ export const BmiCalculatorWidget: React.FC = () => {
           <button
             type="button"
             onClick={() => setUnitSystem('imperial')}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+            className={`flex-1 md:flex-none px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all text-center ${
               unitSystem === 'imperial' ? 'bg-[#e8272a] text-white shadow-md' : 'text-neutral-400 hover:text-white'
             }`}
           >
@@ -134,62 +134,62 @@ export const BmiCalculatorWidget: React.FC = () => {
       </div>
 
       {/* TABS SELECTOR */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-neutral-900/90 p-1.5 rounded-2xl border border-neutral-800">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 bg-neutral-900/90 p-1.5 rounded-2xl border border-neutral-800">
         <button
           type="button"
           onClick={() => setActiveTab('macros')}
-          className={`py-3 px-4 rounded-xl text-xs font-heading tracking-wider flex items-center justify-center gap-2 transition-all ${
+          className={`py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs font-heading tracking-wider flex items-center justify-center gap-1.5 sm:gap-2 transition-all ${
             activeTab === 'macros'
               ? 'bg-[#e8272a] text-white font-bold shadow-lg shadow-red-500/20'
               : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'
           }`}
         >
-          <Flame className="w-4 h-4" />
-          <span>DIET PLAN & MACROS</span>
+          <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span className="truncate">DIET & MACROS</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('bmi')}
-          className={`py-3 px-4 rounded-xl text-xs font-heading tracking-wider flex items-center justify-center gap-2 transition-all ${
+          className={`py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs font-heading tracking-wider flex items-center justify-center gap-1.5 sm:gap-2 transition-all ${
             activeTab === 'bmi'
               ? 'bg-[#e8272a] text-white font-bold shadow-lg shadow-red-500/20'
               : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'
           }`}
         >
-          <Scale className="w-4 h-4" />
-          <span>BMI & TDEE</span>
+          <Scale className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span className="truncate">BMI & TDEE</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('hydration')}
-          className={`py-3 px-4 rounded-xl text-xs font-heading tracking-wider flex items-center justify-center gap-2 transition-all ${
+          className={`py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs font-heading tracking-wider flex items-center justify-center gap-1.5 sm:gap-2 transition-all ${
             activeTab === 'hydration'
               ? 'bg-[#e8272a] text-white font-bold shadow-lg shadow-red-500/20'
               : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'
           }`}
         >
-          <Droplets className="w-4 h-4" />
-          <span>HYDRATION</span>
+          <Droplets className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span className="truncate">HYDRATION</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('onerm')}
-          className={`py-3 px-4 rounded-xl text-xs font-heading tracking-wider flex items-center justify-center gap-2 transition-all ${
+          className={`py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl text-[10px] sm:text-xs font-heading tracking-wider flex items-center justify-center gap-1.5 sm:gap-2 transition-all ${
             activeTab === 'onerm'
               ? 'bg-[#e8272a] text-white font-bold shadow-lg shadow-red-500/20'
               : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'
           }`}
         >
-          <Dumbbell className="w-4 h-4" />
-          <span>1-REP MAX (1RM)</span>
+          <Dumbbell className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span className="truncate">1-REP MAX (1RM)</span>
         </button>
       </div>
 
       {/* CALCULATOR MAIN CONTENT AREA */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
         {/* INPUT PARAMETERS COLUMN */}
         <div className="lg:col-span-6 space-y-6">
           {activeTab !== 'onerm' ? (
@@ -402,67 +402,67 @@ export const BmiCalculatorWidget: React.FC = () => {
         </div>
 
         {/* RESULTS & BREAKDOWN COLUMN */}
-        <div className="lg:col-span-6 bg-neutral-950/90 border border-neutral-800 rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 relative">
+        <div className="lg:col-span-6 bg-neutral-950/90 border border-neutral-800 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 flex flex-col justify-between space-y-6 relative">
           {activeTab === 'macros' && (
-            <div className="space-y-6">
-              <div className="text-center pb-6 border-b border-neutral-800">
-                <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold block mb-1">
+            <div className="space-y-5 sm:space-y-6">
+              <div className="text-center pb-5 sm:pb-6 border-b border-neutral-800">
+                <span className="text-[11px] sm:text-xs uppercase tracking-widest text-[#e8272a] font-semibold block mb-1">
                   TOTAL RECOMMENDED DAILY CALORIES
                 </span>
-                <div className="font-heading text-6xl sm:text-7xl text-white">
-                  {targetCalories} <span className="text-xl text-neutral-400 font-sans">kcal / day</span>
+                <div className="font-heading text-5xl sm:text-6xl lg:text-7xl text-white tracking-tight">
+                  {targetCalories} <span className="text-base sm:text-xl text-neutral-400 font-sans">kcal / day</span>
                 </div>
 
-                <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e8272a]/15 border border-[#e8272a]/30 text-[#e8272a] text-xs font-bold uppercase">
-                  <TrendingUp className="w-3.5 h-3.5" />
-                  <span>
+                <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e8272a]/15 border border-[#e8272a]/30 text-[#e8272a] text-[10px] sm:text-xs font-bold uppercase max-w-full text-center">
+                  <TrendingUp className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">
                     Includes +{activityBurn} kcal for {getActivityLabel(activity).split('(')[0]}
                   </span>
                 </div>
               </div>
 
               {/* CALORIE BREAKDOWN SUMMARY */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
-                  <span className="text-[10px] text-neutral-400 font-bold uppercase block">RESTING BMR</span>
-                  <div className="font-heading text-2xl text-white">{bmr} <span className="text-xs font-sans text-neutral-400">kcal</span></div>
-                  <span className="text-[10px] text-neutral-500 block">Body At Rest</span>
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+                <div className="bg-neutral-900/90 p-3.5 sm:p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
+                  <span className="text-[9px] sm:text-[10px] text-neutral-400 font-bold uppercase block">RESTING BMR</span>
+                  <div className="font-heading text-xl sm:text-2xl text-white">{bmr} <span className="text-xs font-sans text-neutral-400">kcal</span></div>
+                  <span className="text-[9px] sm:text-[10px] text-neutral-500 block">Body At Rest</span>
                 </div>
 
-                <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
-                  <span className="text-[10px] text-[#e8272a] font-bold uppercase block">ACTIVITY BURN</span>
-                  <div className="font-heading text-2xl text-white">+{activityBurn} <span className="text-xs font-sans text-neutral-400">kcal</span></div>
-                  <span className="text-[10px] text-neutral-500 block">From Movement & Exercise</span>
+                <div className="bg-neutral-900/90 p-3.5 sm:p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
+                  <span className="text-[9px] sm:text-[10px] text-[#e8272a] font-bold uppercase block">ACTIVITY BURN</span>
+                  <div className="font-heading text-xl sm:text-2xl text-white">+{activityBurn} <span className="text-xs font-sans text-neutral-400">kcal</span></div>
+                  <span className="text-[9px] sm:text-[10px] text-neutral-500 block">From Movement</span>
                 </div>
               </div>
 
-              <div className="bg-neutral-900/90 p-5 rounded-2xl border border-neutral-800 space-y-3">
-                <div className="flex items-center justify-between text-xs text-white font-bold uppercase border-b border-neutral-800 pb-2">
+              <div className="bg-neutral-900/90 p-4 sm:p-5 rounded-2xl border border-neutral-800 space-y-3">
+                <div className="flex items-center justify-between text-[11px] sm:text-xs text-white font-bold uppercase border-b border-neutral-800 pb-2">
                   <span>SUGGESTED DAILY MACRO SPLIT</span>
-                  <span className="text-[#e8272a] font-heading text-sm">{targetCalories} KCAL</span>
+                  <span className="text-[#e8272a] font-heading text-xs sm:text-sm">{targetCalories} KCAL</span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 text-center">
-                  <div className="p-2.5 rounded-xl bg-black border border-neutral-800">
-                    <span className="text-[10px] text-[#e8272a] font-bold block uppercase">PROTEIN</span>
-                    <span className="font-heading text-lg text-white">{proteinGrams}g</span>
-                    <span className="text-[9px] text-neutral-400 block">Muscle Recovery</span>
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-black border border-neutral-800">
+                    <span className="text-[9px] sm:text-[10px] text-[#e8272a] font-bold block uppercase">PROTEIN</span>
+                    <span className="font-heading text-base sm:text-lg text-white">{proteinGrams}g</span>
+                    <span className="text-[8px] sm:text-[9px] text-neutral-400 block truncate">Recovery</span>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-black border border-neutral-800">
-                    <span className="text-[10px] text-amber-400 font-bold block uppercase">CARBS</span>
-                    <span className="font-heading text-lg text-white">{carbGrams}g</span>
-                    <span className="text-[9px] text-neutral-400 block">Gym Energy</span>
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-black border border-neutral-800">
+                    <span className="text-[9px] sm:text-[10px] text-amber-400 font-bold block uppercase">CARBS</span>
+                    <span className="font-heading text-base sm:text-lg text-white">{carbGrams}g</span>
+                    <span className="text-[8px] sm:text-[9px] text-neutral-400 block truncate">Gym Energy</span>
                   </div>
 
-                  <div className="p-2.5 rounded-xl bg-black border border-neutral-800">
-                    <span className="text-[10px] text-sky-400 font-bold block uppercase">FATS</span>
-                    <span className="font-heading text-lg text-white">{fatGrams}g</span>
-                    <span className="text-[9px] text-neutral-400 block">Hormone Health</span>
+                  <div className="p-2 sm:p-2.5 rounded-xl bg-black border border-neutral-800">
+                    <span className="text-[9px] sm:text-[10px] text-sky-400 font-bold block uppercase">FATS</span>
+                    <span className="font-heading text-base sm:text-lg text-white">{fatGrams}g</span>
+                    <span className="text-[8px] sm:text-[9px] text-neutral-400 block truncate">Hormones</span>
                   </div>
                 </div>
 
-                <p className="text-xs text-neutral-300 leading-relaxed pt-1">
+                <p className="text-[11px] sm:text-xs text-neutral-300 leading-relaxed pt-0.5">
                   Based on your weight of <strong>{unitSystem === 'metric' ? `${weightKg} kg` : `${weightLbs} lbs`}</strong> and <strong>{getActivityLabel(activity)}</strong> level, target <strong>{targetCalories} calories/day</strong> with ~<strong>{proteinGrams}g Protein</strong> for optimal recovery.
                 </p>
               </div>
