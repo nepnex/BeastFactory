@@ -1,16 +1,33 @@
 import React from 'react';
+import { Dumbbell, Award, GraduationCap, Trophy, Globe, Flame } from 'lucide-react';
 import { useData } from '../hooks/useData';
+import { Link } from 'react-router-dom';
+import { SEO } from '../components/SEO';
+import { getBreadcrumbSchema, getTrainerSchema } from '../utils/schemaHelper';
 import logoImg from '../assets/images/logo.png';
 
 export const TrainersPage: React.FC = () => {
-  const { trainers } = useData();
+  const { trainers, settings } = useData();
 
   const activeTrainers = trainers
     .filter((t) => t.isAvailable)
     .sort((a, b) => a.displayOrder - b.displayOrder);
 
+  const siteUrl = settings.siteUrl || 'https://beastfactorynepal.com';
+  const breadcrumbSchema = getBreadcrumbSchema(siteUrl, [
+    { name: 'Home', url: '/' },
+    { name: 'Elite Coaches & Trainers', url: '/trainers' }
+  ]);
+  const trainerSchemas = activeTrainers.map((t) => getTrainerSchema(siteUrl, t));
+
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="Personal Trainers & Certified Fitness Coaches in Damak, Jhapa"
+        description="Meet the certified personal trainers and bodybuilding coaches at Beast Factory Gym in Damak, Jhapa. Expert 1-on-1 coaching, nutrition & contest prep."
+        canonicalPath="/trainers"
+        structuredData={[breadcrumbSchema, ...trainerSchemas]}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 mb-16">
         <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold">CERTIFIED COACHES</span>
         <h1 className="font-heading text-6xl sm:text-7xl text-white">

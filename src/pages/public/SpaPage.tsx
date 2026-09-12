@@ -5,6 +5,8 @@ import { dataService } from '../../services/dataService';
 import { notificationService } from '../../services/notificationService';
 import { SpaService } from '../../types';
 import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../../utils/validation';
+import { SEO } from '../../components/SEO';
+import { getBreadcrumbSchema } from '../../utils/schemaHelper';
 
 export const SpaPage: React.FC = () => {
   const { spaServices, settings } = useData();
@@ -20,6 +22,11 @@ export const SpaPage: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const availableServices = spaServices.filter((s) => s.isAvailable);
+
+  const breadcrumbSchema = getBreadcrumbSchema(settings.siteUrl || 'https://beastfactorynepal.com', [
+    { name: 'Home', url: '/' },
+    { name: 'Spa & Hydrotherapy', url: '/spa' }
+  ]);
 
   const startBooking = (spa: SpaService) => {
     setSelectedSpa(spa);
@@ -71,6 +78,12 @@ export const SpaPage: React.FC = () => {
 
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen relative overflow-hidden">
+      <SEO
+        title="Sauna Spa & Hydrotherapy Recovery | Damak, Jhapa"
+        description="Luxury Finnish dry sauna, steam bath & hydrotherapy recovery suite in Damak-1, Jhapa at Beast Factory. Accelerate muscle repair, alleviate joint stiffness & relieve stress."
+        canonicalPath="/spa"
+        structuredData={breadcrumbSchema}
+      />
       {/* ATMOSPHERIC STEAM LAYERS */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-40">
         <div className="absolute -top-10 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-steam"></div>

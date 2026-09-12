@@ -5,8 +5,12 @@ import { dataService } from '../services/dataService';
 import { notificationService } from '../services/notificationService';
 import { GYM_INFO } from '../data/gymData';
 import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../utils/validation';
+import { useData } from '../hooks/useData';
+import { SEO } from '../components/SEO';
+import { getBreadcrumbSchema } from '../utils/schemaHelper';
 
 export const ApplicationPage: React.FC = () => {
+  const { settings } = useData();
   const [searchParams] = useSearchParams();
   const selectedPlanParam = searchParams.get('plan') || 'regular';
 
@@ -21,6 +25,11 @@ export const ApplicationPage: React.FC = () => {
     fitnessGoal: 'Muscle Gain & Strength',
     notes: ''
   });
+
+  const breadcrumbSchema = getBreadcrumbSchema(settings.siteUrl || 'https://beastfactorynepal.com', [
+    { name: 'Home', url: '/' },
+    { name: 'Membership Application', url: '/apply' }
+  ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,6 +85,12 @@ export const ApplicationPage: React.FC = () => {
 
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="Apply for Membership or Free 1-Day Trial Pass | Damak, Jhapa"
+        description="Lock in your membership or claim a free 1-day trial pass at Beast Factory Gym in Damak, Jhapa. Quick online registration."
+        canonicalPath="/apply"
+        structuredData={breadcrumbSchema}
+      />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center space-y-3 mb-10">

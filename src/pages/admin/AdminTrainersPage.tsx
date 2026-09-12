@@ -152,6 +152,23 @@ export const AdminTrainersPage: React.FC = () => {
                   </div>
                   <input type="email" placeholder="Gmail / Email Address" value={formData.socials?.email || ''} onChange={(e) => setFormData({ ...formData, socials: { ...formData.socials, email: e.target.value } })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white text-xs mt-3" />
                 </div>
+
+                <div className="pt-2 border-t border-neutral-800 space-y-3">
+                  <span className="text-[10px] text-[#e8272a] font-bold uppercase tracking-widest block">SEO & CUSTOM URL (OPTIONAL)</span>
+                  <div>
+                    <label className="block text-neutral-400 font-semibold mb-1">CUSTOM SLUG</label>
+                    <input type="text" placeholder="e.g. coach-bikram" value={formData.slug || ''} onChange={(e) => setFormData({ ...formData, slug: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white" />
+                  </div>
+                  <div>
+                    <label className="block text-neutral-400 font-semibold mb-1">SEO TITLE</label>
+                    <input type="text" placeholder="Custom Page Title for Search Engines" value={formData.seoTitle || ''} onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white" />
+                  </div>
+                  <div>
+                    <label className="block text-neutral-400 font-semibold mb-1">SEO DESCRIPTION</label>
+                    <input type="text" placeholder="Meta description for Search Engines..." value={formData.seoDescription || ''} onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2 text-white" />
+                  </div>
+                </div>
+
                 <button type="submit" className="w-full py-3.5 rounded-xl bg-[#e8272a] text-white font-heading text-lg font-bold hover:bg-[#ff1e1e]">
                   SAVE COACH PROFILE
                 </button>

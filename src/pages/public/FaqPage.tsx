@@ -1,16 +1,29 @@
 import React from 'react';
 import { HelpCircle, ChevronDown } from 'lucide-react';
 import { useData } from '../../hooks/useData';
+import { SEO } from '../../components/SEO';
+import { getBreadcrumbSchema, getFaqSchema } from '../../utils/schemaHelper';
 
 export const FaqPage: React.FC = () => {
-  const { faqs } = useData();
+  const { faqs, settings } = useData();
 
-  const activeFaqs = faqs
-    .filter((f) => f.isActive)
-    .sort((a, b) => a.displayOrder - b.displayOrder);
+  const activeFaqs = faqs.filter((f) => f.isActive);
+
+  const siteUrl = settings.siteUrl || 'https://beastfactorynepal.com';
+  const breadcrumbSchema = getBreadcrumbSchema(siteUrl, [
+    { name: 'Home', url: '/' },
+    { name: 'Frequently Asked Questions', url: '/faq' }
+  ]);
+  const faqSchema = getFaqSchema(activeFaqs.map((f) => ({ question: f.question, answer: f.answer })));
 
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="Frequently Asked Questions (FAQ) | Beast Factory Gym Damak"
+        description="Find answers to common questions about membership plans, operating hours, personal coaching, boxing ring access & sauna spa facilities at Beast Factory Damak."
+        canonicalPath="/faq"
+        structuredData={[breadcrumbSchema, faqSchema]}
+      />
       {/* HERO */}
       <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden">
         <div className="max-w-4xl mx-auto space-y-4">

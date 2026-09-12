@@ -58,66 +58,84 @@ export interface Trainer extends BaseEntity {
   isAvailable: boolean;
   isFeatured: boolean;
   displayOrder: number;
+  slug?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface ServiceItem extends BaseEntity {
   name: string;
-  slug: string;
+  category: 'strength' | 'cardio' | 'boxing' | 'group' | 'spa' | 'coaching';
   shortDescription: string;
-  longDescription: string;
-  iconName: string;
+  fullDescription: string;
   coverImageUrl: string;
   features: string[];
-  startingPriceNpr?: number;
   isFeatured: boolean;
   isActive: boolean;
   displayOrder: number;
+  slug?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface BoxingPlan extends BaseEntity {
   programName: string;
-  description: string;
   durationText: string;
   priceNpr: number;
-  scheduleDetails: string;
+  description: string;
   features: string[];
-  isActive: boolean;
   displayOrder: number;
+  isActive: boolean;
+  slug?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface MembershipPlan extends BaseEntity {
   name: string;
-  description: string;
+  badgeText?: string;
   priceMonthlyNpr: number;
   priceYearlyNpr?: number;
+  description: string;
   features: string[];
-  badgeText?: string;
   isPopular: boolean;
-  isActive: boolean;
   displayOrder: number;
+  isActive: boolean;
+  slug?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface SpaService extends BaseEntity {
   title: string;
+  subtitle: string;
   description: string;
   durationMinutes: number;
   priceNpr: number;
-  imageUrl: string;
-  isAvailable: boolean;
+  coverImageUrl: string;
+  benefits: string[];
+  temperatureControl?: string;
+  capacity?: string;
   displayOrder: number;
+  isAvailable: boolean;
+  slug?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface ProductItem extends BaseEntity {
   name: string;
-  description: string;
-  category: string;
+  category: 'apparel' | 'supplements' | 'accessories' | 'gear';
   priceNpr: number;
+  description: string;
   imageUrls: string[];
-  sku?: string;
   inStock: boolean;
   isFeatured: boolean;
   displayOrder: number;
   isActive: boolean;
+  slug?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface TransformationStory extends BaseEntity {
@@ -126,27 +144,31 @@ export interface TransformationStory extends BaseEntity {
   afterPhotoUrl: string;
   startingWeightKg?: number;
   finalWeightKg?: number;
-  durationWeeks?: number;
-  programName?: string;
-  serviceId?: string;
+  durationWeeks: number;
+  programName: string;
   storyText: string;
   testimonialQuote?: string;
   hasClientConsent: boolean;
-  isFeatured: boolean;
   displayOrder: number;
   isPublished: boolean;
+  slug?: string;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface GalleryItem extends BaseEntity {
   title: string;
-  category: string;
+  category: 'facility' | 'boxing' | 'spa' | 'community' | 'transformations';
   imageUrl: string;
+  caption?: string;
   displayOrder: number;
-  isActive: boolean;
+  isPublished: boolean;
 }
 
 export interface Testimonial extends BaseEntity {
-  name: string;
+  memberName: string;
+  memberTitle?: string;
+  avatarUrl?: string;
   comment: string;
   rating: number;
   isVerified: boolean;
@@ -202,6 +224,12 @@ export interface BusinessSettings extends BaseEntity {
   facebookUrl: string;
   instagramUrl: string;
   tiktokUrl: string;
+  // Extended SEO Controls
+  siteTitle?: string;
+  defaultMetaDescription?: string;
+  defaultOgImage?: string;
+  siteUrl?: string;
+  googleMapsUrl?: string;
 }
 
 export type NotificationPriority = 'HIGH' | 'NORMAL' | 'SYSTEM';

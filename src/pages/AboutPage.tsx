@@ -2,14 +2,27 @@ import React from 'react';
 import { Trophy, Users, Target, Award } from 'lucide-react';
 import aboutBg from '../assets/images/backgrounds/about-bg.webp';
 import { useData } from '../hooks/useData';
+import { SEO } from '../components/SEO';
+import { getBreadcrumbSchema } from '../utils/schemaHelper';
 
 export const AboutPage: React.FC = () => {
   const { founders, settings } = useData();
 
   const activeFounders = founders.filter((f) => f.isActive);
 
+  const breadcrumbSchema = getBreadcrumbSchema(settings.siteUrl || 'https://beastfactorynepal.com', [
+    { name: 'Home', url: '/' },
+    { name: 'About Us', url: '/about' }
+  ]);
+
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="About Us | Elite Fitness Paradise in Damak, Jhapa"
+        description="Learn about Beast Factory Gym in Damak-1, Jhapa. Established in 2018 with top certified trainers, modern heavy equipment, and a culture of transformation."
+        canonicalPath="/about"
+        structuredData={breadcrumbSchema}
+      />
       {/* HERO */}
       <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden">
         <div className="absolute inset-0 z-0">

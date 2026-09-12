@@ -1,17 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Dumbbell, ArrowRight, Check } from 'lucide-react';
 import { useData } from '../hooks/useData';
+import { SEO } from '../components/SEO';
+import { getBreadcrumbSchema } from '../utils/schemaHelper';
 
 export const ServicesPage: React.FC = () => {
-  const { services } = useData();
+  const { services, settings } = useData();
 
   const activeServices = services
     .filter((s) => s.isActive)
     .sort((a, b) => a.displayOrder - b.displayOrder);
 
+  const breadcrumbSchema = getBreadcrumbSchema(settings.siteUrl || 'https://beastfactorynepal.com', [
+    { name: 'Home', url: '/' },
+    { name: 'Training Services', url: '/services' }
+  ]);
+
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="Training Services & Programs | Gym in Damak, Jhapa"
+        description="Explore personal training, muscle building, fat loss, group fitness, CrossFit, and combat sports programs at Beast Factory Gym in Damak, Jhapa."
+        canonicalPath="/services"
+        structuredData={breadcrumbSchema}
+      />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 mb-16">
         <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold">WORLD CLASS FACILITIES</span>

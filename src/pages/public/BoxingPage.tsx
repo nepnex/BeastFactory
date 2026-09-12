@@ -6,15 +6,22 @@ import { notificationService } from '../../services/notificationService';
 import { TiltCard } from '../../components/3d/TiltCard';
 import boxingGlovesImg from '../../assets/images/boxing_gloves.png';
 import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../../utils/validation';
+import { SEO } from '../../components/SEO';
+import { getBreadcrumbSchema } from '../../utils/schemaHelper';
 
 export const BoxingPage: React.FC = () => {
-  const { boxingPlans } = useData();
+  const { boxingPlans, settings } = useData();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [applicant, setApplicant] = useState({ name: '', phone: '', batch: 'Morning (6:00 AM)' });
   const [errorMsg, setErrorMsg] = useState('');
   const [success, setSuccess] = useState(false);
 
   const activePlans = boxingPlans.filter((p) => p.isActive);
+
+  const breadcrumbSchema = getBreadcrumbSchema(settings.siteUrl || 'https://beastfactorynepal.com', [
+    { name: 'Home', url: '/' },
+    { name: 'Boxing & Combat', url: '/boxing' }
+  ]);
 
   const handleEnroll = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +63,12 @@ export const BoxingPage: React.FC = () => {
 
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="Boxing & Combat Training | Boxing Ring in Damak, Jhapa"
+        description="Damak's premier boxing ring & combat sports training facility at Beast Factory. 1-on-1 mitt work, heavy bag drills & tactical sparring with champion coaches."
+        canonicalPath="/boxing"
+        structuredData={breadcrumbSchema}
+      />
       {/* HERO BANNER WITH BOXING GLOVES BACKGROUND */}
       <section className="relative py-28 px-4 text-center border-b border-neutral-900 overflow-hidden flex items-center justify-center min-h-[70vh]">
         {/* BACKGROUND IMAGE & OVERLAYS */}

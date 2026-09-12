@@ -6,9 +6,11 @@ import { ProductItem } from '../../types';
 import { notificationService } from '../../services/notificationService';
 import { TiltCard } from '../../components/3d/TiltCard';
 import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../../utils/validation';
+import { SEO } from '../../components/SEO';
+import { getBreadcrumbSchema, getProductSchema } from '../../utils/schemaHelper';
 
 export const ProductsPage: React.FC = () => {
-  const { products } = useData();
+  const { products, settings } = useData();
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -17,6 +19,13 @@ export const ProductsPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
 
   const activeProducts = products.filter((p) => p.isActive);
+
+  const siteUrl = settings.siteUrl || 'https://beastfactorynepal.com';
+  const breadcrumbSchema = getBreadcrumbSchema(siteUrl, [
+    { name: 'Home', url: '/' },
+    { name: 'Official Store & Gear', url: '/products' }
+  ]);
+  const productSchemas = activeProducts.map((p) => getProductSchema(siteUrl, p));
 
   const handleOrderInquiry = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +69,12 @@ export const ProductsPage: React.FC = () => {
 
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="Official Gym Gear & Merchandise Store | Beast Factory Damak"
+        description="Shop official Beast Factory gym apparel, insulated shakers, heavy lifting belts & authentic supplements in Damak-1, Jhapa. Direct local pickup & inquiry."
+        canonicalPath="/products"
+        structuredData={[breadcrumbSchema, ...productSchemas]}
+      />
       {/* HERO */}
       <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden">
         <div className="max-w-4xl mx-auto space-y-4">

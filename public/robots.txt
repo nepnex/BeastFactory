@@ -1,0 +1,8 @@
+# Beast Factory Gym - Robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
+
+Sitemap: https://beastfactorynepal.com/sitemap.xml

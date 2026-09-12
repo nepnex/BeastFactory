@@ -5,6 +5,8 @@ import { GYM_INFO } from '../data/gymData';
 import { dataService } from '../services/dataService';
 import { notificationService } from '../services/notificationService';
 import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../utils/validation';
+import { SEO } from '../components/SEO';
+import { getBreadcrumbSchema } from '../utils/schemaHelper';
 
 export const ContactPage: React.FC = () => {
   const { settings } = useData();
@@ -13,6 +15,11 @@ export const ContactPage: React.FC = () => {
   const [message, setMessage] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const breadcrumbSchema = getBreadcrumbSchema(settings.siteUrl || 'https://beastfactorynepal.com', [
+    { name: 'Home', url: '/' },
+    { name: 'Contact Us', url: '/contact' }
+  ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +61,12 @@ export const ContactPage: React.FC = () => {
 
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="Contact Us & Location | Gym in Damak-1, Jhapa"
+        description="Contact Beast Factory Gym in Damak-1, Falgunanda Chowk, Jhapa, Nepal. Phone: +977 23577880. Open 365 days, 3:30 AM – 11:00 PM."
+        canonicalPath="/contact"
+        structuredData={breadcrumbSchema}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 mb-16">
         <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold">GET IN TOUCH</span>
         <h1 className="font-heading text-6xl sm:text-7xl text-white">

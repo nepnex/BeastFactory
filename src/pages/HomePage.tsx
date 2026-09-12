@@ -8,6 +8,8 @@ import { MarqueeTicker } from '../components/MarqueeTicker';
 import { BmiCalculatorWidget } from '../components/BmiCalculatorWidget';
 import { useData } from '../hooks/useData';
 import { Tilt3DCard } from '../components/Tilt3DCard';
+import { SEO } from '../components/SEO';
+import { getLocalBusinessSchema } from '../utils/schemaHelper';
 
 export const HomePage: React.FC = () => {
   const { services, trainers, testimonials, settings } = useData();
@@ -18,8 +20,16 @@ export const HomePage: React.FC = () => {
   const featuredTrainers = activeTrainers.filter((t) => t.isFeatured).length > 0 ? activeTrainers.filter((t) => t.isFeatured) : activeTrainers;
   const publishedTestimonials = testimonials.filter((t) => t.isPublished);
 
+  const localBusinessSchema = getLocalBusinessSchema(settings);
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-hidden">
+      <SEO
+        title="Beast Factory | Best Gym & Fitness Center in Damak, Jhapa"
+        description="Beast Factory is the premier bodybuilding gym, personal training center, boxing ring, and hydrotherapy sauna spa in Damak-1, Jhapa, Nepal. Open 365 days, 3:30 AM – 11:00 PM."
+        canonicalPath="/"
+        structuredData={localBusinessSchema}
+      />
       
       {/* 1. HERO SECTION */}
       <section className="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8">

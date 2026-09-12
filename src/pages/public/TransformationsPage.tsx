@@ -3,14 +3,27 @@ import { Trophy, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useData } from '../../hooks/useData';
 import { Link } from 'react-router-dom';
 import { BeforeAfterSlider } from '../../components/3d/BeforeAfterSlider';
+import { SEO } from '../../components/SEO';
+import { getBreadcrumbSchema } from '../../utils/schemaHelper';
 
 export const TransformationsPage: React.FC = () => {
-  const { transformations } = useData();
+  const { transformations, settings } = useData();
 
   const publishedTransformations = transformations.filter((t) => t.isPublished && t.hasClientConsent);
 
+  const breadcrumbSchema = getBreadcrumbSchema(settings.siteUrl || 'https://beastfactorynepal.com', [
+    { name: 'Home', url: '/' },
+    { name: 'Member Transformations', url: '/transformations' }
+  ]);
+
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="Member Transformations & Results | Gym in Damak, Jhapa"
+        description="Verified before & after weight loss and muscle building transformations by members at Beast Factory Gym in Damak-1, Jhapa. Real stories, real results."
+        canonicalPath="/transformations"
+        structuredData={breadcrumbSchema}
+      />
       {/* HERO */}
       <section className="relative py-20 px-4 text-center border-b border-neutral-900 overflow-hidden">
         <div className="max-w-4xl mx-auto space-y-4">

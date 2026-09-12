@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Check, Flame } from 'lucide-react';
 import { useData } from '../hooks/useData';
 import { TiltCard } from '../components/3d/TiltCard';
+import { SEO } from '../components/SEO';
+import { getBreadcrumbSchema } from '../utils/schemaHelper';
 
 export const MembershipPage: React.FC = () => {
   const { membershipPlans, settings } = useData();
@@ -12,8 +14,19 @@ export const MembershipPage: React.FC = () => {
     .filter((p) => p.isActive)
     .sort((a, b) => a.displayOrder - b.displayOrder);
 
+  const breadcrumbSchema = getBreadcrumbSchema(settings.siteUrl || 'https://beastfactorynepal.com', [
+    { name: 'Home', url: '/' },
+    { name: 'Membership Plans', url: '/membership' }
+  ]);
+
   return (
     <div className="pt-28 pb-20 bg-[#0a0a0a] text-white min-h-screen">
+      <SEO
+        title="Membership Plans & Pricing | Gym in Damak, Jhapa"
+        description="Affordable & transparent gym membership packages in Damak, Jhapa at Beast Factory. Monthly & annual passes for regular gym access, Beast Pro, and VIP coaching."
+        canonicalPath="/membership"
+        structuredData={breadcrumbSchema}
+      />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 mb-12">
         <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold">FLEXIBLE MEMBERSHIP PACKAGES</span>
