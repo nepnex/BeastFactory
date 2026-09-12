@@ -9,14 +9,15 @@ import {
   Scale,
   Zap,
   Check,
-  ArrowRight
+  ArrowRight,
+  TrendingUp
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const BmiCalculatorWidget: React.FC = () => {
   // Global Inputs State
   const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
-  const [activeTab, setActiveTab] = useState<'bmi' | 'macros' | 'hydration' | 'onerm'>('bmi');
+  const [activeTab, setActiveTab] = useState<'bmi' | 'macros' | 'hydration' | 'onerm'>('macros');
 
   // Body Metrics
   const [weightKg, setWeightKg] = useState<number>(72);
@@ -25,6 +26,7 @@ export const BmiCalculatorWidget: React.FC = () => {
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [activity, setActivity] = useState<number>(1.55);
   const [fitnessGoal, setFitnessGoal] = useState<'cut' | 'maintain' | 'bulk'>('maintain');
+  const [dietStyle, setDietStyle] = useState<'high_protein' | 'balanced' | 'low_carb' | 'shred'>('high_protein');
 
   // Imperial Helpers
   const weightLbs = Math.round(weightKg * 2.20462);
@@ -36,7 +38,7 @@ export const BmiCalculatorWidget: React.FC = () => {
   const [liftWeight, setLiftWeight] = useState<number>(100);
   const [liftReps, setLiftReps] = useState<number>(5);
 
-  // Calculations
+  // Core Calculations
   const heightMeters = heightCm / 100;
   const bmi = parseFloat((weightKg / (heightMeters * heightMeters)).toFixed(1));
 
@@ -47,7 +49,8 @@ export const BmiCalculatorWidget: React.FC = () => {
       : 10 * weightKg + 6.25 * heightCm - 5 * age - 161
   );
 
-  // Total Daily Energy Expenditure (TDEE)
+  // Activity Energy Expenditure & TDEE
+  const activityBurn = Math.round(bmr * (activity - 1.0));
   const tdee = Math.round(bmr * activity);
 
   // Target Calories based on Goal
@@ -55,16 +58,42 @@ export const BmiCalculatorWidget: React.FC = () => {
   if (fitnessGoal === 'cut') targetCalories = Math.max(1200, tdee - 500);
   if (fitnessGoal === 'bulk') targetCalories = tdee + 350;
 
-  // Macro Calculation (Protein 2.2g/kg for lifters, Fat 0.9g/kg, rest Carbs)
-  const proteinGrams = Math.round(weightKg * 2.2);
-  const fatGrams = Math.round(weightKg * 0.9);
-  const proteinCalories = proteinGrams * 4;
-  const fatCalories = fatGrams * 9;
-  const carbCalories = Math.max(0, targetCalories - (proteinCalories + fatCalories));
-  const carbGrams = Math.round(carbCalories / 4);
+  // Macro Percentage Distributions based on Diet Style & Activity Level
+  let proteinRatio = 0.35;
+  let carbRatio = 0.45;
+  let fatRatio = 0.20;
 
-  // Daily Water Requirement (Liters)
-  const dailyWaterLiters = (weightKg * 0.035 + (activity > 1.4 ? 0.75 : 0.4)).toFixed(1);
+  if (dietStyle === 'balanced') {
+    proteinRatio = 0.30;
+    carbRatio = 0.45;
+    fatRatio = 0.25;
+  } else if (dietStyle === 'low_carb') {
+    proteinRatio = 0.35;
+    carbRatio = 0.15;
+    fatRatio = 0.50;
+  } else if (dietStyle === 'shred') {
+    proteinRatio = 0.40;
+    carbRatio = 0.30;
+    fatRatio = 0.30;
+  }
+
+  // Adjust protein & carbs dynamically for higher activity levels
+  if (activity >= 1.725 && dietStyle !== 'low_carb') {
+    proteinRatio += 0.03;
+    carbRatio += 0.02;
+    fatRatio -= 0.05;
+  }
+
+  const proteinCalories = targetCalories * proteinRatio;
+  const carbCalories = targetCalories * carbRatio;
+  const fatCalories = targetCalories * fatRatio;
+
+  const proteinGrams = Math.round(proteinCalories / 4);
+  const carbGrams = Math.round(carbCalories / 4);
+  const fatGrams = Math.round(fatCalories / 9);
+
+  // Daily Water Requirement (Liters) - Scales dynamically with Activity
+  const dailyWaterLiters = (weightKg * 0.035 + (activity - 1.0) * 1.2).toFixed(1);
   const waterGlasses = Math.round(parseFloat(dailyWaterLiters) * 4); // 250ml per glass
 
   // 1-Rep Max (Brzycki Formula)
@@ -86,6 +115,13 @@ export const BmiCalculatorWidget: React.FC = () => {
 
   const category = getBmiCategory(bmi);
 
+  const getActivityLabel = (val: number) => {
+    if (val >= 1.725) return 'Very Active / Athlete (6-7 Heavy Lifting Days)';
+    if (val >= 1.55) return 'Moderately Active (3-5 Intense Gym Workouts)';
+    if (val >= 1.375) return 'Lightly Active (1-3 Gym Days/Week)';
+    return 'Sedentary (Minimal Exercise)';
+  };
+
   return (
     <div className="glass-panel rounded-3xl p-6 sm:p-10 border border-neutral-800 shadow-2xl relative overflow-hidden space-y-8">
       {/* GLOW DECORATION */}
@@ -98,14 +134,15 @@ export const BmiCalculatorWidget: React.FC = () => {
             <Calculator className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="font-heading text-2xl sm:text-3xl text-white tracking-wide">BEAST BODY & FITNESS CALCULATOR</h3>
-            <p className="text-xs text-neutral-400">Precision metrics for BMI, TDEE, Macros, Hydration & 1-Rep Max</p>
+            <h3 className="font-heading text-2xl sm:text-3xl text-white tracking-wide">BEAST BODY & DIET CALCULATOR</h3>
+            <p className="text-xs text-neutral-400">Activity-adjusted BMI, TDEE, Custom Diet Plans & 1-Rep Max</p>
           </div>
         </div>
 
         {/* METRIC / IMPERIAL TOGGLE */}
         <div className="flex items-center gap-1 p-1 bg-neutral-900 border border-neutral-800 rounded-full self-start md:self-auto">
           <button
+            type="button"
             onClick={() => setUnitSystem('metric')}
             className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
               unitSystem === 'metric' ? 'bg-[#e8272a] text-white shadow-md' : 'text-neutral-400 hover:text-white'
@@ -114,6 +151,7 @@ export const BmiCalculatorWidget: React.FC = () => {
             METRIC (KG / CM)
           </button>
           <button
+            type="button"
             onClick={() => setUnitSystem('imperial')}
             className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
               unitSystem === 'imperial' ? 'bg-[#e8272a] text-white shadow-md' : 'text-neutral-400 hover:text-white'
@@ -127,6 +165,20 @@ export const BmiCalculatorWidget: React.FC = () => {
       {/* TABS SELECTOR */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-neutral-900/90 p-1.5 rounded-2xl border border-neutral-800">
         <button
+          type="button"
+          onClick={() => setActiveTab('macros')}
+          className={`py-3 px-4 rounded-xl text-xs font-heading tracking-wider flex items-center justify-center gap-2 transition-all ${
+            activeTab === 'macros'
+              ? 'bg-[#e8272a] text-white font-bold shadow-lg shadow-red-500/20'
+              : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'
+          }`}
+        >
+          <Flame className="w-4 h-4" />
+          <span>DIET PLAN & MACROS</span>
+        </button>
+
+        <button
+          type="button"
           onClick={() => setActiveTab('bmi')}
           className={`py-3 px-4 rounded-xl text-xs font-heading tracking-wider flex items-center justify-center gap-2 transition-all ${
             activeTab === 'bmi'
@@ -139,18 +191,7 @@ export const BmiCalculatorWidget: React.FC = () => {
         </button>
 
         <button
-          onClick={() => setActiveTab('macros')}
-          className={`py-3 px-4 rounded-xl text-xs font-heading tracking-wider flex items-center justify-center gap-2 transition-all ${
-            activeTab === 'macros'
-              ? 'bg-[#e8272a] text-white font-bold shadow-lg shadow-red-500/20'
-              : 'text-neutral-400 hover:text-white hover:bg-neutral-800/50'
-          }`}
-        >
-          <Flame className="w-4 h-4" />
-          <span>MACROS & GOALS</span>
-        </button>
-
-        <button
+          type="button"
           onClick={() => setActiveTab('hydration')}
           className={`py-3 px-4 rounded-xl text-xs font-heading tracking-wider flex items-center justify-center gap-2 transition-all ${
             activeTab === 'hydration'
@@ -163,6 +204,7 @@ export const BmiCalculatorWidget: React.FC = () => {
         </button>
 
         <button
+          type="button"
           onClick={() => setActiveTab('onerm')}
           className={`py-3 px-4 rounded-xl text-xs font-heading tracking-wider flex items-center justify-center gap-2 transition-all ${
             activeTab === 'onerm'
@@ -262,63 +304,87 @@ export const BmiCalculatorWidget: React.FC = () => {
                 />
               </div>
 
-              {/* ACTIVITY LEVEL SELECTOR */}
-              <div>
-                <label className="block text-xs text-neutral-400 font-semibold uppercase tracking-wider mb-2">
-                  DAILY ACTIVITY LEVEL
+              {/* DAILY ACTIVITY LEVEL SELECTOR */}
+              <div className="p-4 rounded-2xl bg-neutral-900/90 border border-neutral-800 space-y-2">
+                <label className="block text-xs text-neutral-300 font-bold uppercase tracking-wider flex items-center justify-between">
+                  <span>DAILY ACTIVITY LEVEL *</span>
+                  <span className="text-[10px] text-[#e8272a] font-bold">Directly alters Diet Plan</span>
                 </label>
                 <select
                   value={activity}
                   onChange={(e) => setActivity(Number(e.target.value))}
-                  className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-xs text-white font-semibold focus:outline-none focus:border-[#e8272a]"
+                  className="w-full bg-black border border-neutral-800 rounded-xl px-4 py-3 text-xs text-white font-semibold focus:outline-none focus:border-[#e8272a]"
                 >
                   <option value={1.2}>Sedentary (Office desk job, minimal exercise)</option>
                   <option value={1.375}>Lightly Active (1-3 gym workouts/week)</option>
                   <option value={1.55}>Moderately Active (3-5 intense gym sessions)</option>
-                  <option value={1.725}>Very Active (6-7 heavy lifting/athlete days)</option>
+                  <option value={1.725}>Very Active / Athlete (6-7 heavy lifting days)</option>
                 </select>
+
+                <div className="pt-1 flex items-center justify-between text-[11px] text-neutral-400">
+                  <span>Activity Energy Expenditure:</span>
+                  <span className="font-bold text-[#e8272a]">+{activityBurn} kcal/day</span>
+                </div>
               </div>
 
-              {/* FITNESS GOAL SELECTOR */}
+              {/* DIET STYLE & FITNESS GOAL SELECTOR */}
               {activeTab === 'macros' && (
-                <div>
-                  <label className="block text-xs text-neutral-400 font-semibold uppercase tracking-wider mb-2">
-                    PRIMARY FITNESS GOAL
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setFitnessGoal('cut')}
-                      className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all border ${
-                        fitnessGoal === 'cut'
-                          ? 'bg-[#e8272a] border-[#e8272a] text-white shadow-md'
-                          : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white'
-                      }`}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs text-neutral-400 font-semibold uppercase tracking-wider mb-2">
+                      DIET MACRO RATIO STYLE
+                    </label>
+                    <select
+                      value={dietStyle}
+                      onChange={(e: any) => setDietStyle(e.target.value)}
+                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-xs text-white font-semibold focus:outline-none focus:border-[#e8272a]"
                     >
-                      FAT LOSS (-500 kcal)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setFitnessGoal('maintain')}
-                      className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all border ${
-                        fitnessGoal === 'maintain'
-                          ? 'bg-[#e8272a] border-[#e8272a] text-white shadow-md'
-                          : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white'
-                      }`}
-                    >
-                      MAINTAIN
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setFitnessGoal('bulk')}
-                      className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all border ${
-                        fitnessGoal === 'bulk'
-                          ? 'bg-[#e8272a] border-[#e8272a] text-white shadow-md'
-                          : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white'
-                      }`}
-                    >
-                      BULKING (+350 kcal)
-                    </button>
+                      <option value="high_protein">Beast Hypertrophy (High Protein 35% / Carbs 45% / Fat 20%)</option>
+                      <option value="balanced">Balanced Athletic (Protein 30% / Carbs 45% / Fat 25%)</option>
+                      <option value="shred">Fat Loss Shred (Protein 40% / Carbs 30% / Fat 30%)</option>
+                      <option value="low_carb">Keto / Low Carb (Protein 35% / Carbs 15% / Fat 50%)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs text-neutral-400 font-semibold uppercase tracking-wider mb-2">
+                      PRIMARY FITNESS GOAL
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setFitnessGoal('cut')}
+                        className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all border ${
+                          fitnessGoal === 'cut'
+                            ? 'bg-[#e8272a] border-[#e8272a] text-white shadow-md'
+                            : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white'
+                        }`}
+                      >
+                        FAT LOSS (-500)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFitnessGoal('maintain')}
+                        className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all border ${
+                          fitnessGoal === 'maintain'
+                            ? 'bg-[#e8272a] border-[#e8272a] text-white shadow-md'
+                            : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white'
+                        }`}
+                      >
+                        MAINTAIN
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFitnessGoal('bulk')}
+                        className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all border ${
+                          fitnessGoal === 'bulk'
+                            ? 'bg-[#e8272a] border-[#e8272a] text-white shadow-md'
+                            : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white'
+                        }`}
+                      >
+                        BULKING (+350)
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -368,6 +434,7 @@ export const BmiCalculatorWidget: React.FC = () => {
                 setWeightKg(72);
                 setHeightCm(175);
                 setAge(26);
+                setActivity(1.55);
                 setLiftWeight(100);
                 setLiftReps(5);
               }}
@@ -381,6 +448,61 @@ export const BmiCalculatorWidget: React.FC = () => {
 
         {/* RESULTS & BREAKDOWN COLUMN */}
         <div className="lg:col-span-6 bg-neutral-950/90 border border-neutral-800 rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 relative">
+          {activeTab === 'macros' && (
+            <div className="space-y-6">
+              <div className="text-center pb-6 border-b border-neutral-800">
+                <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold block mb-1">
+                  ACTIVITY-ADJUSTED DIET CALORIES
+                </span>
+                <div className="font-heading text-6xl sm:text-7xl text-white">
+                  {targetCalories} <span className="text-xl text-neutral-400 font-sans">kcal/day</span>
+                </div>
+
+                <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e8272a]/15 border border-[#e8272a]/30 text-[#e8272a] text-xs font-bold uppercase">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>
+                    Includes +{activityBurn} kcal for {getActivityLabel(activity).split('(')[0]}
+                  </span>
+                </div>
+              </div>
+
+              {/* MACROS BREAKDOWN CARDS */}
+              <div className="space-y-3">
+                <div className="flex justify-between items-center text-xs text-neutral-400 font-bold uppercase tracking-wider">
+                  <span>DAILY MACRONUTRIENT DISTRIBUTION</span>
+                  <span>{targetCalories} TOTAL KCAL</span>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
+                    <span className="text-[10px] text-[#e8272a] font-bold uppercase block">PROTEIN</span>
+                    <div className="font-heading text-3xl text-white">{proteinGrams}g</div>
+                    <span className="text-[10px] text-neutral-400 block">{proteinCalories} kcal ({Math.round(proteinRatio * 100)}%)</span>
+                  </div>
+
+                  <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
+                    <span className="text-[10px] text-amber-400 font-bold uppercase block">CARBS</span>
+                    <div className="font-heading text-3xl text-white">{carbGrams}g</div>
+                    <span className="text-[10px] text-neutral-400 block">{carbCalories} kcal ({Math.round(carbRatio * 100)}%)</span>
+                  </div>
+
+                  <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800 text-center space-y-1">
+                    <span className="text-[10px] text-sky-400 font-bold uppercase block">FATS</span>
+                    <div className="font-heading text-3xl text-white">{fatGrams}g</div>
+                    <span className="text-[10px] text-neutral-400 block">{fatCalories} kcal ({Math.round(fatRatio * 100)}%)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-neutral-900/70 p-4 rounded-2xl border border-neutral-800 text-xs text-neutral-300 space-y-1.5">
+                <span className="font-bold text-white uppercase block">Diet Plan Summary</span>
+                <p className="leading-relaxed">
+                  For your weight of <strong>{unitSystem === 'metric' ? `${weightKg}kg` : `${weightLbs}lbs`}</strong> and <strong>{getActivityLabel(activity)}</strong>, your daily diet target is <strong>{targetCalories} kcal</strong> ({proteinGrams}g Protein, {carbGrams}g Carbs, {fatGrams}g Fat).
+                </p>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'bmi' && (
             <div className="space-y-6">
               <div className="text-center pb-6 border-b border-neutral-800">
@@ -420,7 +542,7 @@ export const BmiCalculatorWidget: React.FC = () => {
                   <div className="font-heading text-3xl text-white">
                     {tdee} <span className="text-xs text-neutral-400 font-sans">kcal/day</span>
                   </div>
-                  <span className="text-[10px] text-neutral-500 block mt-1">Maintenance Level</span>
+                  <span className="text-[10px] text-neutral-500 block mt-1">Includes +{activityBurn} kcal Activity</span>
                 </div>
 
                 <div className="bg-neutral-900/90 p-4 rounded-2xl border border-neutral-800">
@@ -437,43 +559,10 @@ export const BmiCalculatorWidget: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'macros' && (
-            <div className="space-y-6">
-              <div className="text-center pb-6 border-b border-neutral-800">
-                <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold block mb-1">TARGET CALORIES FOR YOUR GOAL</span>
-                <div className="font-heading text-6xl sm:text-7xl text-white">{targetCalories} <span className="text-xl text-neutral-400 font-sans">kcal</span></div>
-                <span className="text-xs text-neutral-400 uppercase tracking-wider font-bold mt-1 block">
-                  GOAL: {fitnessGoal === 'cut' ? 'Fat Loss & Shredding' : fitnessGoal === 'bulk' ? 'Lean Mass Bulking' : 'Weight Maintenance'}
-                </span>
-              </div>
-
-              {/* MACROS BREAKDOWN CARDS */}
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-neutral-900/90 p-3.5 rounded-2xl border border-neutral-800 text-center">
-                  <span className="text-[10px] text-[#e8272a] font-bold uppercase block">PROTEIN</span>
-                  <div className="font-heading text-2xl text-white mt-1">{proteinGrams}g</div>
-                  <span className="text-[10px] text-neutral-400 block">{proteinCalories} kcal</span>
-                </div>
-
-                <div className="bg-neutral-900/90 p-3.5 rounded-2xl border border-neutral-800 text-center">
-                  <span className="text-[10px] text-amber-400 font-bold uppercase block">CARBS</span>
-                  <div className="font-heading text-2xl text-white mt-1">{carbGrams}g</div>
-                  <span className="text-[10px] text-neutral-400 block">{carbCalories} kcal</span>
-                </div>
-
-                <div className="bg-neutral-900/90 p-3.5 rounded-2xl border border-neutral-800 text-center">
-                  <span className="text-[10px] text-sky-400 font-bold uppercase block">FATS</span>
-                  <div className="font-heading text-2xl text-white mt-1">{fatGrams}g</div>
-                  <span className="text-[10px] text-neutral-400 block">{fatCalories} kcal</span>
-                </div>
-              </div>
-            </div>
-          )}
-
           {activeTab === 'hydration' && (
             <div className="space-y-6 text-center">
               <div className="pb-6 border-b border-neutral-800">
-                <span className="text-xs uppercase tracking-widest text-sky-400 font-semibold block mb-1">RECOMMENDED DAILY WATER INTAKE</span>
+                <span className="text-xs uppercase tracking-widest text-sky-400 font-semibold block mb-1">ACTIVITY-ADJUSTED WATER INTAKE</span>
                 <div className="font-heading text-6xl sm:text-7xl text-white">{dailyWaterLiters} <span className="text-xl text-neutral-400 font-sans">Liters</span></div>
                 <span className="text-xs text-neutral-400 uppercase tracking-wider font-bold mt-1 block">
                   Approx. {waterGlasses} Standard Glasses (250ml) per day
@@ -532,7 +621,7 @@ export const BmiCalculatorWidget: React.FC = () => {
               to="/apply?plan=trial"
               className="w-full py-3.5 px-6 rounded-2xl bg-[#e8272a] text-white font-heading text-sm hover:bg-[#ff1e1e] transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-500/20 group"
             >
-              <span>CLAIM FREE TRIAL PASS & COACH CONSULTATION</span>
+              <span>CLAIM FREE TRIAL PASS & NUTRITION CONSULTATION</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
