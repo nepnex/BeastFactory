@@ -58,6 +58,11 @@ export const BmiCalculatorWidget: React.FC = () => {
   if (fitnessGoal === 'cut') targetCalories = Math.max(1200, tdee - 500);
   if (fitnessGoal === 'bulk') targetCalories = tdee + 350;
 
+  // Recommended Daily Macros (High-level sports nutrition guidelines: ~2.0g protein/kg, 25% fats, remainder carbs)
+  const proteinGrams = Math.round(weightKg * 2.0);
+  const fatGrams = Math.round((targetCalories * 0.25) / 9);
+  const carbGrams = Math.max(50, Math.round((targetCalories - (proteinGrams * 4 + fatGrams * 9)) / 4));
+
   // Daily Water Requirement (Liters)
   const dailyWaterLiters = (weightKg * 0.035 + (activity - 1.0) * 1.2).toFixed(1);
   const waterGlasses = Math.round(parseFloat(dailyWaterLiters) * 4); // 250ml per glass
@@ -431,13 +436,34 @@ export const BmiCalculatorWidget: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-neutral-900/90 p-5 rounded-2xl border border-neutral-800 space-y-2">
-                <div className="flex items-center justify-between text-xs text-white font-bold uppercase">
-                  <span>EASY DIET SUMMARY</span>
-                  <span className="text-[#e8272a] font-heading text-sm">{targetCalories} KCAL / DAY</span>
+              <div className="bg-neutral-900/90 p-5 rounded-2xl border border-neutral-800 space-y-3">
+                <div className="flex items-center justify-between text-xs text-white font-bold uppercase border-b border-neutral-800 pb-2">
+                  <span>SUGGESTED DAILY MACRO SPLIT</span>
+                  <span className="text-[#e8272a] font-heading text-sm">{targetCalories} KCAL</span>
                 </div>
-                <p className="text-xs text-neutral-300 leading-relaxed">
-                  Based on your weight of <strong>{unitSystem === 'metric' ? `${weightKg} kg` : `${weightLbs} lbs`}</strong> and <strong>{getActivityLabel(activity)}</strong>, your total daily energy burn is <strong>{tdee} kcal</strong>. To reach your <strong>{fitnessGoal.toUpperCase()}</strong> goal, consume <strong>{targetCalories} calories per day</strong>.
+
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="p-2.5 rounded-xl bg-black border border-neutral-800">
+                    <span className="text-[10px] text-[#e8272a] font-bold block uppercase">PROTEIN</span>
+                    <span className="font-heading text-lg text-white">{proteinGrams}g</span>
+                    <span className="text-[9px] text-neutral-400 block">Muscle Recovery</span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-black border border-neutral-800">
+                    <span className="text-[10px] text-amber-400 font-bold block uppercase">CARBS</span>
+                    <span className="font-heading text-lg text-white">{carbGrams}g</span>
+                    <span className="text-[9px] text-neutral-400 block">Gym Energy</span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-black border border-neutral-800">
+                    <span className="text-[10px] text-sky-400 font-bold block uppercase">FATS</span>
+                    <span className="font-heading text-lg text-white">{fatGrams}g</span>
+                    <span className="text-[9px] text-neutral-400 block">Hormone Health</span>
+                  </div>
+                </div>
+
+                <p className="text-xs text-neutral-300 leading-relaxed pt-1">
+                  Based on your weight of <strong>{unitSystem === 'metric' ? `${weightKg} kg` : `${weightLbs} lbs`}</strong> and <strong>{getActivityLabel(activity)}</strong> level, target <strong>{targetCalories} calories/day</strong> with ~<strong>{proteinGrams}g Protein</strong> for optimal recovery.
                 </p>
               </div>
             </div>
