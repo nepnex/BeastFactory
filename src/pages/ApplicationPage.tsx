@@ -8,6 +8,7 @@ import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from
 import { useData } from '../hooks/useData';
 import { SEO } from '../components/SEO';
 import { getBreadcrumbSchema } from '../utils/schemaHelper';
+import { applicationFormSchema } from '../utils/formSchemas';
 
 export const ApplicationPage: React.FC = () => {
   const { settings } = useData();
@@ -35,13 +36,15 @@ export const ApplicationPage: React.FC = () => {
     e.preventDefault();
     setErrorMsg('');
 
-    if (!isValidName(formData.fullName)) {
-      setErrorMsg('Please enter a valid full name (letters only).');
-      return;
-    }
+    const parseResult = applicationFormSchema.safeParse({
+      fullName: formData.fullName.trim(),
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
+    });
 
-    if (!isValidPhone(formData.phone)) {
-      setErrorMsg('Please enter a valid phone number (7 to 15 digits).');
+    if (!parseResult.success) {
+      const firstErr = parseResult.error.issues[0]?.message || 'Validation failed.';
+      setErrorMsg(firstErr);
       return;
     }
 

@@ -9,6 +9,7 @@ import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from
 import { SEO } from '../../components/SEO';
 import { getBreadcrumbSchema, getProductSchema } from '../../utils/schemaHelper';
 import { ImageLightboxModal } from '../../components/ImageLightboxModal';
+import { productInquirySchema } from '../../utils/formSchemas';
 
 export const ProductsPage: React.FC = () => {
   const { products, settings } = useData();
@@ -35,15 +36,19 @@ export const ProductsPage: React.FC = () => {
 
     if (!selectedProduct) return;
 
-    if (!isValidName(name)) {
-      setErrorMsg('Please enter a valid name (letters only).');
+    const parseResult = productInquirySchema.safeParse({
+      name: name.trim(),
+      phone: phone.trim(),
+      quantity,
+    });
+
+    if (!parseResult.success) {
+      const firstErr = parseResult.error.issues[0]?.message || 'Validation failed.';
+      setErrorMsg(firstErr);
       return;
     }
 
-    if (!isValidPhone(phone)) {
-      setErrorMsg('Please enter a valid phone number (7 to 15 digits).');
-      return;
-    }
+    const validData = parseResult.data;
 
     const lead = dataService.addLead({
       fullName: name.trim(),

@@ -7,6 +7,7 @@ import { notificationService } from '../services/notificationService';
 import { sanitizeNameInput, sanitizePhoneInput, isValidName, isValidPhone } from '../utils/validation';
 import { SEO } from '../components/SEO';
 import { getBreadcrumbSchema } from '../utils/schemaHelper';
+import { contactFormSchema } from '../utils/formSchemas';
 
 export const ContactPage: React.FC = () => {
   const { settings } = useData();
@@ -25,21 +26,25 @@ export const ContactPage: React.FC = () => {
     e.preventDefault();
     setErrorMsg('');
 
-    if (!isValidName(name)) {
-      setErrorMsg('Please enter a valid name (letters only).');
+    const parseResult = contactFormSchema.safeParse({
+      fullName: name.trim(),
+      phone: phone.trim(),
+      message: message.trim(),
+    });
+
+    if (!parseResult.success) {
+      const firstErr = parseResult.error.issues[0]?.message || 'Validation failed.';
+      setErrorMsg(firstErr);
       return;
     }
 
-    if (!isValidPhone(phone)) {
-      setErrorMsg('Please enter a valid phone number (7 to 15 digits).');
-      return;
-    }
+    const validData = parseResult.data;
 
     const lead = dataService.addLead({
-      fullName: sanitizeNameInput(name),
-      phone: sanitizePhoneInput(phone),
+      fullName: sanitizeNameInput(validData.fullName),
+      phone: sanitizePhoneInput(validData.phone),
       inquiryType: 'general',
-      message: message || 'General contact inquiry from website.',
+      message: validData.message || 'General contact inquiry from website.',
     });
 
     try {
@@ -47,7 +52,7 @@ export const ContactPage: React.FC = () => {
         type: 'new_contact_inquiry',
         priority: 'HIGH',
         title: 'NEW CONTACT INQUIRY',
-        message: `${name} submitted a general inquiry (${phone}).`,
+        message: `${validData.fullName} submitted a general inquiry (${validData.phone}).`,
         relatedId: lead.id,
         relatedType: 'inquiry',
         actionUrl: '/admin/inquiries',
