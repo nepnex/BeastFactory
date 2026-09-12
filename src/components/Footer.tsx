@@ -58,6 +58,7 @@ export const Footer: React.FC = () => {
                 { to: '/membership', label: 'Membership Pricing' },
                 { to: '/products', label: 'Store & Merchandise' },
                 { to: '/transformations', label: 'Member Transformations' },
+                { to: '/calculator', label: 'BMI & Diet Calculator' },
                 { to: '/gallery', label: 'Photo Gallery' },
                 { to: '/faq', label: 'Support & FAQs' },
               ].map((l) => (
