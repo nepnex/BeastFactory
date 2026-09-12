@@ -39,7 +39,7 @@ export const INITIAL_GYM_INFO: BusinessSettings = {
   defaultMetaDescription: 'Beast Factory is the premier gym & fitness center in Damak-1, Falgunanda Chowk, Jhapa. Elite personal training, heavy bodybuilding, boxing, sauna spa & hydrotherapy. Open 365 days, 3:30 AM – 11:00 PM.',
   defaultOgImage: 'https://beastfactorynepal.com/assets/hero_bg.png',
   siteUrl: 'https://beastfactorynepal.com',
-  googleMapsUrl: 'https://maps.google.com/?q=26.6697485,87.7029086',
+  googleMapsUrl: 'https://maps.app.goo.gl/K1E2VLizXKFXfwov5',
 };
 
 // Aliases for compatibility

@@ -32,7 +32,7 @@ export const getLocalBusinessSchema = (settings: BusinessSettings) => {
       latitude: settings.latitude || 26.6697485,
       longitude: settings.longitude || 87.7029086,
     },
-    hasMap: settings.googleMapsUrl || 'https://maps.google.com/?q=26.6697485,87.7029086',
+    hasMap: settings.googleMapsUrl || 'https://maps.app.goo.gl/K1E2VLizXKFXfwov5',
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
@@ -53,7 +53,7 @@ export const getLocalBusinessSchema = (settings: BusinessSettings) => {
       settings.facebookUrl || 'https://www.facebook.com/BeastFactoryGymCenter/',
       settings.instagramUrl || 'https://www.instagram.com/beastfactory21/',
       settings.tiktokUrl || 'https://www.tiktok.com/@beastfactory_official',
-      settings.googleMapsUrl || 'https://maps.google.com/?q=26.6697485,87.7029086'
+      settings.googleMapsUrl || 'https://maps.app.goo.gl/K1E2VLizXKFXfwov5'
     ],
     priceRange: 'NPR 2,500 - 9,000',
   };

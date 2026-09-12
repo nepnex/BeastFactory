@@ -296,7 +296,7 @@ export const HomePage: React.FC = () => {
 
           <div className="text-center pt-4">
             <a
-              href={settings.googleMapsUrl || 'https://maps.google.com/?q=26.6697485,87.7029086'}
+              href={settings.googleMapsUrl || 'https://maps.app.goo.gl/K1E2VLizXKFXfwov5'}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-neutral-900 border border-neutral-700 text-white font-heading text-sm hover:bg-[#e8272a] hover:border-[#e8272a] transition-all shadow-lg group"

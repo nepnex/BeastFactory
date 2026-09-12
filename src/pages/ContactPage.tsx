@@ -135,7 +135,7 @@ export const ContactPage: React.FC = () => {
 
             <div className="pt-4 border-t border-neutral-800">
               <a
-                href={settings.googleMapsUrl || 'https://maps.google.com/?q=26.6697485,87.7029086'}
+                href={settings.googleMapsUrl || 'https://maps.app.goo.gl/K1E2VLizXKFXfwov5'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3 px-4 rounded-xl bg-neutral-900 border border-neutral-700 text-white font-heading text-sm font-bold hover:bg-[#e8272a] hover:border-[#e8272a] transition-all flex items-center justify-center gap-2 group"
