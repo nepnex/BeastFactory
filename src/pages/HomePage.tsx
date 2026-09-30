@@ -11,6 +11,7 @@ import { Tilt3DCard } from '../components/Tilt3DCard';
 import { SEO } from '../components/SEO';
 import { getLocalBusinessSchema } from '../utils/schemaHelper';
 import { CoachProfileModal } from '../components/CoachProfileModal';
+import { ProgressiveImage } from '../components/ProgressiveImage';
 import { Trainer } from '../types';
 
 export const HomePage: React.FC = () => {
@@ -146,9 +147,14 @@ export const HomePage: React.FC = () => {
               <Tilt3DCard key={program.id} depth={18}>
                 <div className="group glass-panel-3d rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/60 transition-all duration-300 flex flex-col justify-between h-full">
                   <div className="relative h-56 overflow-hidden">
-                    <img src={program.coverImageUrl} alt={program.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent"></div>
-                    <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#e8272a] text-white text-xs font-bold uppercase tracking-wider shadow-lg">Training</span>
+                    <ProgressiveImage
+                      src={program.coverImageUrl}
+                      alt={program.name}
+                      containerClassName="w-full h-full"
+                      className="group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent z-10 pointer-events-none"></div>
+                    <span className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-[#e8272a] text-white text-xs font-bold uppercase tracking-wider shadow-lg">Training</span>
                   </div>
                   <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                     <div>
@@ -200,16 +206,14 @@ export const HomePage: React.FC = () => {
                   className="glass-panel-3d rounded-3xl overflow-hidden border border-neutral-800 group hover:border-[#e8272a]/70 transition-all duration-300 cursor-pointer relative"
                 >
                   <div className="relative h-80 overflow-hidden bg-neutral-950">
-                    <img
+                    <ProgressiveImage
                       src={trainer.photoUrl}
                       alt={trainer.fullName}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = logoImg;
-                      }}
+                      containerClassName="w-full h-full"
+                      className="group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
-                    <span className="absolute top-4 right-4 px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider border border-neutral-700 group-hover:border-[#e8272a] group-hover:bg-[#e8272a] transition-all shadow-lg flex items-center gap-1.5">
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10 pointer-events-none"></div>
+                    <span className="absolute top-4 right-4 z-20 px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider border border-neutral-700 group-hover:border-[#e8272a] group-hover:bg-[#e8272a] transition-all shadow-lg flex items-center gap-1.5">
                       <UserCheck className="w-3.5 h-3.5" />
                       <span>VIEW PROFILE</span>
                     </span>
@@ -248,9 +252,14 @@ export const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {useData().galleryItems.filter(g => g.isActive).slice(0, 4).map((item) => (
               <Link key={item.id} to="/gallery" className="group glass-panel rounded-2xl overflow-hidden border border-neutral-800 relative h-64">
-                <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80"></div>
-                <div className="absolute bottom-4 left-4 right-4">
+                <ProgressiveImage
+                  src={item.imageUrl}
+                  alt={item.title}
+                  containerClassName="w-full h-full"
+                  className="group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80 z-10 pointer-events-none"></div>
+                <div className="absolute bottom-4 left-4 right-4 z-20">
                   <span className="text-[10px] text-[#e8272a] font-bold uppercase tracking-wider block">{item.category}</span>
                   <h4 className="font-heading text-xl text-white group-hover:text-[#ff1e1e] transition-colors">{item.title}</h4>
                 </div>

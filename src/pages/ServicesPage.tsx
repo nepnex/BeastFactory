@@ -4,6 +4,7 @@ import { CheckCircle2, Dumbbell, ArrowRight, Check } from 'lucide-react';
 import { useData } from '../hooks/useData';
 import { SEO } from '../components/SEO';
 import { getBreadcrumbSchema } from '../utils/schemaHelper';
+import { ProgressiveImage } from '../components/ProgressiveImage';
 
 export const ServicesPage: React.FC = () => {
   const { services, settings } = useData();
@@ -53,13 +54,13 @@ export const ServicesPage: React.FC = () => {
         {activeServices.map((prog, index) => (
           <div
             key={prog.id}
-            className={`glass-panel rounded-3xl p-8 border border-neutral-800 flex flex-col ${
+            className={`glass-panel rounded-3xl p-6 sm:p-8 border border-neutral-800 flex flex-col ${
               index % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'
             } gap-8 items-center hover:border-[#e8272a]/30 transition-all`}
           >
-            <div className="w-full lg:w-1/2 h-80 rounded-2xl overflow-hidden relative">
-              <img src={prog.coverImageUrl} alt={prog.name} className="w-full h-full object-cover" />
-              <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#e8272a] text-white text-xs font-bold uppercase">
+            <div className="w-full lg:w-1/2 h-64 sm:h-80 rounded-2xl overflow-hidden relative">
+              <ProgressiveImage src={prog.coverImageUrl} alt={prog.name} containerClassName="w-full h-full" />
+              <span className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-[#e8272a] text-white text-xs font-bold uppercase shadow-lg">
                 Featured Program
               </span>
             </div>

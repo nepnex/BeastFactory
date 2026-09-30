@@ -6,6 +6,7 @@ import { SEO } from '../components/SEO';
 import { getBreadcrumbSchema, getTrainerSchema } from '../utils/schemaHelper';
 import logoImg from '../assets/images/logo.png';
 import { CoachProfileModal } from '../components/CoachProfileModal';
+import { ProgressiveImage } from '../components/ProgressiveImage';
 import { Trainer } from '../types';
 
 export const TrainersPage: React.FC = () => {
@@ -49,18 +50,14 @@ export const TrainersPage: React.FC = () => {
             className="glass-panel rounded-3xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/60 transition-all space-y-4 p-6 flex flex-col justify-between group cursor-pointer"
           >
             <div className="h-72 sm:h-80 rounded-2xl overflow-hidden relative bg-neutral-900 group/photo">
-              <img
+              <ProgressiveImage
                 src={trainer.photoUrl}
                 alt={trainer.fullName}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover group-hover/photo:scale-105 transition-transform duration-500"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = logoImg;
-                }}
+                containerClassName="w-full h-full"
+                className="group-hover/photo:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
-              <span className="absolute top-3 right-3 px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider border border-neutral-700 group-hover/photo:border-[#e8272a] group-hover/photo:bg-[#e8272a] transition-all flex items-center gap-1.5 shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10 pointer-events-none"></div>
+              <span className="absolute top-3 right-3 z-20 px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider border border-neutral-700 group-hover/photo:border-[#e8272a] group-hover/photo:bg-[#e8272a] transition-all flex items-center gap-1.5 shadow-lg">
                 <UserCheck className="w-3.5 h-3.5" />
                 <span>VIEW PROFILE</span>
               </span>
