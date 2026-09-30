@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Dumbbell, ArrowRight, Star, ExternalLink } from 'lucide-react';
+import { Dumbbell, ArrowRight, Star, ExternalLink, UserCheck } from 'lucide-react';
 import heroBg from '../assets/images/hero_bg.png';
 import logoImg from '../assets/images/logo.png';
 import { MarqueeTicker } from '../components/MarqueeTicker';
@@ -10,9 +10,12 @@ import { useData } from '../hooks/useData';
 import { Tilt3DCard } from '../components/Tilt3DCard';
 import { SEO } from '../components/SEO';
 import { getLocalBusinessSchema } from '../utils/schemaHelper';
+import { CoachProfileModal } from '../components/CoachProfileModal';
+import { Trainer } from '../types';
 
 export const HomePage: React.FC = () => {
   const { services, trainers, testimonials, settings } = useData();
+  const [selectedTrainer, setSelectedTrainer] = useState<Trainer | null>(null);
 
   const activeServices = services.filter((s) => s.isActive);
   const featuredServices = activeServices.filter((s) => s.isFeatured).length > 0 ? activeServices.filter((s) => s.isFeatured) : activeServices;
@@ -192,16 +195,33 @@ export const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {featuredTrainers.map((trainer) => (
               <Tilt3DCard key={trainer.id} depth={20}>
-                <div className="glass-panel-3d rounded-3xl overflow-hidden border border-neutral-800 group hover:border-[#e8272a]/60 transition-all duration-300">
-                  <div className="relative h-80 overflow-hidden">
-                    <img src={trainer.photoUrl} alt={trainer.fullName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div
+                  onClick={() => setSelectedTrainer(trainer)}
+                  className="glass-panel-3d rounded-3xl overflow-hidden border border-neutral-800 group hover:border-[#e8272a]/70 transition-all duration-300 cursor-pointer relative"
+                >
+                  <div className="relative h-80 overflow-hidden bg-neutral-950">
+                    <img
+                      src={trainer.photoUrl}
+                      alt={trainer.fullName}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = logoImg;
+                      }}
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+                    <span className="absolute top-4 right-4 px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider border border-neutral-700 group-hover:border-[#e8272a] group-hover:bg-[#e8272a] transition-all shadow-lg flex items-center gap-1.5">
+                      <UserCheck className="w-3.5 h-3.5" />
+                      <span>VIEW PROFILE</span>
+                    </span>
                   </div>
-                  <div className="p-6 space-y-2">
-                    <span className="text-xs font-bold text-[#e8272a] uppercase tracking-widest">{trainer.title}</span>
-                    <h3 className="font-heading text-2xl text-white">{trainer.fullName}</h3>
+                  <div className="p-6 space-y-2 text-left">
+                    <span className="text-xs font-bold text-[#e8272a] uppercase tracking-widest block">{trainer.title}</span>
+                    <h3 className="font-heading text-2xl text-white group-hover:text-[#ff1e1e] transition-colors flex items-center justify-between">
+                      <span>{trainer.fullName}</span>
+                      <span className="text-xs font-sans text-neutral-400 font-normal">➔</span>
+                    </h3>
                     <p className="text-xs text-neutral-400">{trainer.specializations.join(', ')} • {trainer.yearsExperience}+ Years</p>
-                    <p className="text-neutral-300 text-xs pt-2 border-t border-neutral-800">{trainer.shortBio}</p>
+                    <p className="text-neutral-300 text-xs pt-2 border-t border-neutral-800 leading-relaxed">{trainer.shortBio}</p>
                   </div>
                 </div>
               </Tilt3DCard>
@@ -321,6 +341,13 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* COACH PROFILE MODAL */}
+      <CoachProfileModal
+        isOpen={!!selectedTrainer}
+        onClose={() => setSelectedTrainer(null)}
+        trainer={selectedTrainer}
+      />
     </div>
   );
 };

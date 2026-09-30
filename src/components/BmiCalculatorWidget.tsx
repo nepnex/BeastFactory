@@ -22,7 +22,7 @@ export const BmiCalculatorWidget: React.FC = () => {
   // Body Metrics
   const [weightKg, setWeightKg] = useState<number>(72);
   const [heightCm, setHeightCm] = useState<number>(175);
-  const [age, setAge] = useState<number>(26);
+  const [age, setAge] = useState<number | string>(26);
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [activity, setActivity] = useState<number>(1.55);
   const [fitnessGoal, setFitnessGoal] = useState<'cut' | 'maintain' | 'bulk'>('maintain');
@@ -35,8 +35,13 @@ export const BmiCalculatorWidget: React.FC = () => {
   const heightRemainingInches = totalInches % 12;
 
   // 1-Rep Max Inputs
-  const [liftWeight, setLiftWeight] = useState<number>(100);
-  const [liftReps, setLiftReps] = useState<number>(5);
+  const [liftWeight, setLiftWeight] = useState<number | string>(100);
+  const [liftReps, setLiftReps] = useState<number | string>(5);
+
+  // Safe numeric values for calculations
+  const numericAge = typeof age === 'number' ? age : (parseInt(String(age), 10) || 26);
+  const numericLiftWeight = typeof liftWeight === 'number' ? liftWeight : (parseFloat(String(liftWeight)) || 100);
+  const numericLiftReps = typeof liftReps === 'number' ? liftReps : (parseInt(String(liftReps), 10) || 5);
 
   // Core Calculations
   const heightMeters = heightCm / 100;
@@ -45,8 +50,8 @@ export const BmiCalculatorWidget: React.FC = () => {
   // Mifflin-St Jeor BMR Formula
   const bmr = Math.round(
     gender === 'male'
-      ? 10 * weightKg + 6.25 * heightCm - 5 * age + 5
-      : 10 * weightKg + 6.25 * heightCm - 5 * age - 161
+      ? 10 * weightKg + 6.25 * heightCm - 5 * numericAge + 5
+      : 10 * weightKg + 6.25 * heightCm - 5 * numericAge - 161
   );
 
   // Activity Energy Expenditure & TDEE
@@ -68,7 +73,7 @@ export const BmiCalculatorWidget: React.FC = () => {
   const waterGlasses = Math.round(parseFloat(dailyWaterLiters) * 4); // 250ml per glass
 
   // 1-Rep Max (Brzycki Formula)
-  const oneRepMax = Math.round(liftWeight / (1.0278 - 0.0278 * liftReps));
+  const oneRepMax = Math.round(numericLiftWeight / (1.0278 - 0.0278 * numericLiftReps));
 
   // BMI Category & Styling
   const getBmiCategory = (val: number) => {
@@ -231,7 +236,22 @@ export const BmiCalculatorWidget: React.FC = () => {
                     min={12}
                     max={90}
                     value={age}
-                    onChange={(e) => setAge(Math.max(12, Math.min(90, Number(e.target.value))))}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === '') {
+                        setAge('');
+                      } else {
+                        const num = parseInt(val, 10);
+                        setAge(isNaN(num) ? '' : num);
+                      }
+                    }}
+                    onBlur={() => {
+                      if (age === '' || isNaN(Number(age))) {
+                        setAge(26);
+                      } else {
+                        setAge(Math.max(12, Math.min(90, Number(age))));
+                      }
+                    }}
                     className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-sm text-white font-bold focus:outline-none focus:border-[#e8272a]"
                   />
                 </div>
@@ -356,7 +376,22 @@ export const BmiCalculatorWidget: React.FC = () => {
                   min={1}
                   max={500}
                   value={liftWeight}
-                  onChange={(e) => setLiftWeight(Math.max(1, Number(e.target.value)))}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === '') {
+                      setLiftWeight('');
+                    } else {
+                      const num = parseFloat(val);
+                      setLiftWeight(isNaN(num) ? '' : num);
+                    }
+                  }}
+                  onBlur={() => {
+                    if (liftWeight === '' || isNaN(Number(liftWeight))) {
+                      setLiftWeight(100);
+                    } else {
+                      setLiftWeight(Math.max(1, Math.min(500, Number(liftWeight))));
+                    }
+                  }}
                   className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-lg font-heading text-white focus:outline-none focus:border-[#e8272a]"
                 />
               </div>
@@ -370,7 +405,22 @@ export const BmiCalculatorWidget: React.FC = () => {
                   min={1}
                   max={12}
                   value={liftReps}
-                  onChange={(e) => setLiftReps(Math.max(1, Math.min(12, Number(e.target.value))))}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === '') {
+                      setLiftReps('');
+                    } else {
+                      const num = parseInt(val, 10);
+                      setLiftReps(isNaN(num) ? '' : num);
+                    }
+                  }}
+                  onBlur={() => {
+                    if (liftReps === '' || isNaN(Number(liftReps))) {
+                      setLiftReps(5);
+                    } else {
+                      setLiftReps(Math.max(1, Math.min(12, Number(liftReps))));
+                    }
+                  }}
                   className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-lg font-heading text-white focus:outline-none focus:border-[#e8272a]"
                 />
               </div>

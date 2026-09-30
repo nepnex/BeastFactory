@@ -1,6 +1,11 @@
 import saunaImg from '../assets/images/services/sauna.webp';
 import nutritionImg from '../assets/images/services/nutrition.webp';
 import cardioImg from '../assets/images/services/cardio.webp';
+import weightLossImg from '../assets/images/services/weight_loss.jpg';
+import personalTrainingImg from '../assets/images/services/personal_training.jpg';
+import muscleGrowthImg from '../assets/images/services/muscle_growth.jpg';
+import saunaJacuzziImg from '../assets/images/services/sauna_steam_jacuzzi.jpg';
+import dietCafeImg from '../assets/images/services/diet_cafe.jpg';
 const groupfitnessImg = cardioImg;
 import trainer1Img from '../assets/images/trainers/trainer1.webp';
 import trainer2Img from '../assets/images/trainers/trainer2.webp';
@@ -175,7 +180,7 @@ export const INITIAL_SERVICES: ServiceItem[] = [
     shortDescription: 'Targeted fat shredding with high-intensity cardio and dietary supervision.',
     longDescription: 'Our signature weight loss program combines cardiovascular interval training, metabolic conditioning, and structured meal guidelines designed to incinerate fat fast while preserving lean muscle mass.',
     iconName: 'Flame',
-    coverImageUrl: cardioImg,
+    coverImageUrl: weightLossImg,
     features: ['Customized Calorie Deficit Plan', 'Stair Climbers & HIIT Workouts', 'Bi-weekly Body Composition Scans'],
     startingPriceNpr: 2500,
     isFeatured: true,
@@ -189,7 +194,7 @@ export const INITIAL_SERVICES: ServiceItem[] = [
     shortDescription: '1-on-1 dedicated coaching tailored to your individual physical goals.',
     longDescription: 'Get dedicated attention from certified male or female personal trainers. Includes direct posture correction, customized workout routines, and direct phone/WhatsApp guidance.',
     iconName: 'Dumbbell',
-    coverImageUrl: groupfitnessImg,
+    coverImageUrl: personalTrainingImg,
     features: ['Dedicated 1-on-1 Coach', 'Form Correction & Safety', 'Custom Workout & Diet Blueprint'],
     startingPriceNpr: 9000,
     isFeatured: true,
@@ -203,7 +208,7 @@ export const INITIAL_SERVICES: ServiceItem[] = [
     shortDescription: 'Heavy Olympic lifting platforms and international grade hyper-trophy machines.',
     longDescription: 'Built for bodybuilders and strength enthusiasts. Features heavy dumbbells up to 60kg, Olympic bumper plates, power racks, cable crossovers, and specialized isolation machines.',
     iconName: 'Trophy',
-    coverImageUrl: groupfitnessImg,
+    coverImageUrl: muscleGrowthImg,
     features: ['Heavy Dumbbells & Olympic Racks', 'Hypertrophy Machines', '365 Days Open Access'],
     startingPriceNpr: 2500,
     isFeatured: true,
@@ -217,7 +222,7 @@ export const INITIAL_SERVICES: ServiceItem[] = [
     shortDescription: 'Finnish hot sauna and steam hydrotherapy for muscle recovery.',
     longDescription: 'Accelerate post-workout recovery, eliminate toxins, and un-wind in our luxury Finnish hot sauna steam room and jacuzzi facility.',
     iconName: 'Waves',
-    coverImageUrl: saunaImg,
+    coverImageUrl: saunaJacuzziImg,
     features: ['Finnish Hot Wood Sauna', 'Hydrotherapy Jacuzzi Jets', 'Locker & Towel Service'],
     startingPriceNpr: 1000,
     isFeatured: true,
@@ -231,7 +236,7 @@ export const INITIAL_SERVICES: ServiceItem[] = [
     shortDescription: 'Nutritious post-workout protein shakes, healthy meals, and supplement store.',
     longDescription: 'Fuel your beast-mode workouts with our in-house nutrition bar offering fresh protein smoothies, balanced macro meal bowls, and genuine international supplements.',
     iconName: 'Coffee',
-    coverImageUrl: nutritionImg,
+    coverImageUrl: dietCafeImg,
     features: ['Post-Workout Whey Protein Shakes', 'Macro Meal Bowls', 'Authentic Supplements'],
     isFeatured: true,
     isActive: true,
