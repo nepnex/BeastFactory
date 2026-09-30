@@ -87,7 +87,20 @@ export const dataService = {
   },
 
   // SERVICES
-  getServices: (): ServiceItem[] => getStorageItem('services', INITIAL_SERVICES),
+  getServices: (): ServiceItem[] => {
+    const stored = getStorageItem<ServiceItem[]>('services', INITIAL_SERVICES);
+    if (!Array.isArray(stored) || stored.length === 0) return INITIAL_SERVICES;
+    return stored.map((item) => {
+      const defaultItem = INITIAL_SERVICES.find((s) => s.id === item.id);
+      if (defaultItem) {
+        return {
+          ...item,
+          coverImageUrl: defaultItem.coverImageUrl || item.coverImageUrl,
+        };
+      }
+      return item;
+    });
+  },
   saveServices: (services: ServiceItem[]) => setStorageItem('services', services),
   addService: (service: Omit<ServiceItem, 'id'>) => {
     const services = dataService.getServices();

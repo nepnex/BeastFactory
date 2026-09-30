@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { dataService } from '../services/dataService';
 import { trainerService, serviceService, inquiryService, bookingService } from '../services/supabase';
 import { Trainer, ServiceItem, Lead, Booking } from '../types';
+import { INITIAL_SERVICES } from '../data/gymData';
 
 export const useData = () => {
   const [dataVersion, setDataVersion] = useState(0);
@@ -19,10 +20,10 @@ export const useData = () => {
         bookingService.getBookings()
       ]);
 
-      if (tList) setSupabaseTrainers(tList);
-      if (sList) setSupabaseServices(sList);
-      if (lList) setSupabaseLeads(lList);
-      if (bList) setSupabaseBookings(bList);
+      if (tList && tList.length > 0) setSupabaseTrainers(tList);
+      if (sList && sList.length > 0) setSupabaseServices(sList);
+      if (lList && lList.length > 0) setSupabaseLeads(lList);
+      if (bList && bList.length > 0) setSupabaseBookings(bList);
     } catch (err) {
       console.warn('Supabase async sync fallback to local store');
     }
@@ -33,7 +34,6 @@ export const useData = () => {
 
     const handleStorageUpdate = () => {
       setDataVersion((prev) => prev + 1);
-      refreshAsyncData();
     };
 
     window.addEventListener('beast_factory_storage_update', handleStorageUpdate);
@@ -43,13 +43,22 @@ export const useData = () => {
       window.removeEventListener('beast_factory_storage_update', handleStorageUpdate);
       window.removeEventListener('storage', handleStorageUpdate);
     };
-  }, [dataVersion]);
+  }, []);
+
+  const rawServices = supabaseServices || dataService.getServices();
+  const servicesWithImages = rawServices.map((svc) => {
+    const init = INITIAL_SERVICES.find((s) => s.id === svc.id);
+    return {
+      ...svc,
+      coverImageUrl: svc.coverImageUrl || (init ? init.coverImageUrl : ''),
+    };
+  });
 
   return {
     version: dataVersion,
     founders: dataService.getFounders(),
     trainers: supabaseTrainers || dataService.getTrainers(),
-    services: supabaseServices || dataService.getServices(),
+    services: servicesWithImages,
     boxingPlans: dataService.getBoxingPlans(),
     membershipPlans: dataService.getMembershipPlans(),
     spaServices: dataService.getSpaServices(),
