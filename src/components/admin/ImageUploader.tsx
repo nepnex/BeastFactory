@@ -42,15 +42,15 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   return (
     <div className="space-y-2">
-      <label className="block text-xs font-semibold text-neutral-300 uppercase tracking-wider">
+      <label className="block text-xs font-semibold text-slate-700 dark:text-neutral-300 uppercase tracking-wider">
         {label}
       </label>
 
       {value ? (
-        <div className="relative group w-full h-44 rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800">
+        <div className="relative group w-full h-44 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
           <img src={value} alt="Preview" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-            <label className="p-2.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer transition-colors">
+            <label className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white cursor-pointer transition-colors">
               <Upload className="w-4 h-4" />
               <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
             </label>
@@ -64,26 +64,26 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           </div>
         </div>
       ) : (
-        <label className="w-full h-36 border-2 border-dashed border-neutral-800 hover:border-[#e8272a]/50 rounded-2xl flex flex-col items-center justify-center p-4 bg-neutral-900/50 cursor-pointer transition-all hover:bg-neutral-900">
+        <label className="w-full h-36 border-2 border-dashed border-slate-300 hover:border-[#e8272a]/50 rounded-2xl flex flex-col items-center justify-center p-4 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-all">
           {uploading ? (
-            <div className="flex flex-col items-center gap-2 text-neutral-400">
+            <div className="flex flex-col items-center gap-2 text-slate-500">
               <Loader2 className="w-6 h-6 text-[#e8272a] animate-spin" />
-              <span className="text-xs">Uploading...</span>
+              <span className="text-xs font-medium">Uploading...</span>
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-2 text-neutral-400">
-              <div className="w-10 h-10 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-300">
+            <div className="flex flex-col items-center gap-2 text-slate-500">
+              <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600">
                 <ImageIcon className="w-5 h-5" />
               </div>
-              <span className="text-xs font-medium text-neutral-300">Click to upload image</span>
-              <span className="text-[10px] text-neutral-500">PNG, JPG, WEBP up to 5MB</span>
+              <span className="text-xs font-medium text-slate-700">Click to upload image</span>
+              <span className="text-[10px] text-slate-400">PNG, JPG, WEBP up to 5MB</span>
             </div>
           )}
           <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} disabled={uploading} />
         </label>
       )}
 
-      {error && <p className="text-[11px] text-red-400 font-medium">{error}</p>}
+      {error && <p className="text-[11px] text-red-500 font-medium">{error}</p>}
     </div>
   );
 };
