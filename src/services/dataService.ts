@@ -14,6 +14,7 @@ import {
   Testimonial,
   FAQItem
 } from '../types';
+import { trainerService } from './supabase/trainers';
 import {
   INITIAL_FOUNDERS,
   INITIAL_TRAINERS,
@@ -75,15 +76,18 @@ export const dataService = {
     const trainers = dataService.getTrainers();
     const newTrainer: Trainer = { ...trainer, id: `t_${Date.now()}` };
     dataService.saveTrainers([newTrainer, ...trainers]);
+    trainerService.addTrainer(trainer).catch(() => {});
     return newTrainer;
   },
   updateTrainer: (id: string, updated: Partial<Trainer>) => {
     const trainers = dataService.getTrainers().map(t => t.id === id ? { ...t, ...updated } : t);
     dataService.saveTrainers(trainers);
+    trainerService.updateTrainer(id, updated).catch(() => {});
   },
   deleteTrainer: (id: string) => {
     const trainers = dataService.getTrainers().filter(t => t.id !== id);
     dataService.saveTrainers(trainers);
+    trainerService.deleteTrainer(id).catch(() => {});
   },
 
   // SERVICES

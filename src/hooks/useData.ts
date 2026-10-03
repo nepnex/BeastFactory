@@ -57,7 +57,7 @@ export const useData = () => {
   return {
     version: dataVersion,
     founders: dataService.getFounders(),
-    trainers: supabaseTrainers || dataService.getTrainers(),
+    trainers: supabaseTrainers && supabaseTrainers.length > 0 ? supabaseTrainers : dataService.getTrainers(),
     services: servicesWithImages,
     boxingPlans: dataService.getBoxingPlans(),
     membershipPlans: dataService.getMembershipPlans(),
@@ -67,8 +67,8 @@ export const useData = () => {
     galleryItems: dataService.getGallery(),
     testimonials: dataService.getTestimonials(),
     faqs: dataService.getFaqs(),
-    leads: supabaseLeads || dataService.getLeads(),
-    bookings: supabaseBookings || dataService.getBookings(),
+    leads: supabaseLeads && supabaseLeads.length > 0 ? supabaseLeads : dataService.getLeads(),
+    bookings: supabaseBookings && supabaseBookings.length > 0 ? supabaseBookings : dataService.getBookings(),
     settings: dataService.getSettings(),
 
     setFounders: dataService.saveFounders,
