@@ -4,6 +4,7 @@ import { useData } from '../../hooks/useData';
 import { dataService } from '../../services/dataService';
 import { AdminLayout } from '../../layouts/AdminLayout';
 import { Founder } from '../../types';
+import { ImageUploader } from '../../components/admin/ImageUploader';
 
 export const AdminFoundersPage: React.FC = () => {
   const { founders } = useData();
@@ -115,10 +116,11 @@ export const AdminFoundersPage: React.FC = () => {
                   <label className="block text-neutral-400 font-semibold mb-1">POSITION / TITLE *</label>
                   <input type="text" required value={formData.position} onChange={(e) => setFormData({ ...formData, position: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-white" />
                 </div>
-                <div>
-                  <label className="block text-neutral-400 font-semibold mb-1">PHOTO URL / IMAGE</label>
-                  <input type="text" placeholder="/src/assets/images/trainers/trainer1.webp" value={formData.photoUrl} onChange={(e) => setFormData({ ...formData, photoUrl: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-white" />
-                </div>
+                <ImageUploader
+                  label="FOUNDER PHOTO"
+                  value={formData.photoUrl}
+                  onChange={(url) => setFormData({ ...formData, photoUrl: url })}
+                />
                 <div>
                   <label className="block text-neutral-400 font-semibold mb-1">SHORT BIOGRAPHY</label>
                   <textarea rows={3} value={formData.shortBio} onChange={(e) => setFormData({ ...formData, shortBio: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-white"></textarea>

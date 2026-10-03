@@ -5,6 +5,8 @@ import { dataService } from '../../services/dataService';
 import { AdminLayout } from '../../layouts/AdminLayout';
 import { Trainer } from '../../types';
 
+import { ImageUploader } from '../../components/admin/ImageUploader';
+
 export const AdminTrainersPage: React.FC = () => {
   const { trainers } = useData();
   const [modalOpen, setModalOpen] = useState(false);
@@ -134,10 +136,11 @@ export const AdminTrainersPage: React.FC = () => {
                     <input type="number" value={formData.sessionPriceNpr || 0} onChange={(e) => setFormData({ ...formData, sessionPriceNpr: Number(e.target.value) })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-white" />
                   </div>
                 </div>
-                <div>
-                  <label className="block text-neutral-400 font-semibold mb-1">PHOTO URL</label>
-                  <input type="text" value={formData.photoUrl} onChange={(e) => setFormData({ ...formData, photoUrl: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-white" />
-                </div>
+                <ImageUploader
+                  label="TRAINER PHOTO"
+                  value={formData.photoUrl}
+                  onChange={(url) => setFormData({ ...formData, photoUrl: url })}
+                />
                 <div>
                   <label className="block text-neutral-400 font-semibold mb-1">SHORT BIO</label>
                   <textarea rows={2} value={formData.shortBio} onChange={(e) => setFormData({ ...formData, shortBio: e.target.value })} className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-white"></textarea>
