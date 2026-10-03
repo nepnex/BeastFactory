@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { verifyPassword, checkLockoutStatus, registerFailedAttempt, resetFailedAttempts } from '../utils/security';
 
 const DEMO_AUTH_KEY = 'beast_factory_admin_session';
 
@@ -46,7 +47,7 @@ export const useAuth = (): AuthState => {
         subscription.unsubscribe();
       };
     } else {
-      // Demo / Local Fallback when Supabase env keys are not provided
+      // Local fallback session check
       const demoAuth = localStorage.getItem(DEMO_AUTH_KEY) === 'true';
       setIsAuthenticated(demoAuth);
       setLoading(false);
@@ -67,6 +68,15 @@ export const useAuth = (): AuthState => {
     emailOrPassword: string,
     password?: string
   ): Promise<{ success: boolean; error?: string }> => {
+    // Rate Limiting & Lockout Check
+    const lockout = checkLockoutStatus();
+    if (lockout.isLocked) {
+      return {
+        success: false,
+        error: `Account temporarily locked due to failed login attempts. Please try again in ${lockout.remainingSeconds} seconds.`
+      };
+    }
+
     if (isSupabaseConfigured && supabase) {
       const email = password ? emailOrPassword : emailOrPassword;
       const pwd = password || emailOrPassword;
@@ -78,10 +88,18 @@ export const useAuth = (): AuthState => {
         });
 
         if (error) {
-          return { success: false, error: error.message };
+          const status = registerFailedAttempt();
+          if (status.isLocked) {
+            return { success: false, error: 'Too many failed attempts. Locked out for 5 minutes.' };
+          }
+          return {
+            success: false,
+            error: `${error.message} (${status.attemptsLeft} attempts left before lockout)`
+          };
         }
 
         if (data.session) {
+          resetFailedAttempts();
           setSession(data.session);
           setUser(data.user);
           setIsAuthenticated(true);
@@ -92,15 +110,26 @@ export const useAuth = (): AuthState => {
         return { success: false, error: err.message || 'Authentication error occurred.' };
       }
     } else {
-      // Local fallback check
+      // Local Hashed Auth verification via Web Crypto API (SHA-256)
       const pwd = password || emailOrPassword;
-      if (pwd === 'beast2026' || pwd === 'admin') {
+      const isValid = await verifyPassword(pwd);
+
+      if (isValid) {
+        resetFailedAttempts();
         localStorage.setItem(DEMO_AUTH_KEY, 'true');
         window.dispatchEvent(new Event('beast_factory_auth_update'));
         setIsAuthenticated(true);
         return { success: true };
+      } else {
+        const status = registerFailedAttempt();
+        if (status.isLocked) {
+          return { success: false, error: 'Too many invalid attempts. Admin portal locked for 5 minutes.' };
+        }
+        return {
+          success: false,
+          error: `Invalid admin password. (${status.attemptsLeft} attempts remaining)`
+        };
       }
-      return { success: false, error: 'Invalid admin password.' };
     }
   };
 
