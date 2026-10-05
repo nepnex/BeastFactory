@@ -126,18 +126,70 @@ export const AboutPage: React.FC = () => {
             </div>
           ))}
         </div>
-
-        {/* FOUNDER IMAGE LIGHTBOX MODAL */}
-        <ImageLightboxModal
-          isOpen={!!selectedFounder}
-          onClose={() => setSelectedFounder(null)}
-          imageUrl={selectedFounder?.photoUrl || ''}
-          title={selectedFounder?.name || ''}
-          subtitle={selectedFounder?.position}
-          details={`${selectedFounder?.shortBio || ''} ${selectedFounder?.roleDescription || ''}`}
-          category="BEAST FACTORY FOUNDER"
-        />
       </section>
+
+      {/* BEAST FACTORY TEAM & STAFF SECTION */}
+      <section className="py-24 bg-[#111111] border-t border-neutral-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
+            <div>
+              <span className="text-xs uppercase tracking-widest text-[#e8272a] font-semibold flex items-center gap-2">
+                <Users className="w-4 h-4" /> DEDICATED TEAM & STAFF
+              </span>
+              <h2 className="font-heading text-5xl sm:text-6xl text-white mt-1">THE BEAST <span className="text-[#e8272a]">CREW</span></h2>
+              <p className="text-neutral-400 text-sm mt-2 max-w-2xl">
+                Behind every clean rep and smooth facility experience is our passionate crew — certified fitness trainers, floor managers, hydrotherapy specialists, and nutrition staff.
+              </p>
+            </div>
+            <a href="/trainers" className="mt-4 md:mt-0 text-sm font-bold text-[#e8272a] hover:text-[#ff1e1e] flex items-center gap-1 shrink-0">
+              <span>MEET ALL COACHES →</span>
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="glass-panel p-8 rounded-3xl border border-neutral-800 space-y-4 hover:border-[#e8272a]/50 transition-all">
+              <div className="w-12 h-12 rounded-2xl bg-[#e8272a]/15 border border-[#e8272a]/30 flex items-center justify-center text-[#e8272a] font-heading text-xl">
+                01
+              </div>
+              <h3 className="font-heading text-2xl text-white">CERTIFIED COACHES</h3>
+              <p className="text-neutral-400 text-xs leading-relaxed">
+                Expert 1-on-1 personal trainers specializing in bodybuilding, weight loss transformations, functional athletic conditioning, and injury prevention.
+              </p>
+            </div>
+
+            <div className="glass-panel p-8 rounded-3xl border border-neutral-800 space-y-4 hover:border-[#e8272a]/50 transition-all">
+              <div className="w-12 h-12 rounded-2xl bg-[#e8272a]/15 border border-[#e8272a]/30 flex items-center justify-center text-[#e8272a] font-heading text-xl">
+                02
+              </div>
+              <h3 className="font-heading text-2xl text-white">SPA & HYDROTHERAPY CREW</h3>
+              <p className="text-neutral-400 text-xs leading-relaxed">
+                Trained specialists managing our Finnish sauna, steam room, and hydrotherapy jacuzzi to ensure clean, soothing post-workout recovery.
+              </p>
+            </div>
+
+            <div className="glass-panel p-8 rounded-3xl border border-neutral-800 space-y-4 hover:border-[#e8272a]/50 transition-all">
+              <div className="w-12 h-12 rounded-2xl bg-[#e8272a]/15 border border-[#e8272a]/30 flex items-center justify-center text-[#e8272a] font-heading text-xl">
+                03
+              </div>
+              <h3 className="font-heading text-2xl text-white">OPERATIONS & FRONT DESK</h3>
+              <p className="text-neutral-400 text-xs leading-relaxed">
+                Welcoming front desk staff available 365 days a year (3:30 AM – 11:00 PM) to assist with inquiries, memberships, and facility maintenance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FOUNDER IMAGE LIGHTBOX MODAL */}
+      <ImageLightboxModal
+        isOpen={!!selectedFounder}
+        onClose={() => setSelectedFounder(null)}
+        imageUrl={selectedFounder?.photoUrl || ''}
+        title={selectedFounder?.name || ''}
+        subtitle={selectedFounder?.position}
+        details={`${selectedFounder?.shortBio || ''} ${selectedFounder?.roleDescription || ''}`}
+        category="BEAST FACTORY FOUNDER"
+      />
     </div>
   );
 };
