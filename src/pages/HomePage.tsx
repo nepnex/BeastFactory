@@ -353,7 +353,7 @@ export const HomePage: React.FC = () => {
           <p className="text-white/80 font-medium text-lg max-w-xl mx-auto">Join Damak's most powerful fitness community today. {settings.daysOpen} • {settings.operatingHours}</p>
           <div>
             <Link to="/apply" className="inline-block px-10 py-4 rounded-full bg-[#0a0a0a] text-white font-heading text-2xl tracking-wider hover:bg-neutral-900 transition-transform hover:scale-105 shadow-2xl">
-              CLAIM YOUR FREE TRIAL PASS
+              JOIN BEAST FACTORY TODAY
             </Link>
           </div>
         </div>
