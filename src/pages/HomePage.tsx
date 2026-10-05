@@ -14,6 +14,8 @@ import { CoachProfileModal } from '../components/CoachProfileModal';
 import { ProgressiveImage } from '../components/ProgressiveImage';
 import { Trainer } from '../types';
 
+import { AnnouncementBanner } from '../components/AnnouncementBanner';
+
 export const HomePage: React.FC = () => {
   const { services, trainers, testimonials, settings } = useData();
   const [selectedTrainer, setSelectedTrainer] = useState<Trainer | null>(null);
@@ -51,10 +53,8 @@ export const HomePage: React.FC = () => {
             </span>
           </motion.div>
 
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.7, delay: 0.1 }} className="w-44 h-44 sm:w-52 sm:h-52 mx-auto">
-            <Tilt3DCard depth={25} className="w-full h-full">
-              <img src={logoImg} alt="Beast Factory Emblem" className="w-full h-full object-contain filter drop-shadow-[0_20px_30px_rgba(232,39,42,0.4)]" />
-            </Tilt3DCard>
+          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5 }} className="w-40 h-40 sm:w-48 sm:h-48 mx-auto">
+            <img src={logoImg} alt="Beast Factory Emblem" className="w-full h-full object-contain filter drop-shadow-[0_15px_25px_rgba(232,39,42,0.3)] hover:scale-105 transition-transform duration-300" />
           </motion.div>
 
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }} className="font-heading text-6xl sm:text-8xl md:text-9xl tracking-tight leading-none text-white drop-shadow-2xl">
@@ -93,16 +93,17 @@ export const HomePage: React.FC = () => {
               { val: '50+', label: 'Heavy Machines' },
               { val: '365', label: 'Days Open / Year' },
             ].map((s) => (
-              <Tilt3DCard key={s.label} depth={15}>
-                <div className="glass-panel-3d p-6 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/40 transition-all duration-300">
-                  <div className="font-heading text-4xl sm:text-5xl text-[#e8272a] mb-1 drop-shadow-md">{s.val}</div>
-                  <div className="text-xs text-neutral-400 font-semibold uppercase tracking-widest">{s.label}</div>
-                </div>
-              </Tilt3DCard>
+              <div key={s.label} className="glass-panel-3d p-6 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/40 transition-all duration-300">
+                <div className="font-heading text-4xl sm:text-5xl text-[#e8272a] mb-1 drop-shadow-md">{s.val}</div>
+                <div className="text-xs text-neutral-400 font-semibold uppercase tracking-widest">{s.label}</div>
+              </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* ANNOUNCEMENTS & OFFERS BANNER */}
+      <AnnouncementBanner />
 
       {/* 4. ALL SERVICES GRID */}
       <section className="py-24 bg-[#0a0a0a] relative">
@@ -114,7 +115,7 @@ export const HomePage: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {activeServices.map((svc) => (
-              <Tilt3DCard key={svc.id} depth={12}>
+              <Tilt3DCard key={svc.id} depth={6}>
                 <div className="glass-panel-3d rounded-2xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/60 transition-all duration-300 group h-full flex flex-col justify-between">
                   {svc.coverImageUrl ? (
                     <div className="relative h-44 overflow-hidden bg-neutral-950">
@@ -134,12 +135,6 @@ export const HomePage: React.FC = () => {
                       <h4 className="font-heading text-xl text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.name}</h4>
                       <p className="text-xs text-neutral-400 mt-2 line-clamp-2">{svc.shortDescription || svc.description}</p>
                     </div>
-                    {svc.startingPriceNpr && (
-                      <div className="mt-4 pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
-                        <span className="text-neutral-500 font-medium">Starting at</span>
-                        <span className="font-bold text-[#e8272a]">NPR {svc.startingPriceNpr}</span>
-                      </div>
-                    )}
                   </div>
                 </div>
               </Tilt3DCard>

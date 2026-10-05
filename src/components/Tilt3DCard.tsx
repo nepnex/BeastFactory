@@ -11,7 +11,7 @@ interface Tilt3DCardProps {
 export const Tilt3DCard: React.FC<Tilt3DCardProps> = ({
   children,
   className = '',
-  depth = 20,
+  depth = 6,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 

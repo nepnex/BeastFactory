@@ -146,15 +146,13 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center justify-between">
             
             {/* LOGO */}
-            <Link to="/" className="flex items-center gap-3.5 group shrink-0">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-lg shadow-red-500/10 group-hover:scale-105 transition-all duration-300 border border-neutral-800/80">
-                <img src={logoImg} alt="Beast Factory Logo" className="w-full h-full object-cover" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-heading text-xl sm:text-2xl tracking-wider text-white flex items-center leading-none">
-                  BEAST <span className="text-[#C8102E] ml-1">FACTORY</span>
+            <Link to="/" className="flex items-center gap-3 group shrink-0 py-0.5">
+              <img src={logoImg} alt="Beast Factory Logo" className="w-12 h-12 sm:w-14 sm:h-14 object-contain filter drop-shadow-md hover:scale-105 transition-transform duration-200" />
+              <div className="flex flex-col justify-center">
+                <span className="font-heading text-2xl sm:text-3xl tracking-wider text-white flex items-center leading-none">
+                  BEAST <span className="text-[#C8102E] ml-1.5">FACTORY</span>
                 </span>
-                <span className="text-[9px] uppercase tracking-[0.2em] text-neutral-400 font-sans font-medium mt-1">
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.22em] text-neutral-400 font-sans font-semibold mt-1 leading-none">
                   {settings.tagline || 'The Fitness Paradise'}
                 </span>
               </div>

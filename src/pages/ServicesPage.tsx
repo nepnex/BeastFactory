@@ -84,10 +84,9 @@ export const ServicesPage: React.FC = () => {
                 </ul>
               </div>
 
-              <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
-                <span className="text-xs text-neutral-400">Starting NPR {prog.startingPriceNpr?.toLocaleString()}</span>
+              <div className="pt-4 border-t border-neutral-800 flex items-center justify-end">
                 <Link to="/apply" className="px-6 py-2.5 rounded-full bg-[#e8272a] text-white font-heading text-lg font-bold hover:bg-[#ff1e1e] transition-colors">
-                  ENROLL NOW
+                  ENROLL NOW →
                 </Link>
               </div>
             </div>
