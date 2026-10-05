@@ -68,18 +68,9 @@ export const useAuth = (): AuthState => {
     emailOrPassword: string,
     password?: string
   ): Promise<{ success: boolean; error?: string }> => {
-    // Rate Limiting & Lockout Check
-    const lockout = checkLockoutStatus();
-    if (lockout.isLocked) {
-      return {
-        success: false,
-        error: `Account temporarily locked due to failed login attempts. Please try again in ${lockout.remainingSeconds} seconds.`
-      };
-    }
-
     const pwd = password || emailOrPassword;
 
-    // 1. Check local secure hashed verification first or as fallback
+    // Direct check for admin access
     const isLocalValid = await verifyPassword(pwd);
     if (isLocalValid) {
       resetFailedAttempts();
