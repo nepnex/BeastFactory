@@ -77,60 +77,47 @@ export const useAuth = (): AuthState => {
       };
     }
 
-    if (isSupabaseConfigured && supabase) {
-      const email = password ? emailOrPassword : emailOrPassword;
-      const pwd = password || emailOrPassword;
+    const pwd = password || emailOrPassword;
 
+    // 1. Check local secure hashed verification first or as fallback
+    const isLocalValid = await verifyPassword(pwd);
+    if (isLocalValid) {
+      resetFailedAttempts();
+      localStorage.setItem(DEMO_AUTH_KEY, 'true');
+      window.dispatchEvent(new Event('beast_factory_auth_update'));
+      setIsAuthenticated(true);
+      return { success: true };
+    }
+
+    // 2. Try Supabase Auth if configured
+    if (isSupabaseConfigured && supabase) {
+      const email = password ? emailOrPassword : (emailOrPassword.includes('@') ? emailOrPassword : `${emailOrPassword}@beastfactory.com`);
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
-          email: email.includes('@') ? email : `${email}@beastfactory.com`,
+          email,
           password: pwd,
         });
 
-        if (error) {
-          const status = registerFailedAttempt();
-          if (status.isLocked) {
-            return { success: false, error: 'Too many failed attempts. Locked out for 5 minutes.' };
-          }
-          return {
-            success: false,
-            error: `${error.message} (${status.attemptsLeft} attempts left before lockout)`
-          };
-        }
-
-        if (data.session) {
+        if (!error && data.session) {
           resetFailedAttempts();
           setSession(data.session);
           setUser(data.user);
           setIsAuthenticated(true);
           return { success: true };
         }
-        return { success: false, error: 'Authentication failed. Invalid session.' };
-      } catch (err: any) {
-        return { success: false, error: err.message || 'Authentication error occurred.' };
-      }
-    } else {
-      // Local Hashed Auth verification via Web Crypto API (SHA-256)
-      const pwd = password || emailOrPassword;
-      const isValid = await verifyPassword(pwd);
-
-      if (isValid) {
-        resetFailedAttempts();
-        localStorage.setItem(DEMO_AUTH_KEY, 'true');
-        window.dispatchEvent(new Event('beast_factory_auth_update'));
-        setIsAuthenticated(true);
-        return { success: true };
-      } else {
-        const status = registerFailedAttempt();
-        if (status.isLocked) {
-          return { success: false, error: 'Too many invalid attempts. Admin portal locked for 5 minutes.' };
-        }
-        return {
-          success: false,
-          error: `Invalid admin password. (${status.attemptsLeft} attempts remaining)`
-        };
+      } catch (err) {
+        // Fallthrough to failed attempt
       }
     }
+
+    const status = registerFailedAttempt();
+    if (status.isLocked) {
+      return { success: false, error: 'Too many invalid attempts. Admin portal locked for 5 minutes.' };
+    }
+    return {
+      success: false,
+      error: `Invalid admin credentials. (${status.attemptsLeft} attempts remaining)`
+    };
   };
 
   const logout = async (): Promise<void> => {
