@@ -634,10 +634,10 @@ export const BmiCalculatorWidget: React.FC = () => {
           {/* CTA TO CONSULT COACH */}
           <div className="pt-4 border-t border-neutral-800">
             <Link
-              to="/apply?plan=trial"
+              to="/apply"
               className="w-full py-3.5 px-6 rounded-2xl bg-[#e8272a] text-white font-heading text-sm hover:bg-[#ff1e1e] transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-500/20 group"
             >
-              <span>CLAIM FREE TRIAL PASS & NUTRITION CONSULTATION</span>
+              <span>BOOK NUTRITION & GYM CONSULTATION</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
