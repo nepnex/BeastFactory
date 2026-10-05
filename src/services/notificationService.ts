@@ -1,51 +1,14 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { AdminNotification, NotificationType, NotificationPriority } from '../types';
 
-const INITIAL_MOCK_NOTIFICATIONS: AdminNotification[] = [
-  {
-    id: 'notif-1',
-    type: 'new_membership_inquiry',
-    priority: 'HIGH',
-    title: 'NEW MEMBERSHIP INQUIRY',
-    message: 'Rajesh Gurung submitted an annual Beast Pro plan inquiry.',
-    relatedId: 'lead-101',
-    relatedType: 'inquiry',
-    actionUrl: '/admin/inquiries',
-    isRead: false,
-    createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'notif-2',
-    type: 'new_spa_booking',
-    priority: 'HIGH',
-    title: 'NEW SPA BOOKING',
-    message: 'Bikash Adhikari requested a Finnish Wood Sauna Session.',
-    relatedId: 'bk-201',
-    relatedType: 'booking',
-    actionUrl: '/admin/bookings',
-    isRead: false,
-    createdAt: new Date(Date.now() - 18 * 60 * 1000).toISOString(),
-  },
-  {
-    id: 'notif-3',
-    type: 'new_free_trial',
-    priority: 'HIGH',
-    title: 'NEW FREE TRIAL REQUEST',
-    message: 'Sita Dahal requested a free 1-day pass for morning Zumba class.',
-    relatedId: 'lead-102',
-    relatedType: 'inquiry',
-    actionUrl: '/admin/inquiries',
-    isRead: true,
-    createdAt: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
-  },
-];
+const INITIAL_MOCK_NOTIFICATIONS: AdminNotification[] = [];
 
 const getLocalStorageNotifications = (): AdminNotification[] => {
   try {
     const data = localStorage.getItem('beast_factory_notifications');
-    return data ? JSON.parse(data) : INITIAL_MOCK_NOTIFICATIONS;
+    return data !== null ? JSON.parse(data) : [];
   } catch {
-    return INITIAL_MOCK_NOTIFICATIONS;
+    return [];
   }
 };
 
