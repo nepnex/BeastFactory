@@ -16,7 +16,8 @@ import {
   LogOut,
   Menu,
   X,
-  ExternalLink
+  ExternalLink,
+  Megaphone
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import logoImg from '../assets/images/logo.png';
@@ -60,9 +61,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       ]
     },
     {
-      group: 'CONTENT',
+      group: 'HOME & CONTENT',
       items: [
-        { name: 'Services', path: '/admin/services', icon: Sparkles },
+        { name: 'Offers & Notices', path: '/admin/offers-notices', icon: Megaphone },
+        { name: 'Our Services', path: '/admin/services', icon: Sparkles },
         { name: 'Trainers', path: '/admin/trainers', icon: Dumbbell },
         { name: 'Founders', path: '/admin/founders', icon: Award },
         { name: 'Memberships', path: '/admin/memberships', icon: Layers },

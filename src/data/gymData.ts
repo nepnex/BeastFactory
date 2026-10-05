@@ -45,6 +45,25 @@ export const INITIAL_GYM_INFO: BusinessSettings = {
   defaultOgImage: 'https://beastfactorynepal.com/assets/hero_bg.png',
   siteUrl: 'https://beastfactorynepal.com',
   googleMapsUrl: 'https://maps.app.goo.gl/K1E2VLizXKFXfwov5',
+  activeOffers: [
+    {
+      id: 'offer_1',
+      tag: 'NEW OFFER',
+      title: '365 DAYS ANNUAL MEMBERSHIP DISCOUNT',
+      description: 'Get exclusive access to gym floor, hydrotherapy sauna, and complimentary personal trainer sessions when you sign up this month!',
+      actionText: 'CLAIM OFFER',
+      actionUrl: '/membership',
+      isHighPriority: true
+    },
+    {
+      id: 'notice_1',
+      tag: 'NOTICE',
+      title: 'EARLY MORNING BATCH (3:30 AM OPENING)',
+      description: 'Our morning session starts daily at 3:30 AM. Certified trainers available for morning motivation and technique guidance.',
+      actionText: 'VIEW TIMINGS',
+      actionUrl: '/contact'
+    }
+  ]
 };
 
 // Aliases for compatibility

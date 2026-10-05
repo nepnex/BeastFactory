@@ -12,7 +12,8 @@ import {
   UserPlus,
   PackagePlus,
   CalendarPlus,
-  Bell
+  Bell,
+  Megaphone
 } from 'lucide-react';
 import { useData } from '../../hooks/useData';
 import { AdminLayout } from '../../layouts/AdminLayout';
@@ -107,14 +108,18 @@ export const AdminDashboardOverview: React.FC = () => {
           <h3 className="font-heading text-xl text-slate-900 flex items-center gap-2">
             <Plus className="w-4 h-4 text-[#e8272a]" /> QUICK ACTIONS
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            <Link to="/admin/trainers" className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-slate-800 font-semibold transition-colors">
-              <UserPlus className="w-4 h-4 text-[#e8272a]" />
-              <span>Add Trainer</span>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
+            <Link to="/admin/offers-notices" className="flex items-center gap-2.5 p-3 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-xs text-[#e8272a] font-bold transition-colors">
+              <Megaphone className="w-4 h-4 text-[#e8272a]" />
+              <span>Offers & Notices</span>
             </Link>
             <Link to="/admin/services" className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-slate-800 font-semibold transition-colors">
               <Sparkles className="w-4 h-4 text-purple-600" />
-              <span>Add Service</span>
+              <span>Our Services</span>
+            </Link>
+            <Link to="/admin/trainers" className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-slate-800 font-semibold transition-colors">
+              <UserPlus className="w-4 h-4 text-[#e8272a]" />
+              <span>Add Trainer</span>
             </Link>
             <Link to="/admin/products" className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs text-slate-800 font-semibold transition-colors">
               <PackagePlus className="w-4 h-4 text-sky-600" />

@@ -1,38 +1,35 @@
 import React from 'react';
-import { Sparkles, Megaphone, Bell, ArrowRight } from 'lucide-react';
+import { Sparkles, Megaphone, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-export interface NoticeOffer {
-  id: string;
-  tag: string;
-  title: string;
-  description: string;
-  actionText?: string;
-  actionUrl?: string;
-  isHighPriority?: boolean;
-}
-
-const DEFAULT_OFFERS: NoticeOffer[] = [
-  {
-    id: 'offer_1',
-    tag: 'NEW OFFER',
-    title: '365 DAYS ANNUAL MEMBERSHIP DISCOUNT',
-    description: 'Get exclusive access to gym floor, hydrotherapy sauna, and 2 complimentary personal trainer sessions when you sign up this month!',
-    actionText: 'CLAIM OFFER',
-    actionUrl: '/membership',
-    isHighPriority: true
-  },
-  {
-    id: 'notice_1',
-    tag: 'NOTICE',
-    title: 'EARLY MORNING BATCH (3:30 AM OPENING)',
-    description: 'Our morning session starts daily at 3:30 AM. Certified trainers available for morning motivation and technique guidance.',
-    actionText: 'VIEW TIMINGS',
-    actionUrl: '/contact'
-  }
-];
+import { useData } from '../hooks/useData';
+import { NoticeOffer } from '../types';
 
 export const AnnouncementBanner: React.FC = () => {
+  const { settings } = useData();
+  const offersList: NoticeOffer[] = (settings.activeOffers && settings.activeOffers.length > 0)
+    ? settings.activeOffers
+    : [
+        {
+          id: 'offer_1',
+          tag: 'NEW OFFER',
+          title: '365 DAYS ANNUAL MEMBERSHIP DISCOUNT',
+          description: 'Get exclusive access to gym floor, hydrotherapy sauna, and complimentary personal trainer sessions when you sign up this month!',
+          actionText: 'CLAIM OFFER',
+          actionUrl: '/membership',
+          isHighPriority: true
+        },
+        {
+          id: 'notice_1',
+          tag: 'NOTICE',
+          title: 'EARLY MORNING BATCH (3:30 AM OPENING)',
+          description: 'Our morning session starts daily at 3:30 AM. Certified trainers available for morning motivation and technique guidance.',
+          actionText: 'VIEW TIMINGS',
+          actionUrl: '/contact'
+        }
+      ];
+
+  if (offersList.length === 0) return null;
+
   return (
     <section className="bg-gradient-to-r from-neutral-950 via-[#140506] to-neutral-950 border-y border-[#e8272a]/30 py-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#e8272a]/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -57,7 +54,7 @@ export const AnnouncementBanner: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {DEFAULT_OFFERS.map((item) => (
+          {offersList.map((item) => (
             <div
               key={item.id}
               className={`p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between space-y-3 ${
@@ -71,7 +68,7 @@ export const AnnouncementBanner: React.FC = () => {
                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                     item.isHighPriority ? 'bg-[#e8272a] text-white' : 'bg-neutral-800 text-neutral-300'
                   }`}>
-                    {item.tag}
+                    {item.tag || 'NOTICE'}
                   </span>
                   {item.isHighPriority && (
                     <span className="text-[10px] text-amber-400 font-bold uppercase tracking-widest flex items-center gap-1">
@@ -79,6 +76,11 @@ export const AnnouncementBanner: React.FC = () => {
                     </span>
                   )}
                 </div>
+                {item.imageUrl && (
+                  <div className="h-40 rounded-xl overflow-hidden mb-2 bg-neutral-950 border border-neutral-800">
+                    <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                  </div>
+                )}
                 <h4 className="font-heading text-xl text-white tracking-wide">{item.title}</h4>
                 <p className="text-neutral-300 text-xs leading-relaxed">{item.description}</p>
               </div>

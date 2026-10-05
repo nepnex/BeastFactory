@@ -229,6 +229,17 @@ export interface Booking extends BaseEntity {
   createdAt: string;
 }
 
+export interface NoticeOffer {
+  id: string;
+  tag: string;
+  title: string;
+  description: string;
+  imageUrl?: string;
+  actionText?: string;
+  actionUrl?: string;
+  isHighPriority?: boolean;
+}
+
 export interface BusinessSettings extends BaseEntity {
   gymName: string;
   tagline: string;
@@ -242,6 +253,7 @@ export interface BusinessSettings extends BaseEntity {
   tiktokUrl: string;
   latitude?: number;
   longitude?: number;
+  activeOffers?: NoticeOffer[];
   // Extended SEO Controls
   siteTitle?: string;
   defaultMetaDescription?: string;
