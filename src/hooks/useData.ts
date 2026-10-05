@@ -45,7 +45,10 @@ export const useData = () => {
     };
   }, []);
 
-  const rawServices = supabaseServices || dataService.getServices();
+  // Prefer stored localStorage data first so admin changes persist on reload & across mobile/desktop sessions
+  const localServices = dataService.getServices();
+  const rawServices = localServices.length > 0 ? localServices : (supabaseServices || INITIAL_SERVICES);
+
   const servicesWithImages = rawServices.map((svc) => {
     const init = INITIAL_SERVICES.find((s) => s.id === svc.id);
     return {
@@ -54,10 +57,19 @@ export const useData = () => {
     };
   });
 
+  const localTrainers = dataService.getTrainers();
+  const trainersData = localTrainers.length > 0 ? localTrainers : (supabaseTrainers || []);
+
+  const localLeads = dataService.getLeads();
+  const leadsData = localLeads.length > 0 ? localLeads : (supabaseLeads || []);
+
+  const localBookings = dataService.getBookings();
+  const bookingsData = localBookings.length > 0 ? localBookings : (supabaseBookings || []);
+
   return {
     version: dataVersion,
     founders: dataService.getFounders(),
-    trainers: supabaseTrainers && supabaseTrainers.length > 0 ? supabaseTrainers : dataService.getTrainers(),
+    trainers: trainersData,
     services: servicesWithImages,
     boxingPlans: dataService.getBoxingPlans(),
     membershipPlans: dataService.getMembershipPlans(),
@@ -67,8 +79,8 @@ export const useData = () => {
     galleryItems: dataService.getGallery(),
     testimonials: dataService.getTestimonials(),
     faqs: dataService.getFaqs(),
-    leads: supabaseLeads && supabaseLeads.length > 0 ? supabaseLeads : dataService.getLeads(),
-    bookings: supabaseBookings && supabaseBookings.length > 0 ? supabaseBookings : dataService.getBookings(),
+    leads: leadsData,
+    bookings: bookingsData,
     settings: dataService.getSettings(),
 
     setFounders: dataService.saveFounders,
