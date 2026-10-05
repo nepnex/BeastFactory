@@ -39,11 +39,13 @@ export const ServicesPage: React.FC = () => {
 
       {/* ALL SERVICES GRID */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {activeServices.map((svc) => (
-            <div key={svc.id} className="glass-panel p-5 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/40 transition-all duration-300 text-center group hover:-translate-y-1">
-              <div className="text-3xl mb-3">⚡</div>
-              <h4 className="font-heading text-base sm:text-lg text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.name}</h4>
+            <div key={svc.id} className="glass-panel p-5 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/50 transition-all duration-300 flex items-center gap-4 group">
+              <div className="w-10 h-10 rounded-xl bg-[#e8272a]/15 border border-[#e8272a]/30 flex items-center justify-center text-[#e8272a] shrink-0 font-bold text-lg group-hover:bg-[#e8272a] group-hover:text-white transition-colors">
+                ✓
+              </div>
+              <h4 className="font-heading text-lg text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.name}</h4>
             </div>
           ))}
         </div>

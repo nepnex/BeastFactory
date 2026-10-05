@@ -113,31 +113,24 @@ export const HomePage: React.FC = () => {
             <h2 className="font-heading text-4xl sm:text-6xl text-white mt-1">OUR <span className="text-[#e8272a]">SERVICES</span></h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {activeServices.map((svc) => (
-              <Tilt3DCard key={svc.id} depth={6}>
-                <div className="glass-panel-3d rounded-2xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/60 transition-all duration-300 group h-full flex flex-col justify-between">
-                  {svc.coverImageUrl ? (
-                    <div className="relative h-44 overflow-hidden bg-neutral-950">
-                      <ProgressiveImage
-                        src={svc.coverImageUrl}
-                        alt={svc.name}
-                        containerClassName="w-full h-full"
-                        className="group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10 pointer-events-none"></div>
-                    </div>
-                  ) : (
-                    <div className="h-32 bg-neutral-900/60 flex items-center justify-center text-4xl">⚡</div>
-                  )}
-                  <div className="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h4 className="font-heading text-xl text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.name}</h4>
-                      <p className="text-xs text-neutral-400 mt-2 line-clamp-2">{svc.shortDescription || svc.description}</p>
-                    </div>
-                  </div>
+              <div 
+                key={svc.id} 
+                className="glass-panel p-5 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/50 transition-all duration-300 flex items-center gap-4 group hover:-translate-y-0.5"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#e8272a]/15 border border-[#e8272a]/30 flex items-center justify-center text-[#e8272a] shrink-0 font-bold text-lg group-hover:bg-[#e8272a] group-hover:text-white transition-colors">
+                  ✓
                 </div>
-              </Tilt3DCard>
+                <div>
+                  <h4 className="font-heading text-lg sm:text-xl text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide leading-snug">
+                    {svc.name}
+                  </h4>
+                  {svc.shortDescription && (
+                    <p className="text-xs text-neutral-400 mt-1 line-clamp-1">{svc.shortDescription}</p>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         </div>
