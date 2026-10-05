@@ -89,9 +89,6 @@ export const AdminServicesPage: React.FC = () => {
                 )}
                 <h3 className="font-heading text-2xl text-slate-900">{s.name}</h3>
                 <p className="text-xs text-slate-600 line-clamp-3">{s.shortDescription}</p>
-                {s.startingPriceNpr && (
-                  <span className="text-xs font-bold text-[#e8272a]">Starting NPR {s.startingPriceNpr}</span>
-                )}
               </div>
 
               <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
@@ -127,11 +124,7 @@ export const AdminServicesPage: React.FC = () => {
 
                 <div>
                   <label className="block text-slate-600 font-semibold mb-1">SHORT DESCRIPTION</label>
-                  <textarea rows={2} value={formData.shortDescription} onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:bg-white focus:border-[#e8272a] outline-none"></textarea>
-                </div>
-                <div>
-                  <label className="block text-slate-600 font-semibold mb-1">STARTING PRICE (NPR)</label>
-                  <input type="number" value={formData.startingPriceNpr || 0} onChange={(e) => setFormData({ ...formData, startingPriceNpr: Number(e.target.value) })} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:bg-white focus:border-[#e8272a] outline-none" />
+                  <textarea rows={3} value={formData.shortDescription} onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:bg-white focus:border-[#e8272a] outline-none"></textarea>
                 </div>
 
                 <div className="pt-2 border-t border-slate-100 space-y-3">
@@ -139,14 +132,6 @@ export const AdminServicesPage: React.FC = () => {
                   <div>
                     <label className="block text-slate-600 font-semibold mb-1">CUSTOM SLUG</label>
                     <input type="text" placeholder="e.g. personal-training" value={formData.slug || ''} onChange={(e) => setFormData({ ...formData, slug: e.target.value })} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:bg-white" />
-                  </div>
-                  <div>
-                    <label className="block text-slate-600 font-semibold mb-1">SEO TITLE</label>
-                    <input type="text" placeholder="Custom Page Title for Search Engines" value={formData.seoTitle || ''} onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-slate-900 focus:bg-white" />
-                  </div>
-                  <div>
-                    <label className="block text-slate-600 font-semibold mb-1">SEO DESCRIPTION</label>
-                    <input type="text" placeholder="Meta description for Search Engines..." value={formData.seoDescription || ''} onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-slate-[#000000] focus:bg-white" />
                   </div>
                 </div>
 
