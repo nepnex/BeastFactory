@@ -1,9 +1,9 @@
 import saunaImg from '../assets/images/services/sauna.webp';
 import nutritionImg from '../assets/images/services/nutrition.webp';
 import cardioImg from '../assets/images/services/cardio.webp';
-import weightLossImg from '../assets/images/services/weight_loss.jpg';
-import personalTrainingImg from '../assets/images/services/personal_training.jpg';
-import muscleGrowthImg from '../assets/images/services/muscle_growth.jpg';
+import weightLossImg from '../assets/images/services/WeightLoss.jpg';
+import personalTrainingImg from '../assets/images/services/personal training .jpg';
+import muscleGrowthImg from '../assets/images/services/Muscle Growth.jpg';
 import saunaJacuzziImg from '../assets/images/services/sauna_steam_jacuzzi.jpg';
 import dietCafeImg from '../assets/images/services/diet_cafe.jpg';
 const groupfitnessImg = cardioImg;

@@ -112,15 +112,35 @@ export const HomePage: React.FC = () => {
             <h2 className="font-heading text-4xl sm:text-6xl text-white mt-1">OUR <span className="text-[#e8272a]">SERVICES</span></h2>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {activeServices.map((svc) => (
               <Tilt3DCard key={svc.id} depth={12}>
-                <div className="glass-panel-3d p-5 rounded-2xl border border-neutral-800 hover:border-[#e8272a]/60 transition-all duration-300 text-center group h-full flex flex-col justify-between">
-                  <div>
-                    <div className="text-3xl mb-3 filter drop-shadow-md">⚡</div>
-                    <h4 className="font-heading text-base sm:text-lg text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.name}</h4>
+                <div className="glass-panel-3d rounded-2xl overflow-hidden border border-neutral-800 hover:border-[#e8272a]/60 transition-all duration-300 group h-full flex flex-col justify-between">
+                  {svc.coverImageUrl ? (
+                    <div className="relative h-44 overflow-hidden bg-neutral-950">
+                      <ProgressiveImage
+                        src={svc.coverImageUrl}
+                        alt={svc.name}
+                        containerClassName="w-full h-full"
+                        className="group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10 pointer-events-none"></div>
+                    </div>
+                  ) : (
+                    <div className="h-32 bg-neutral-900/60 flex items-center justify-center text-4xl">⚡</div>
+                  )}
+                  <div className="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-heading text-xl text-white group-hover:text-[#ff1e1e] transition-colors tracking-wide">{svc.name}</h4>
+                      <p className="text-xs text-neutral-400 mt-2 line-clamp-2">{svc.shortDescription || svc.description}</p>
+                    </div>
+                    {svc.startingPriceNpr && (
+                      <div className="mt-4 pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
+                        <span className="text-neutral-500 font-medium">Starting at</span>
+                        <span className="font-bold text-[#e8272a]">NPR {svc.startingPriceNpr}</span>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-xs text-neutral-400 mt-2 line-clamp-2">{svc.description}</p>
                 </div>
               </Tilt3DCard>
             ))}
